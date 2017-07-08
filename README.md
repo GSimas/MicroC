@@ -56,6 +56,9 @@
 - SCHUNK, L. M. **Microcontroladores AVR: Teoria e Aplicações Práticas**. 1ed. São Paulo: Érica, 2001.
 - NICOLOSI, D. E. C. **Microcontrolador 8051: Detalhado**. 2ed. São Paulo: Érica, 2001.
 
+![IFSC](https://teatroifscfpolis.files.wordpress.com/2016/03/marca_ifsc_florianopolis_horizontal.jpg)
+
+
 ## EEL7030
 
 **Instituição**: [Universidade Federal de Santa Catarina (UFSC)](http://ufsc.br/)
@@ -72,3 +75,4 @@
 
 **[Ementa](http://cagr.sistemas.ufsc.br/relatorios/curriculoCurso?curso=235)**: Arquiteturas de microprocessadores; programação de microprocessadores: tipo e formatos de instruções, modos de endereçamento; linguagens Assembly ou C; memória; entrada/saída; dispositivos periféricos; interrupção; acesso direto a memória; barramentos padrões; ferramentas para análise, desenvolvimento e depuração; projetos.
 
+![UFSC](http://wp.clicrbs.com.br/voleiboleiro/files/2013/02/brasao_UFSC_vertical_sigla1.jpg) ![CTC](http://tisc.com.br/wp-content/uploads/ctcufsc.gif)
