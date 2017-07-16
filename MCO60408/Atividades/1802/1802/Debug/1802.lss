@@ -1,0 +1,644 @@
+
+1802.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  00000442  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000003ee  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .comment      00000030  00000000  00000000  00000442  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000474  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000020  00000000  00000000  000004b4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   0000021c  00000000  00000000  000004d4  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 0000012c  00000000  00000000  000006f0  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000001ba  00000000  00000000  0000081c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000034  00000000  00000000  000009d8  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000001c1  00000000  00000000  00000a0c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    00000331  00000000  00000000  00000bcd  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000040  00000000  00000000  00000efe  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 3c 00 	jmp	0x78	; 0x78 <__ctors_end>
+   4:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+   8:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+   c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  10:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  14:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  18:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  1c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  20:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  24:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  28:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  2c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  30:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  34:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  38:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  3c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  40:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  44:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  48:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  4c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  50:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  54:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  58:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  5c:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  60:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+  64:	0c 94 46 00 	jmp	0x8c	; 0x8c <__bad_interrupt>
+
+00000068 <Tabela>:
+  68:	40 79 24 30 19 12 02 78 00 18 08 03 46 21 06 0e     @y$0...x....F!..
+
+00000078 <__ctors_end>:
+  78:	11 24       	eor	r1, r1
+  7a:	1f be       	out	0x3f, r1	; 63
+  7c:	cf ef       	ldi	r28, 0xFF	; 255
+  7e:	d8 e0       	ldi	r29, 0x08	; 8
+  80:	de bf       	out	0x3e, r29	; 62
+  82:	cd bf       	out	0x3d, r28	; 61
+  84:	0e 94 48 00 	call	0x90	; 0x90 <main>
+  88:	0c 94 f5 01 	jmp	0x3ea	; 0x3ea <_exit>
+
+0000008c <__bad_interrupt>:
+  8c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000090 <main>:
+
+const unsigned char Tabela[] PROGMEM = {0x40, 0x79, 0x24, 0x30, 0x19, 0x12, 0x02, 0x78,
+										0x00, 0x18, 0x08, 0x03, 0x46, 0x21, 0x06, 0x0E};
+
+int main(void)
+{
+  90:	cf 93       	push	r28
+  92:	df 93       	push	r29
+  94:	cd b7       	in	r28, 0x3d	; 61
+  96:	de b7       	in	r29, 0x3e	; 62
+  98:	28 97       	sbiw	r28, 0x08	; 8
+  9a:	0f b6       	in	r0, 0x3f	; 63
+  9c:	f8 94       	cli
+  9e:	de bf       	out	0x3e, r29	; 62
+  a0:	0f be       	out	0x3f, r0	; 63
+  a2:	cd bf       	out	0x3d, r28	; 61
+	DISPLAY_PORT = 0b11111111;
+  a4:	8f ef       	ldi	r24, 0xFF	; 255
+  a6:	8b b9       	out	0x0b, r24	; 11
+	DISPLAY_DDR = 0xFF;
+  a8:	8a b9       	out	0x0a, r24	; 10
+	BOTAO_PORT = 0b01111111;
+  aa:	9f e7       	ldi	r25, 0x7F	; 127
+  ac:	95 b9       	out	0x05, r25	; 5
+	BOTAO_DDR = 0xFF;
+  ae:	84 b9       	out	0x04, r24	; 4
+	
+    unsigned char i = 0;
+	unsigned int n = 0;
+	unsigned int leds[4];
+	unsigned int valor = 1802;
+  b0:	4a e0       	ldi	r20, 0x0A	; 10
+  b2:	57 e0       	ldi	r21, 0x07	; 7
+    while (1) 
+    {
+		leds[0] = (valor % 10) - 1;
+		leds[1] = ((valor/10) % 10) - 1;
+		leds[2] = ((valor/100) % 10) - 1;
+		leds[3] = ((valor/1000) % 10) - 1;
+  b4:	8e 01       	movw	r16, r28
+  b6:	0f 5f       	subi	r16, 0xFF	; 255
+  b8:	1f 4f       	sbci	r17, 0xFF	; 255
+				
+			for(i=0; i<4; i++)
+  ba:	c1 2c       	mov	r12, r1
+		while(tst_bit(PINB, BOTAO))
+		{
+			leds[0] = (valor % 10) - 1;
+			leds[1] = ((valor/10) % 10) - 1;
+			leds[2] = ((valor/100) % 10) - 1;
+			leds[3] = ((valor/1000) % 10) - 1;
+  bc:	d0 2e       	mov	r13, r16
+  be:	e1 2e       	mov	r14, r17
+			
+			for(i=0; i<4; i++)
+  c0:	fc 2c       	mov	r15, r12
+	
+	
+	
+    while (1) 
+    {
+		leds[0] = (valor % 10) - 1;
+  c2:	9a 01       	movw	r18, r20
+  c4:	ad ec       	ldi	r26, 0xCD	; 205
+  c6:	bc ec       	ldi	r27, 0xCC	; 204
+  c8:	0e 94 e6 01 	call	0x3cc	; 0x3cc <__umulhisi3>
+  cc:	fc 01       	movw	r30, r24
+  ce:	f6 95       	lsr	r31
+  d0:	e7 95       	ror	r30
+  d2:	f6 95       	lsr	r31
+  d4:	e7 95       	ror	r30
+  d6:	f6 95       	lsr	r31
+  d8:	e7 95       	ror	r30
+  da:	9f 01       	movw	r18, r30
+  dc:	22 0f       	add	r18, r18
+  de:	33 1f       	adc	r19, r19
+  e0:	cf 01       	movw	r24, r30
+  e2:	88 0f       	add	r24, r24
+  e4:	99 1f       	adc	r25, r25
+  e6:	88 0f       	add	r24, r24
+  e8:	99 1f       	adc	r25, r25
+  ea:	88 0f       	add	r24, r24
+  ec:	99 1f       	adc	r25, r25
+  ee:	82 0f       	add	r24, r18
+  f0:	93 1f       	adc	r25, r19
+  f2:	9a 01       	movw	r18, r20
+  f4:	28 1b       	sub	r18, r24
+  f6:	39 0b       	sbc	r19, r25
+  f8:	c9 01       	movw	r24, r18
+  fa:	01 97       	sbiw	r24, 0x01	; 1
+  fc:	9a 83       	std	Y+2, r25	; 0x02
+  fe:	89 83       	std	Y+1, r24	; 0x01
+		leds[1] = ((valor/10) % 10) - 1;
+ 100:	9f 01       	movw	r18, r30
+ 102:	0e 94 e6 01 	call	0x3cc	; 0x3cc <__umulhisi3>
+ 106:	96 95       	lsr	r25
+ 108:	87 95       	ror	r24
+ 10a:	96 95       	lsr	r25
+ 10c:	87 95       	ror	r24
+ 10e:	96 95       	lsr	r25
+ 110:	87 95       	ror	r24
+ 112:	9c 01       	movw	r18, r24
+ 114:	22 0f       	add	r18, r18
+ 116:	33 1f       	adc	r19, r19
+ 118:	88 0f       	add	r24, r24
+ 11a:	99 1f       	adc	r25, r25
+ 11c:	88 0f       	add	r24, r24
+ 11e:	99 1f       	adc	r25, r25
+ 120:	88 0f       	add	r24, r24
+ 122:	99 1f       	adc	r25, r25
+ 124:	82 0f       	add	r24, r18
+ 126:	93 1f       	adc	r25, r19
+ 128:	e8 1b       	sub	r30, r24
+ 12a:	f9 0b       	sbc	r31, r25
+ 12c:	31 97       	sbiw	r30, 0x01	; 1
+ 12e:	fc 83       	std	Y+4, r31	; 0x04
+ 130:	eb 83       	std	Y+3, r30	; 0x03
+		leds[2] = ((valor/100) % 10) - 1;
+ 132:	9a 01       	movw	r18, r20
+ 134:	36 95       	lsr	r19
+ 136:	27 95       	ror	r18
+ 138:	36 95       	lsr	r19
+ 13a:	27 95       	ror	r18
+ 13c:	ab e7       	ldi	r26, 0x7B	; 123
+ 13e:	b4 e1       	ldi	r27, 0x14	; 20
+ 140:	0e 94 e6 01 	call	0x3cc	; 0x3cc <__umulhisi3>
+ 144:	fc 01       	movw	r30, r24
+ 146:	f6 95       	lsr	r31
+ 148:	e7 95       	ror	r30
+ 14a:	9f 01       	movw	r18, r30
+ 14c:	ad ec       	ldi	r26, 0xCD	; 205
+ 14e:	bc ec       	ldi	r27, 0xCC	; 204
+ 150:	0e 94 e6 01 	call	0x3cc	; 0x3cc <__umulhisi3>
+ 154:	96 95       	lsr	r25
+ 156:	87 95       	ror	r24
+ 158:	96 95       	lsr	r25
+ 15a:	87 95       	ror	r24
+ 15c:	96 95       	lsr	r25
+ 15e:	87 95       	ror	r24
+ 160:	9c 01       	movw	r18, r24
+ 162:	22 0f       	add	r18, r18
+ 164:	33 1f       	adc	r19, r19
+ 166:	88 0f       	add	r24, r24
+ 168:	99 1f       	adc	r25, r25
+ 16a:	88 0f       	add	r24, r24
+ 16c:	99 1f       	adc	r25, r25
+ 16e:	88 0f       	add	r24, r24
+ 170:	99 1f       	adc	r25, r25
+ 172:	82 0f       	add	r24, r18
+ 174:	93 1f       	adc	r25, r19
+ 176:	e8 1b       	sub	r30, r24
+ 178:	f9 0b       	sbc	r31, r25
+ 17a:	31 97       	sbiw	r30, 0x01	; 1
+ 17c:	fe 83       	std	Y+6, r31	; 0x06
+ 17e:	ed 83       	std	Y+5, r30	; 0x05
+		leds[3] = ((valor/1000) % 10) - 1;
+ 180:	9a 01       	movw	r18, r20
+ 182:	36 95       	lsr	r19
+ 184:	27 95       	ror	r18
+ 186:	36 95       	lsr	r19
+ 188:	27 95       	ror	r18
+ 18a:	36 95       	lsr	r19
+ 18c:	27 95       	ror	r18
+ 18e:	a5 ec       	ldi	r26, 0xC5	; 197
+ 190:	b0 e2       	ldi	r27, 0x20	; 32
+ 192:	0e 94 e6 01 	call	0x3cc	; 0x3cc <__umulhisi3>
+ 196:	fc 01       	movw	r30, r24
+ 198:	f2 95       	swap	r31
+ 19a:	e2 95       	swap	r30
+ 19c:	ef 70       	andi	r30, 0x0F	; 15
+ 19e:	ef 27       	eor	r30, r31
+ 1a0:	ff 70       	andi	r31, 0x0F	; 15
+ 1a2:	ef 27       	eor	r30, r31
+ 1a4:	9f 01       	movw	r18, r30
+ 1a6:	ad ec       	ldi	r26, 0xCD	; 205
+ 1a8:	bc ec       	ldi	r27, 0xCC	; 204
+ 1aa:	0e 94 e6 01 	call	0x3cc	; 0x3cc <__umulhisi3>
+ 1ae:	96 95       	lsr	r25
+ 1b0:	87 95       	ror	r24
+ 1b2:	96 95       	lsr	r25
+ 1b4:	87 95       	ror	r24
+ 1b6:	96 95       	lsr	r25
+ 1b8:	87 95       	ror	r24
+ 1ba:	9c 01       	movw	r18, r24
+ 1bc:	22 0f       	add	r18, r18
+ 1be:	33 1f       	adc	r19, r19
+ 1c0:	88 0f       	add	r24, r24
+ 1c2:	99 1f       	adc	r25, r25
+ 1c4:	88 0f       	add	r24, r24
+ 1c6:	99 1f       	adc	r25, r25
+ 1c8:	88 0f       	add	r24, r24
+ 1ca:	99 1f       	adc	r25, r25
+ 1cc:	82 0f       	add	r24, r18
+ 1ce:	93 1f       	adc	r25, r19
+ 1d0:	e8 1b       	sub	r30, r24
+ 1d2:	f9 0b       	sbc	r31, r25
+ 1d4:	31 97       	sbiw	r30, 0x01	; 1
+ 1d6:	f8 87       	std	Y+8, r31	; 0x08
+ 1d8:	ef 83       	std	Y+7, r30	; 0x07
+ 1da:	d8 01       	movw	r26, r16
+				
+			for(i=0; i<4; i++)
+ 1dc:	8c 2d       	mov	r24, r12
+			{
+				clr_bit(BOTAO_PORT, DISPLAY0);
+ 1de:	28 98       	cbi	0x05, 0	; 5
+				clr_bit(BOTAO_PORT, DISPLAY1);
+ 1e0:	29 98       	cbi	0x05, 1	; 5
+				clr_bit(BOTAO_PORT, DISPLAY2);
+ 1e2:	2a 98       	cbi	0x05, 2	; 5
+				clr_bit(BOTAO_PORT, DISPLAY3);
+ 1e4:	2b 98       	cbi	0x05, 3	; 5
+				
+				n = leds[i];
+ 1e6:	ed 91       	ld	r30, X+
+ 1e8:	fd 91       	ld	r31, X+
+				
+				DISPLAY_PORT = pgm_read_byte(&Tabela[n+1]);
+ 1ea:	e7 59       	subi	r30, 0x97	; 151
+ 1ec:	ff 4f       	sbci	r31, 0xFF	; 255
+ 1ee:	e4 91       	lpm	r30, Z
+ 1f0:	eb b9       	out	0x0b, r30	; 11
+				
+				if(i == 0)
+ 1f2:	81 11       	cpse	r24, r1
+ 1f4:	02 c0       	rjmp	.+4      	; 0x1fa <main+0x16a>
+					set_bit(BOTAO_PORT, DISPLAY0);
+ 1f6:	28 9a       	sbi	0x05, 0	; 5
+ 1f8:	0f c0       	rjmp	.+30     	; 0x218 <main+0x188>
+				if(i == 1)
+ 1fa:	81 30       	cpi	r24, 0x01	; 1
+ 1fc:	11 f4       	brne	.+4      	; 0x202 <main+0x172>
+					set_bit(BOTAO_PORT, DISPLAY1);
+ 1fe:	29 9a       	sbi	0x05, 1	; 5
+ 200:	15 c0       	rjmp	.+42     	; 0x22c <main+0x19c>
+				if(i == 2)
+ 202:	82 30       	cpi	r24, 0x02	; 2
+ 204:	49 f4       	brne	.+18     	; 0x218 <main+0x188>
+					set_bit(BOTAO_PORT, DISPLAY2);
+ 206:	2a 9a       	sbi	0x05, 2	; 5
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+ 208:	ef ed       	ldi	r30, 0xDF	; 223
+ 20a:	fe e2       	ldi	r31, 0x2E	; 46
+ 20c:	31 97       	sbiw	r30, 0x01	; 1
+ 20e:	f1 f7       	brne	.-4      	; 0x20c <main+0x17c>
+ 210:	00 c0       	rjmp	.+0      	; 0x212 <main+0x182>
+ 212:	00 00       	nop
+		leds[0] = (valor % 10) - 1;
+		leds[1] = ((valor/10) % 10) - 1;
+		leds[2] = ((valor/100) % 10) - 1;
+		leds[3] = ((valor/1000) % 10) - 1;
+				
+			for(i=0; i<4; i++)
+ 214:	8f 5f       	subi	r24, 0xFF	; 255
+ 216:	e3 cf       	rjmp	.-58     	; 0x1de <main+0x14e>
+					set_bit(BOTAO_PORT, DISPLAY0);
+				if(i == 1)
+					set_bit(BOTAO_PORT, DISPLAY1);
+				if(i == 2)
+					set_bit(BOTAO_PORT, DISPLAY2);
+				if(i == 3)
+ 218:	83 30       	cpi	r24, 0x03	; 3
+ 21a:	41 f4       	brne	.+16     	; 0x22c <main+0x19c>
+					set_bit(BOTAO_PORT, DISPLAY3);
+ 21c:	2b 9a       	sbi	0x05, 3	; 5
+ 21e:	8f ed       	ldi	r24, 0xDF	; 223
+ 220:	9e e2       	ldi	r25, 0x2E	; 46
+ 222:	01 97       	sbiw	r24, 0x01	; 1
+ 224:	f1 f7       	brne	.-4      	; 0x222 <main+0x192>
+ 226:	00 c0       	rjmp	.+0      	; 0x228 <main+0x198>
+ 228:	00 00       	nop
+ 22a:	cd c0       	rjmp	.+410    	; 0x3c6 <main+0x336>
+ 22c:	ef ed       	ldi	r30, 0xDF	; 223
+ 22e:	fe e2       	ldi	r31, 0x2E	; 46
+ 230:	31 97       	sbiw	r30, 0x01	; 1
+ 232:	f1 f7       	brne	.-4      	; 0x230 <main+0x1a0>
+ 234:	00 c0       	rjmp	.+0      	; 0x236 <main+0x1a6>
+ 236:	00 00       	nop
+		leds[0] = (valor % 10) - 1;
+		leds[1] = ((valor/10) % 10) - 1;
+		leds[2] = ((valor/100) % 10) - 1;
+		leds[3] = ((valor/1000) % 10) - 1;
+				
+			for(i=0; i<4; i++)
+ 238:	8f 5f       	subi	r24, 0xFF	; 255
+ 23a:	84 30       	cpi	r24, 0x04	; 4
+ 23c:	81 f6       	brne	.-96     	; 0x1de <main+0x14e>
+ 23e:	c3 c0       	rjmp	.+390    	; 0x3c6 <main+0x336>
+					set_bit(BOTAO_PORT, DISPLAY3);
+				_delay_ms(3);				
+			}
+		while(tst_bit(PINB, BOTAO))
+		{
+			leds[0] = (valor % 10) - 1;
+ 240:	9a 01       	movw	r18, r20
+ 242:	ad ec       	ldi	r26, 0xCD	; 205
+ 244:	bc ec       	ldi	r27, 0xCC	; 204
+ 246:	0e 94 e6 01 	call	0x3cc	; 0x3cc <__umulhisi3>
+ 24a:	fc 01       	movw	r30, r24
+ 24c:	f6 95       	lsr	r31
+ 24e:	e7 95       	ror	r30
+ 250:	f6 95       	lsr	r31
+ 252:	e7 95       	ror	r30
+ 254:	f6 95       	lsr	r31
+ 256:	e7 95       	ror	r30
+ 258:	9f 01       	movw	r18, r30
+ 25a:	22 0f       	add	r18, r18
+ 25c:	33 1f       	adc	r19, r19
+ 25e:	cf 01       	movw	r24, r30
+ 260:	88 0f       	add	r24, r24
+ 262:	99 1f       	adc	r25, r25
+ 264:	88 0f       	add	r24, r24
+ 266:	99 1f       	adc	r25, r25
+ 268:	88 0f       	add	r24, r24
+ 26a:	99 1f       	adc	r25, r25
+ 26c:	82 0f       	add	r24, r18
+ 26e:	93 1f       	adc	r25, r19
+ 270:	9a 01       	movw	r18, r20
+ 272:	28 1b       	sub	r18, r24
+ 274:	39 0b       	sbc	r19, r25
+ 276:	c9 01       	movw	r24, r18
+ 278:	01 97       	sbiw	r24, 0x01	; 1
+ 27a:	9a 83       	std	Y+2, r25	; 0x02
+ 27c:	89 83       	std	Y+1, r24	; 0x01
+			leds[1] = ((valor/10) % 10) - 1;
+ 27e:	9f 01       	movw	r18, r30
+ 280:	0e 94 e6 01 	call	0x3cc	; 0x3cc <__umulhisi3>
+ 284:	96 95       	lsr	r25
+ 286:	87 95       	ror	r24
+ 288:	96 95       	lsr	r25
+ 28a:	87 95       	ror	r24
+ 28c:	96 95       	lsr	r25
+ 28e:	87 95       	ror	r24
+ 290:	9c 01       	movw	r18, r24
+ 292:	22 0f       	add	r18, r18
+ 294:	33 1f       	adc	r19, r19
+ 296:	88 0f       	add	r24, r24
+ 298:	99 1f       	adc	r25, r25
+ 29a:	88 0f       	add	r24, r24
+ 29c:	99 1f       	adc	r25, r25
+ 29e:	88 0f       	add	r24, r24
+ 2a0:	99 1f       	adc	r25, r25
+ 2a2:	82 0f       	add	r24, r18
+ 2a4:	93 1f       	adc	r25, r19
+ 2a6:	e8 1b       	sub	r30, r24
+ 2a8:	f9 0b       	sbc	r31, r25
+ 2aa:	31 97       	sbiw	r30, 0x01	; 1
+ 2ac:	fc 83       	std	Y+4, r31	; 0x04
+ 2ae:	eb 83       	std	Y+3, r30	; 0x03
+			leds[2] = ((valor/100) % 10) - 1;
+ 2b0:	9a 01       	movw	r18, r20
+ 2b2:	36 95       	lsr	r19
+ 2b4:	27 95       	ror	r18
+ 2b6:	36 95       	lsr	r19
+ 2b8:	27 95       	ror	r18
+ 2ba:	ab e7       	ldi	r26, 0x7B	; 123
+ 2bc:	b4 e1       	ldi	r27, 0x14	; 20
+ 2be:	0e 94 e6 01 	call	0x3cc	; 0x3cc <__umulhisi3>
+ 2c2:	fc 01       	movw	r30, r24
+ 2c4:	f6 95       	lsr	r31
+ 2c6:	e7 95       	ror	r30
+ 2c8:	9f 01       	movw	r18, r30
+ 2ca:	ad ec       	ldi	r26, 0xCD	; 205
+ 2cc:	bc ec       	ldi	r27, 0xCC	; 204
+ 2ce:	0e 94 e6 01 	call	0x3cc	; 0x3cc <__umulhisi3>
+ 2d2:	96 95       	lsr	r25
+ 2d4:	87 95       	ror	r24
+ 2d6:	96 95       	lsr	r25
+ 2d8:	87 95       	ror	r24
+ 2da:	96 95       	lsr	r25
+ 2dc:	87 95       	ror	r24
+ 2de:	9c 01       	movw	r18, r24
+ 2e0:	22 0f       	add	r18, r18
+ 2e2:	33 1f       	adc	r19, r19
+ 2e4:	88 0f       	add	r24, r24
+ 2e6:	99 1f       	adc	r25, r25
+ 2e8:	88 0f       	add	r24, r24
+ 2ea:	99 1f       	adc	r25, r25
+ 2ec:	88 0f       	add	r24, r24
+ 2ee:	99 1f       	adc	r25, r25
+ 2f0:	82 0f       	add	r24, r18
+ 2f2:	93 1f       	adc	r25, r19
+ 2f4:	e8 1b       	sub	r30, r24
+ 2f6:	f9 0b       	sbc	r31, r25
+ 2f8:	31 97       	sbiw	r30, 0x01	; 1
+ 2fa:	fe 83       	std	Y+6, r31	; 0x06
+ 2fc:	ed 83       	std	Y+5, r30	; 0x05
+			leds[3] = ((valor/1000) % 10) - 1;
+ 2fe:	9a 01       	movw	r18, r20
+ 300:	36 95       	lsr	r19
+ 302:	27 95       	ror	r18
+ 304:	36 95       	lsr	r19
+ 306:	27 95       	ror	r18
+ 308:	36 95       	lsr	r19
+ 30a:	27 95       	ror	r18
+ 30c:	a5 ec       	ldi	r26, 0xC5	; 197
+ 30e:	b0 e2       	ldi	r27, 0x20	; 32
+ 310:	0e 94 e6 01 	call	0x3cc	; 0x3cc <__umulhisi3>
+ 314:	fc 01       	movw	r30, r24
+ 316:	f2 95       	swap	r31
+ 318:	e2 95       	swap	r30
+ 31a:	ef 70       	andi	r30, 0x0F	; 15
+ 31c:	ef 27       	eor	r30, r31
+ 31e:	ff 70       	andi	r31, 0x0F	; 15
+ 320:	ef 27       	eor	r30, r31
+ 322:	9f 01       	movw	r18, r30
+ 324:	ad ec       	ldi	r26, 0xCD	; 205
+ 326:	bc ec       	ldi	r27, 0xCC	; 204
+ 328:	0e 94 e6 01 	call	0x3cc	; 0x3cc <__umulhisi3>
+ 32c:	96 95       	lsr	r25
+ 32e:	87 95       	ror	r24
+ 330:	96 95       	lsr	r25
+ 332:	87 95       	ror	r24
+ 334:	96 95       	lsr	r25
+ 336:	87 95       	ror	r24
+ 338:	9c 01       	movw	r18, r24
+ 33a:	22 0f       	add	r18, r18
+ 33c:	33 1f       	adc	r19, r19
+ 33e:	88 0f       	add	r24, r24
+ 340:	99 1f       	adc	r25, r25
+ 342:	88 0f       	add	r24, r24
+ 344:	99 1f       	adc	r25, r25
+ 346:	88 0f       	add	r24, r24
+ 348:	99 1f       	adc	r25, r25
+ 34a:	82 0f       	add	r24, r18
+ 34c:	93 1f       	adc	r25, r19
+ 34e:	e8 1b       	sub	r30, r24
+ 350:	f9 0b       	sbc	r31, r25
+ 352:	31 97       	sbiw	r30, 0x01	; 1
+ 354:	f8 87       	std	Y+8, r31	; 0x08
+ 356:	ef 83       	std	Y+7, r30	; 0x07
+ 358:	ad 2d       	mov	r26, r13
+ 35a:	be 2d       	mov	r27, r14
+			
+			for(i=0; i<4; i++)
+ 35c:	8f 2d       	mov	r24, r15
+			{
+				clr_bit(BOTAO_PORT, DISPLAY0);
+ 35e:	28 98       	cbi	0x05, 0	; 5
+				clr_bit(BOTAO_PORT, DISPLAY1);
+ 360:	29 98       	cbi	0x05, 1	; 5
+				clr_bit(BOTAO_PORT, DISPLAY2);
+ 362:	2a 98       	cbi	0x05, 2	; 5
+				clr_bit(BOTAO_PORT, DISPLAY3);
+ 364:	2b 98       	cbi	0x05, 3	; 5
+				
+				n = leds[i];
+ 366:	ed 91       	ld	r30, X+
+ 368:	fd 91       	ld	r31, X+
+				
+				DISPLAY_PORT = pgm_read_byte(&Tabela[n+1]);
+ 36a:	e7 59       	subi	r30, 0x97	; 151
+ 36c:	ff 4f       	sbci	r31, 0xFF	; 255
+ 36e:	e4 91       	lpm	r30, Z
+ 370:	eb b9       	out	0x0b, r30	; 11
+				
+				if(i == 0)
+ 372:	81 11       	cpse	r24, r1
+ 374:	02 c0       	rjmp	.+4      	; 0x37a <main+0x2ea>
+				set_bit(BOTAO_PORT, DISPLAY0);
+ 376:	28 9a       	sbi	0x05, 0	; 5
+ 378:	0f c0       	rjmp	.+30     	; 0x398 <main+0x308>
+				if(i == 1)
+ 37a:	81 30       	cpi	r24, 0x01	; 1
+ 37c:	11 f4       	brne	.+4      	; 0x382 <main+0x2f2>
+				set_bit(BOTAO_PORT, DISPLAY1);
+ 37e:	29 9a       	sbi	0x05, 1	; 5
+ 380:	15 c0       	rjmp	.+42     	; 0x3ac <main+0x31c>
+				if(i == 2)
+ 382:	82 30       	cpi	r24, 0x02	; 2
+ 384:	49 f4       	brne	.+18     	; 0x398 <main+0x308>
+				set_bit(BOTAO_PORT, DISPLAY2);
+ 386:	2a 9a       	sbi	0x05, 2	; 5
+ 388:	ef ed       	ldi	r30, 0xDF	; 223
+ 38a:	fe e2       	ldi	r31, 0x2E	; 46
+ 38c:	31 97       	sbiw	r30, 0x01	; 1
+ 38e:	f1 f7       	brne	.-4      	; 0x38c <main+0x2fc>
+ 390:	00 c0       	rjmp	.+0      	; 0x392 <main+0x302>
+ 392:	00 00       	nop
+			leds[0] = (valor % 10) - 1;
+			leds[1] = ((valor/10) % 10) - 1;
+			leds[2] = ((valor/100) % 10) - 1;
+			leds[3] = ((valor/1000) % 10) - 1;
+			
+			for(i=0; i<4; i++)
+ 394:	8f 5f       	subi	r24, 0xFF	; 255
+ 396:	e3 cf       	rjmp	.-58     	; 0x35e <main+0x2ce>
+				set_bit(BOTAO_PORT, DISPLAY0);
+				if(i == 1)
+				set_bit(BOTAO_PORT, DISPLAY1);
+				if(i == 2)
+				set_bit(BOTAO_PORT, DISPLAY2);
+				if(i == 3)
+ 398:	83 30       	cpi	r24, 0x03	; 3
+ 39a:	41 f4       	brne	.+16     	; 0x3ac <main+0x31c>
+				set_bit(BOTAO_PORT, DISPLAY3);
+ 39c:	2b 9a       	sbi	0x05, 3	; 5
+ 39e:	8f ed       	ldi	r24, 0xDF	; 223
+ 3a0:	9e e2       	ldi	r25, 0x2E	; 46
+ 3a2:	01 97       	sbiw	r24, 0x01	; 1
+ 3a4:	f1 f7       	brne	.-4      	; 0x3a2 <main+0x312>
+ 3a6:	00 c0       	rjmp	.+0      	; 0x3a8 <main+0x318>
+ 3a8:	00 00       	nop
+ 3aa:	09 c0       	rjmp	.+18     	; 0x3be <main+0x32e>
+ 3ac:	ef ed       	ldi	r30, 0xDF	; 223
+ 3ae:	fe e2       	ldi	r31, 0x2E	; 46
+ 3b0:	31 97       	sbiw	r30, 0x01	; 1
+ 3b2:	f1 f7       	brne	.-4      	; 0x3b0 <main+0x320>
+ 3b4:	00 c0       	rjmp	.+0      	; 0x3b6 <main+0x326>
+ 3b6:	00 00       	nop
+			leds[0] = (valor % 10) - 1;
+			leds[1] = ((valor/10) % 10) - 1;
+			leds[2] = ((valor/100) % 10) - 1;
+			leds[3] = ((valor/1000) % 10) - 1;
+			
+			for(i=0; i<4; i++)
+ 3b8:	8f 5f       	subi	r24, 0xFF	; 255
+ 3ba:	84 30       	cpi	r24, 0x04	; 4
+ 3bc:	81 f6       	brne	.-96     	; 0x35e <main+0x2ce>
+				set_bit(BOTAO_PORT, DISPLAY2);
+				if(i == 3)
+				set_bit(BOTAO_PORT, DISPLAY3);
+				_delay_ms(3);
+			}
+			if(!tst_bit(PINB, BOTAO))
+ 3be:	1f 99       	sbic	0x03, 7	; 3
+ 3c0:	02 c0       	rjmp	.+4      	; 0x3c6 <main+0x336>
+			valor++;
+ 3c2:	4f 5f       	subi	r20, 0xFF	; 255
+ 3c4:	5f 4f       	sbci	r21, 0xFF	; 255
+					set_bit(BOTAO_PORT, DISPLAY2);
+				if(i == 3)
+					set_bit(BOTAO_PORT, DISPLAY3);
+				_delay_ms(3);				
+			}
+		while(tst_bit(PINB, BOTAO))
+ 3c6:	1f 99       	sbic	0x03, 7	; 3
+ 3c8:	3b cf       	rjmp	.-394    	; 0x240 <main+0x1b0>
+ 3ca:	7b ce       	rjmp	.-778    	; 0xc2 <main+0x32>
+
+000003cc <__umulhisi3>:
+ 3cc:	a2 9f       	mul	r26, r18
+ 3ce:	b0 01       	movw	r22, r0
+ 3d0:	b3 9f       	mul	r27, r19
+ 3d2:	c0 01       	movw	r24, r0
+ 3d4:	a3 9f       	mul	r26, r19
+ 3d6:	70 0d       	add	r23, r0
+ 3d8:	81 1d       	adc	r24, r1
+ 3da:	11 24       	eor	r1, r1
+ 3dc:	91 1d       	adc	r25, r1
+ 3de:	b2 9f       	mul	r27, r18
+ 3e0:	70 0d       	add	r23, r0
+ 3e2:	81 1d       	adc	r24, r1
+ 3e4:	11 24       	eor	r1, r1
+ 3e6:	91 1d       	adc	r25, r1
+ 3e8:	08 95       	ret
+
+000003ea <_exit>:
+ 3ea:	f8 94       	cli
+
+000003ec <__stop_program>:
+ 3ec:	ff cf       	rjmp	.-2      	; 0x3ec <__stop_program>
