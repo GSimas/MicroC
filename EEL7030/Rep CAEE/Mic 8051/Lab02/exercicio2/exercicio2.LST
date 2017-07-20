@@ -1,0 +1,59 @@
+A51 MACRO ASSEMBLER  EXERCICIO2                                                           07/15/2015 15:32:07 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio2.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio2.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0000                 2     RESET   EQU 0H
+  0060                 3     VETOR   EQU 60H
+0000                   4                     ORG RESET ; PC = 0000H ao se resetar o 8051
+0000 900060            5                     MOV DPTR,#NRO ; endereco nro parcelas a ser somado              
+0003 7400              6                     MOV A,#0
+0005 93                7                     MOVC A,@A+DPTR
+0006 6014              8                     JZ FIM
+0008 F9                9                     MOV R1,A ; R1 = nro parcelas a ser somado       
+0009 900061           10                     MOV DPTR,#DADOS ; end. vetor de dados a ser somado
+000C 7A00             11                     MOV R2,#0 ; guarda resultado das somas realizadas
+000E 7800             12                     MOV R0,#0 ; especifica parcela a ser lida do vetor de dados
+0010 7B00             13                     MOV R3,#0
+0012 E8               14     VOLTA:  MOV A,R0
+0013 93               15                     MOVC A,@A+DPTR ; le parcela
+0014 2A               16                     ADD A,R2
+0015 FA               17                     MOV R2,A
+                      18     
+                      19                     
+0016 E9               20                     MOV A,R1
+0017 6003             21                     JZ FIM
+                      22                     
+0019 08               23                     INC R0
+001A D9F6             24                     DJNZ R1, VOLTA
+001C 80FE             25     FIM:    JMP FIM
+0060                  26                     ORG VETOR
+0060 03               27     NRO:    DB 3H
+0061 01030506         28     DADOS:  DB 01H,03H,05H,06H,0AH,0E2H
+0065 0AE2                    
+                      29                     END
+A51 MACRO ASSEMBLER  EXERCICIO2                                                           07/15/2015 15:32:07 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DADOS. . . . . . .  C ADDR   0061H   A   
+FIM. . . . . . . .  C ADDR   001CH   A   
+NRO. . . . . . . .  C ADDR   0060H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+VETOR. . . . . . .  N NUMB   0060H   A   
+VOLTA. . . . . . .  C ADDR   0012H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
