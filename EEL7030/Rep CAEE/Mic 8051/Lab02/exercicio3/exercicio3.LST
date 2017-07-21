@@ -1,0 +1,65 @@
+A51 MACRO ASSEMBLER  EXERCICIO3                                                           07/15/2015 15:32:22 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio3.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio3.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0000                 2                     RESET EQU 0H
+  0060                 3                     VETOR EQU 60H
+0000                   4                     ORG RESET ; PC = 0000H ao se resetar o 8051
+0000 900060            5                     MOV DPTR,#NRO ; endereco nro parcelas a ser somado
+0003 7400              6                     MOV A,#0
+0005 93                7                     MOVC A,@A+DPTR
+0006 F9                8                     MOV R1,A
+0007 900061            9                     MOV DPTR,#DADOS ; end. vetor de dados a ser somado
+000A 7A00             10                     MOV R2,#0 ; guarda resultado das somas realizadas
+000C 7800             11                     MOV R0,#0 ; especifica parcela a ser lida do vetor de dados
+000E 7B00             12                     MOV R3,#0
+0010 E8               13     VOLTA:  MOV A,R0
+0011 93               14                     MOVC A,@A+DPTR ; le parcela
+0012 2A               15                     ADD A,R2
+0013 FA               16                     MOV R2,A
+                      17                                     
+                      18                     
+0014 3B               19                     ADDC A,R3
+0015 F583             20                     MOV DPH,A
+0017 E583             21                     MOV A,DPH
+0019 900000           22                     MOV DPTR,#0
+001C F0               23                     MOVX @DPTR,A
+001D EA               24                     MOV A,R2
+001E 900061           25                     MOV DPTR,#DADOS
+0021 08               26                     INC R0
+0022 D9EC             27                     DJNZ R1,VOLTA
+                      28     
+                      29     
+0060                  30                     ORG VETOR
+0060 15               31     NRO:    DB 15H
+0061 01030506         32     DADOS:  DB 01H,03H,05H,06H,0AH,0E2H,01H,03H,05H,06H,0AH,0E2H,0E2H,0E2H,0E2H     
+0065 0AE20103                
+0069 05060AE2                
+006D E2E2E2                  
+                      33                     END
+A51 MACRO ASSEMBLER  EXERCICIO3                                                           07/15/2015 15:32:22 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DADOS. . . . . . .  C ADDR   0061H   A   
+DPH. . . . . . . .  D ADDR   0083H   A   
+NRO. . . . . . . .  C ADDR   0060H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+VETOR. . . . . . .  N NUMB   0060H   A   
+VOLTA. . . . . . .  C ADDR   0010H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
