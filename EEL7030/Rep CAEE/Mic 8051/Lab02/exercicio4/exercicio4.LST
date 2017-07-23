@@ -1,0 +1,70 @@
+A51 MACRO ASSEMBLER  EXERCICIO4                                                           07/15/2015 15:32:45 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio4.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio4.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0000                 2     RESET   EQU 0H
+  0060                 3     VETOR   EQU 60H
+                       4                     
+0000                   5                     ORG RESET               ; PC = 0000H ao se resetar o 8051
+0000 900060            6                     MOV DPTR,#NRO   ; endereco nro parcelas a ser somado
+0003 7400              7                     MOV A,#0
+0005 93                8                     MOVC A,@A+DPTR
+0006 FF                9                     MOV R7,A                ; R1 = nro parcelas a ser somado
+0007 900061           10                     MOV DPTR,#DADOS ; end. vetor de dados a ser somado
+000A 7800             11                     MOV R0,#0
+000C 7B00             12                     MOV R3,#0
+000E 7C00             13                     MOV R4,#0
+0010 7E00             14                     MOV R6,#0               ; especifica parcela a ser lida do vetor de dados
+0012 EE               15     VOLTA:  MOV A,R6
+0013 93               16                     MOVC A,@A+DPTR  ; le parcela, Acc possui o numero a ser guardado
+0014 FB               17                     MOV R3,A        ; R3 possui o nro a ser guardado                
+0015 EC               18                     MOV A,R4
+0016 2450             19                     ADD A,#50H
+0018 F8               20                     MOV R0,A
+0019 EB               21                     MOV A,R3
+001A F6               22                     MOV @R0,A       ;terminando de escrever na memoria interna
+                      23                     
+001B 902200           24                     MOV DPTR,#2200H ;escrevendo na memoria externa
+001E E582             25                     MOV A,DPL
+0020 2C               26                     ADD A,R4
+0021 F582             27                     MOV DPL,A
+0023 EB               28                     MOV A,R3
+0024 F0               29                     MOVX @DPTR,A    ;terminando de escrever na mem. externa
+0025 900061           30                     MOV DPTR,#DADOS         
+0028 0C               31                     INC R4
+0029 0E               32                     INC R6
+002A DFE6             33                     DJNZ R7,VOLTA
+002C 80FE             34     FIM:    JMP FIM
+                      35                     
+0060                  36                     ORG VETOR
+0060 05               37     NRO:    DB 05H
+0061 01020304         38     DADOS:  DB 01H,02H,03H,04H,05H
+0065 05                      
+                      39                     END
+A51 MACRO ASSEMBLER  EXERCICIO4                                                           07/15/2015 15:32:45 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DADOS. . . . . . .  C ADDR   0061H   A   
+DPL. . . . . . . .  D ADDR   0082H   A   
+FIM. . . . . . . .  C ADDR   002CH   A   
+NRO. . . . . . . .  C ADDR   0060H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+VETOR. . . . . . .  N NUMB   0060H   A   
+VOLTA. . . . . . .  C ADDR   0012H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
