@@ -1,0 +1,81 @@
+A51 MACRO ASSEMBLER  EXERCICIO5                                                           07/15/2015 15:32:56 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio5.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio5.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+                       2     
+  0000                 3     RESET   EQU 0H
+  2100                 4     VETOR   EQU 2100H
+                       5                     
+0000                   6                     ORG RESET               ; PC = 0000H ao se resetar o 8051
+0000 902100            7                     MOV DPTR,#NRO   ; endereco nro parcelas a ser somado
+0003 7400              8                     MOV A,#0
+0005 93                9                     MOVC A,@A+DPTR          
+0006 FF               10                     MOV R7,A                ; R1 = nro parcelas a ser somado
+0007 7C00             11                     MOV R4,#0
+0009 7D10             12                     MOV R5,#16
+                      13     
+                      14                     
+000B 7800             15                     MOV R0,#0
+000D 7B00             16                     MOV R3,#0
+000F 7C00             17                     MOV R4,#0
+0011 7E00             18                     MOV R6,#0               ; especifica parcela a ser lida do vetor de dados
+0013 EE               19     VOLTA:  MOV A,R6
+0014 93               20                     MOVC A,@A+DPTR  ; le parcela, Acc possui o numero a ser guardado
+0015 FB               21                     MOV R3,A        ; R3 possui o nro a ser guardado                
+0016 902101           22     PREENCHER:MOV DPTR,#DADOS ; end. vetor de dados a ser somado
+0019 E582             23                     MOV A,DPL
+001B 2C               24                     ADD A,R4
+001C F582             25                     MOV DPL,A
+001E EB               26                     MOV A,R3
+001F F0               27                     MOVX @DPTR,A    ;terminando de escrever na mem. externa
+0020 0C               28                     INC R4
+0021 DDF3             29                     DJNZ R5, PREENCHER
+                      30     
+                      31                     
+0023 902200           32                     MOV DPTR,#2200H ;escrevendo na memoria externa
+0026 E582             33                     MOV A,DPL
+0028 2C               34                     ADD A,R4
+0029 F582             35                     MOV DPL,A
+002B EB               36                     MOV A,R3
+002C F0               37                     MOVX @DPTR,A    ;terminando de escrever na mem. externa
+002D 902101           38                     MOV DPTR,#DADOS         
+0030 0C               39                     INC R4
+0031 0E               40                     INC R6
+0032 DFDF             41                     DJNZ R7,VOLTA
+0034 80FE             42     FIM:    JMP FIM
+                      43                     
+2100                  44                     ORG VETOR
+2100 0F               45     NRO:    DB 0FH
+2101 00010203         46     DADOS:  DB 00H,01H,02H,03H,04H,05H,06H,07H,08H,09H,0AH,0BH,0CH,0DH,0EH,0FH
+2105 04050607                
+2109 08090A0B                
+210D 0C0D0E0F                
+                      47                     END
+A51 MACRO ASSEMBLER  EXERCICIO5                                                           07/15/2015 15:32:56 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DADOS. . . . . . .  C ADDR   2101H   A   
+DPL. . . . . . . .  D ADDR   0082H   A   
+FIM. . . . . . . .  C ADDR   0034H   A   
+NRO. . . . . . . .  C ADDR   2100H   A   
+PREENCHER. . . . .  C ADDR   0016H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+VETOR. . . . . . .  N NUMB   2100H   A   
+VOLTA. . . . . . .  C ADDR   0013H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

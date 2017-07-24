@@ -1,0 +1,82 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/15/2015  15:32:57  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE exercicio5.obj TO exercicio5
+
+
+INPUT MODULES INCLUDED:
+  exercicio5.obj (EXERCICIO5)
+
+
+LINK MAP OF MODULE:  exercicio5 (EXERCICIO5)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     2111H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  exercicio5 (EXERCICIO5)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        EXERCICIO5
+  C:2101H         SYMBOL        DADOS
+  D:0082H         SYMBOL        DPL
+  C:0034H         SYMBOL        FIM
+  C:2100H         SYMBOL        NRO
+  C:0016H         SYMBOL        PREENCHER
+  N:0000H         SYMBOL        RESET
+  N:2100H         SYMBOL        VETOR
+  C:0013H         SYMBOL        VOLTA
+  C:0000H         LINE#         7
+  C:0003H         LINE#         8
+  C:0005H         LINE#         9
+  C:0006H         LINE#         10
+  C:0007H         LINE#         11
+  C:0009H         LINE#         12
+  C:000BH         LINE#         15
+  C:000DH         LINE#         16
+  C:000FH         LINE#         17
+  C:0011H         LINE#         18
+  C:0013H         LINE#         19
+  C:0014H         LINE#         20
+  C:0015H         LINE#         21
+  C:0016H         LINE#         22
+  C:0019H         LINE#         23
+  C:001BH         LINE#         24
+  C:001CH         LINE#         25
+  C:001EH         LINE#         26
+  C:001FH         LINE#         27
+  C:0020H         LINE#         28
+  C:0021H         LINE#         29
+  C:0023H         LINE#         32
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/15/2015  15:32:57  PAGE 2
+
+
+  C:0026H         LINE#         33
+  C:0028H         LINE#         34
+  C:0029H         LINE#         35
+  C:002BH         LINE#         36
+  C:002CH         LINE#         37
+  C:002DH         LINE#         38
+  C:0030H         LINE#         39
+  C:0031H         LINE#         40
+  C:0032H         LINE#         41
+  C:0034H         LINE#         42
+  -------         ENDMOD        EXERCICIO5
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0047H BYTE ( 3%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=8465
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
