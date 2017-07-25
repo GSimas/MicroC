@@ -1,0 +1,9 @@
+; Programa FIRST.asm
+INICIO EQU  0H
+			ORG INICIO
+			MOV 02H,#3
+VOLTA: 		MOV A,R2
+			ADD A,32H
+			MOV 32H,A
+			JMP VOLTA
+			END
