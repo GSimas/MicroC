@@ -1,0 +1,57 @@
+A51 MACRO ASSEMBLER  EXERCICIO1                                                           07/15/2015 15:33:23 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio1.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio1.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0087                 2     CS                EQU P0.7
+  00B3                 3     END0      EQU P3.3;
+  00B4                 4     END1      EQU P3.4;
+0000                   5                       ORG 0h
+0000 C2B3              6                       CLR END0
+0002 C2B4              7                       CLR END1
+0004 D287              8                       SETB CS       
+                       9                       
+0006 E5A0             10     VOLTA:    MOV A,P2   ;P2 são as chaves, switches
+0008 F4               11                       CPL A      ;complementa P2 para quando apertar as chaves, aparecer 1 e na
+                             o 0            
+0009 110F             12                       CALL CONVERTE
+000B F590             13                       MOV P1,A
+000D 80F7             14                       JMP VOLTA      ;nao tinha o volta, era infinito, agora deu certo
+                      15                               
+000F 04               16     CONVERTE: INC A
+0010 83               17                       MOVC A,@A+PC
+0011 22               18                       RET
+0012 40792430         19     TABELA:   DB 40H, 79H, 24H, 30H, 19H, 12H, 02H, 78H, 00H, 10H, 08H, 03H, 46H,21H, 06H, 0EH
+0016 19120278                
+001A 00100803                
+001E 4621060E                
+                      20                       END
+A51 MACRO ASSEMBLER  EXERCICIO1                                                           07/15/2015 15:33:23 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CONVERTE . . . . .  C ADDR   000FH   A   
+CS . . . . . . . .  B ADDR   0080H.7 A   
+END0 . . . . . . .  B ADDR   00B0H.3 A   
+END1 . . . . . . .  B ADDR   00B0H.4 A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+TABELA . . . . . .  C ADDR   0012H   A   
+VOLTA. . . . . . .  C ADDR   0006H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
