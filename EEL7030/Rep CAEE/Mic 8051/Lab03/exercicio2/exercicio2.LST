@@ -1,0 +1,78 @@
+A51 MACRO ASSEMBLER  EXERCICIO2                                                           07/15/2015 15:33:37 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio2.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio2.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0087                 2     CS                EQU P0.7
+  00B3                 3     END0      EQU P3.3;
+  00B4                 4     END1      EQU P3.4;
+0000                   5                       ORG 0h
+0000 C2B3              6                       CLR END0
+0002 C2B4              7                       CLR END1
+0004 D287              8                       SETB CS       
+                       9                       
+0006 7C00             10                       MOV R4,#0H
+0008 7D0A             11                       MOV R5,#0AH
+                      12                       
+000A E5A0             13     VOLTA:    MOV A,P2   ;P2 são as chaves, switches
+                      14                       
+000C F4               15                       CPL A      ;complementa P2 para quando apertar as chaves, aparecer 1 e na
+                             o 0          
+000D FB               16                       MOV R3,A
+000E 1115             17                       CALL FLAG
+0010 EC               18                       MOV A,R4
+0011 F590             19                       MOV P1,A
+0013 8013             20                       JMP FIM      ;nao tinha o volta, era infinito, agora deu certo
+                      21     
+                      22      
+0015 1D               23     FLAG:     DEC R5
+                      24                     
+                      25                       
+0016 ED               26                       MOV A,R5
+0017 600E             27                       JZ CONTINUA     ;se A=0, desvia o fluxo
+0019 EB               28                       MOV A,R3
+001A 4002             29                       JC SOMA
+001C 5005             30                       JNC ROT       
+001E 0C               31     SOMA:     INC R4
+001F 33               32               RLC A
+0020 FB               33                       MOV R3,A
+0021 80F2             34                       JMP FLAG      
+0023 33               35     ROT:      RLC A
+0024 FB               36                   MOV R3,A
+0025 80EE             37                       JMP FLAG
+0027 22               38     CONTINUA: RET
+                      39                       
+0028                  40                       FIM:                            
+                      41                      END
+A51 MACRO ASSEMBLER  EXERCICIO2                                                           07/15/2015 15:33:37 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CONTINUA . . . . .  C ADDR   0027H   A   
+CS . . . . . . . .  B ADDR   0080H.7 A   
+END0 . . . . . . .  B ADDR   00B0H.3 A   
+END1 . . . . . . .  B ADDR   00B0H.4 A   
+FIM. . . . . . . .  C ADDR   0028H   A   
+FLAG . . . . . . .  C ADDR   0015H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+ROT. . . . . . . .  C ADDR   0023H   A   
+SOMA . . . . . . .  C ADDR   001EH   A   
+VOLTA. . . . . . .  C ADDR   000AH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
