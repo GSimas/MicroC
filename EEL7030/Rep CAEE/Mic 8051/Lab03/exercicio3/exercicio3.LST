@@ -1,0 +1,63 @@
+A51 MACRO ASSEMBLER  EXERCICIO3                                                           07/15/2015 15:33:49 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio3.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio3.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0087                 2     CS                EQU P0.7
+  00B3                 3     END0      EQU P3.3;
+  00B4                 4     END1      EQU P3.4;
+  0005                 5     ATRASO    EQU 05H
+0000                   6                       ORG 0h
+0000 C2B3              7                       CLR END0
+0002 C2B4              8                       CLR END1
+0004 D287              9                       SETB CS       
+                      10                      
+0006 7F09             11                     MOV R7,#9
+0008 8F90             12     VOLTA:  MOV P1,R7
+000A 7405             13                     MOV A,#ATRASO
+000C 111D             14                     CALL DELAY              
+000E 1F               15                     DEC R7
+000F EF               16                     MOV A,R7
+0010 6002             17                     JZ CONT
+0012 80F4             18                     JMP VOLTA
+0014 759000           19     CONT:   MOV P1,#0
+0017 7405             20                     MOV A,#ATRASO
+0019 111D             21                     CALL DELAY
+001B 8004             22                     JMP FIM
+                      23     
+                      24     
+001D D5E0FD           25     DELAY:  DJNZ Acc,DELAY 
+0020 22               26                     RET       
+0021                  27     FIM:    
+                      28                     END
+A51 MACRO ASSEMBLER  EXERCICIO3                                                           07/15/2015 15:33:49 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+ATRASO . . . . . .  N NUMB   0005H   A   
+CONT . . . . . . .  C ADDR   0014H   A   
+CS . . . . . . . .  B ADDR   0080H.7 A   
+DELAY. . . . . . .  C ADDR   001DH   A   
+END0 . . . . . . .  B ADDR   00B0H.3 A   
+END1 . . . . . . .  B ADDR   00B0H.4 A   
+FIM. . . . . . . .  C ADDR   0021H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+VOLTA. . . . . . .  C ADDR   0008H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
