@@ -1,0 +1,62 @@
+A51 MACRO ASSEMBLER  EXERCICIO5                                                           07/15/2015 15:34:14 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio5.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio5.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0087                 2     CS                EQU P0.7
+  00B3                 3     END0      EQU P3.3;
+  00B4                 4     END1      EQU P3.4;
+  0005                 5     ATRASO    EQU 05H
+0000                   6                       ORG 0h
+0000 C2B3              7                       CLR END0
+0002 C2B4              8                       CLR END1
+0004 C287              9                       CLR CS        
+                      10                      
+0006 759002           11                     MOV P1,#00000010B
+0009 110D             12     CIC:    CALL LED
+000B 80FC             13                     JMP CIC
+                      14     
+                      15     
+                      16     
+000D 7405             17     LED:    MOV A,#ATRASO
+000F 1117             18                     CALL DELAY
+0011 E590             19                     MOV A,P1
+0013 23               20                     RL A
+0014 F590             21                     MOV P1,A
+0016 22               22                     RET
+                      23                     
+                      24     
+0017 D5E0FD           25     DELAY:  DJNZ Acc,DELAY 
+001A 22               26                     RET       
+                      27             
+                      28                     END
+A51 MACRO ASSEMBLER  EXERCICIO5                                                           07/15/2015 15:34:14 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+ATRASO . . . . . .  N NUMB   0005H   A   
+CIC. . . . . . . .  C ADDR   0009H   A   
+CS . . . . . . . .  B ADDR   0080H.7 A   
+DELAY. . . . . . .  C ADDR   0017H   A   
+END0 . . . . . . .  B ADDR   00B0H.3 A   
+END1 . . . . . . .  B ADDR   00B0H.4 A   
+LED. . . . . . . .  C ADDR   000DH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
