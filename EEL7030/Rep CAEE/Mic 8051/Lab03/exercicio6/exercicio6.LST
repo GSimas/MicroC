@@ -1,0 +1,67 @@
+A51 MACRO ASSEMBLER  EXERCICIO6                                                           07/15/2015 15:34:30 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio6.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio6.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0002                 2     ATRASO EQU 2H   
+                       3             
+                       4             
+0000                   5                     ORG 0h
+0000                   6     DENOVO:         
+0000 7400              7                     MOV A,#0H
+0002 1108              8                     CALL LEDON
+0004 1116              9                     CALL LEDOFF
+0006 80F8             10                     JMP DENOVO
+                      11                     
+0008 D3               12     LEDON:  SETB C      ; C = 1, e A = 0, quando rotacionar A, ele vai receber o C, assim, A=00
+                             000001, 
+0009 33               13                     RLC A       ;sentando de novo o C, o A vai receber outro carry na rotação, 
+                             A=00000011
+000A F590             14                     MOV P1,A
+000C 7402             15                     MOV A,#ATRASO
+000E 1123             16                     CALL DELAY
+0010 E590             17                     MOV A,P1        
+0012 B4FFF3           18                     CJNE A,#255,LEDON
+0015 22               19                     RET
+                      20                     
+0016 13               21     LEDOFF: RRC A      ; A vai sendo rotacionado com carry = 0, perdendo os bits =1
+0017 F590             22                     MOV P1,A
+0019 7402             23                     MOV A,#ATRASO
+001B 1123             24                     CALL DELAY
+001D E590             25                     MOV A,P1        
+001F B400F4           26                     CJNE A,#0,LEDOFF
+0022 22               27                     RET             
+                      28     
+0023 D5E0FD           29     DELAY: DJNZ Acc,DELAY ; subrotina DELAY
+0026 22               30                     RET
+                      31             
+                      32                     END
+                             
+                             
+                             
+A51 MACRO ASSEMBLER  EXERCICIO6                                                           07/15/2015 15:34:30 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+ATRASO . . . . . .  N NUMB   0002H   A   
+DELAY. . . . . . .  C ADDR   0023H   A   
+DENOVO . . . . . .  C ADDR   0000H   A   
+LEDOFF . . . . . .  C ADDR   0016H   A   
+LEDON. . . . . . .  C ADDR   0008H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
