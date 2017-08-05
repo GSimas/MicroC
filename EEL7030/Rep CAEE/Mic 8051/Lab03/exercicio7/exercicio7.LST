@@ -1,0 +1,68 @@
+A51 MACRO ASSEMBLER  EXERCICIO7                                                           07/15/2015 15:34:45 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio7.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio7.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+0000                   2                     ORG 0h
+0000 759002            3                     MOV P1,#00000010B
+                       4     
+0003                   5     ABERTA: 
+0003 30A703            6                     JNB P2.7,FECHADA ;0
+0006 20A7FA            7                     JB P2.7,ABERTA   ;1
+                       8     
+                       9     
+0009                  10     FECHADA:
+0009 AFA0             11                     MOV R7,P2
+000B EF               12                     MOV A,R7
+000C F4               13                     CPL A
+000D FF               14                     MOV R7,A
+000E 53070F           15                     ANL 07H,#00001111B     ;passei para r7 o valor das chaves de p2, fiz um AND
+                              para limpar o byte MSD e deixar apenas o LSD em R7 de p2
+                      16                     
+0011 30A603           17                     JNB P2.6,DIREITA
+0014 20A60B           18                      JB P2.6,ESQUERDA
+                      19                      
+0017 E590             20     DIREITA: MOV A,P1
+0019 03               21                      RR A
+001A F590             22                      MOV P1,A
+001C 1F               23                      DEC R7
+001D BF00F7           24                      CJNE R7,#0,DIREITA
+0020 800B             25                      JMP FIM
+                      26     
+0022 E590             27     ESQUERDA: MOV A,P1
+0024 23               28                       RL A
+0025 F590             29                       MOV P1,A
+0027 1F               30                       DEC R7
+0028 BF00F7           31                       CJNE R7,#0,ESQUERDA
+002B 8000             32                       JMP FIM
+                      33     
+                      34     
+002D                  35     FIM:
+                      36     END
+                             
+A51 MACRO ASSEMBLER  EXERCICIO7                                                           07/15/2015 15:34:45 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ABERTA . . . . . .  C ADDR   0003H   A   
+DIREITA. . . . . .  C ADDR   0017H   A   
+ESQUERDA . . . . .  C ADDR   0022H   A   
+FECHADA. . . . . .  C ADDR   0009H   A   
+FIM. . . . . . . .  C ADDR   002DH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
