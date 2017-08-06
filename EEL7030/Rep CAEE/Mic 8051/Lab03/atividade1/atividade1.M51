@@ -1,0 +1,57 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        04/04/2015  21:09:26  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE atividade1.obj TO atividade1
+
+
+INPUT MODULES INCLUDED:
+  atividade1.obj (ATIVIDADE1)
+
+
+LINK MAP OF MODULE:  atividade1 (ATIVIDADE1)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0021H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  atividade1 (ATIVIDADE1)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ATIVIDADE1
+  C:000EH         SYMBOL        CONVERTE
+  B:0080H.7       SYMBOL        CS
+  B:00B0H.3       SYMBOL        END0
+  B:00B0H.4       SYMBOL        END1
+  D:0080H         SYMBOL        P0
+  D:0090H         SYMBOL        P1
+  D:00B0H         SYMBOL        P3
+  C:0011H         SYMBOL        TABELA
+  C:0000H         LINE#         5
+  C:0002H         LINE#         6
+  C:0004H         LINE#         7
+  C:0006H         LINE#         8
+  C:0008H         LINE#         9
+  C:000AH         LINE#         10
+  C:000CH         LINE#         11
+  C:000EH         LINE#         12
+  C:000FH         LINE#         13
+  C:0010H         LINE#         14
+  -------         ENDMOD        ATIVIDADE1
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0021H BYTE ( 1%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=33
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
