@@ -1,0 +1,84 @@
+A51 MACRO ASSEMBLER  EXERCICIO1                                                           07/15/2015 15:35:00 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio1.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio1.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0000                 2     reset equ 00h
+  0003                 3     ltint0 equ 03h ; local tratador
+  0013                 4     ltint1 equ 13h
+  0020                 5     state equ 20h
+0000                   6                      org reset ;PC=0 depois de reset
+0000 8016              7                      jmp inicio
+                       8     
+0003                   9                      org ltint0
+0003 8034             10                      jmp handler    ;teve jump pra baixo pra entrar numa regiao de memoria onde
+                              nao se ilimita a 8 bytes
+                      11                      
+0013                  12                      org ltint1
+0013 C289             13                      clr ie0     ;mesmo dentro da itint1, se acionada a itint0, nao vai obedece
+                             r a itint0
+0015 B2A8             14                      cpl ex0     ;como se fosse uma prioridade na itint1
+0017 32               15                      reti    
+                      16                      
+0018                  17     inicio:
+0018 75A885           18                      mov ie,#10000101b ; habilita interrupção externa 0
+                      19                      ;setb px1                      ;IT1 passa a ter prioridade, nao usarei pq 
+                             priorizei ja em cima no org itint1
+001B D288             20                      setb it0                       ;faz com que o mic entenda que a BORDA DE D
+                             ESCIDA seja a solicitação de interrup.
+001D D28A             21                      setb it1
+001F 752000           22                      mov state,#0h ;inicialização
+0022 7820             23                      mov r0,# state
+0024 90003D           24                      mov dptr,#tabela
+0027 7900             25                      mov r1,#0
+0029                  26     volta:
+0029 B601FD           27                     cjne @r0,#1,volta    ;se for diferente, fica no loop, e vai ficar infinito
+002C 752000           28                     mov state,#0h           ;eu faço a interrupção para ele mudar de estado, pq
+                              ai o state recebe 1 e sai do loop
+002F E9               29                      mov a,r1
+0030 93               30                      movc a,@a+dptr
+0031 F590             31                      mov p1,a
+0033 09               32                      inc r1
+0034 B910F2           33                     cjne r1,#16,volta
+0037 80FE             34                      jmp $
+0039 752001           35     handler: mov state,#1h          ;nunca alterar algum registrador na interrupção
+003C 32               36                     reti                            ;ah n ser que tenha q ter operação aritmeti
+                             ca, ai usa push e pop
+003D 4D696372         37     tabela: db 'Microcontrolador'
+0041 6F636F6E                
+0045 74726F6C                
+0049 61646F72                
+                      38                     end
+A51 MACRO ASSEMBLER  EXERCICIO1                                                           07/15/2015 15:35:00 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+EX0. . . . . . . .  B ADDR   00A8H.0 A   
+HANDLER. . . . . .  C ADDR   0039H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+IE0. . . . . . . .  B ADDR   0088H.1 A   
+INICIO . . . . . .  C ADDR   0018H   A   
+IT0. . . . . . . .  B ADDR   0088H.0 A   
+IT1. . . . . . . .  B ADDR   0088H.2 A   
+LTINT0 . . . . . .  N NUMB   0003H   A   
+LTINT1 . . . . . .  N NUMB   0013H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+TABELA . . . . . .  C ADDR   003DH   A   
+VOLTA. . . . . . .  C ADDR   0029H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
