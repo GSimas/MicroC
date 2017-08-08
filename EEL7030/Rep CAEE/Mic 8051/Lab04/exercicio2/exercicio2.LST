@@ -1,0 +1,89 @@
+A51 MACRO ASSEMBLER  EXERCICIO2                                                           07/15/2015 15:35:15 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio2.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio2.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0003                 2     itint0    EQU 03H
+  0020                 3     state     EQU 20H       
+  0087                 4     CS                EQU P0.7
+  00B3                 5     END0      EQU P3.3;
+  00B4                 6     END1      EQU P3.4;
+  0002                 7     ATRASO    EQU 02H
+                       8     
+0000                   9                       ORG 0h 
+0000 8009             10                       JMP INICIO
+0003                  11                       ORG itint0
+0003 802C             12                       JMP HANDLER                     
+0005 C2B3             13                       CLR END0
+0007 C2B4             14                       CLR END1
+0009 D287             15                       SETB CS       
+                      16     
+                      17     
+000B 75A881           18     INICIO: MOV IE,#10000001B
+000E D288             19                     SETB IT0
+0010 752000           20                     MOV state,#0H
+0013 7820             21                     MOV R0,#state
+                      22                     
+0015 7F00             23                     MOV R7,#0
+0017 8F90             24     VOLTA:  MOV P1,R7
+0019 7402             25                     MOV A,#ATRASO
+001B 112D             26                     CALL DELAY
+001D 0F               27                     INC R7
+001E EF               28                     MOV A,R7
+001F B4FFF5           29                     CJNE A,#0FFH,VOLTA
+0022 8F90             30                     MOV P1,R7
+0024 7402             31                     MOV A,#ATRASO
+0026 112D             32                     CALL DELAY
+0028 B601FD           33     LOOPINF:CJNE @R0,#1,LOOPINF
+002B 80DE             34                     JMP INICIO
+                      35     
+                      36     
+002D D5E0FD           37     DELAY:  DJNZ Acc,DELAY 
+0030 22               38                     RET       
+                      39     
+0031 752001           40     HANDLER: MOV state,#1h
+0034 BFFF03           41                      CJNE R7,#0FFH,INTERROMPER
+0037 7F00             42                      MOV R7,#0H
+0039 32               43                      RETI
+                      44     
+003A 80FE             45     INTERROMPER: JMP $ 
+                      46     
+                      47     
+                      48                      END
+A51 MACRO ASSEMBLER  EXERCICIO2                                                           07/15/2015 15:35:15 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+ATRASO . . . . . .  N NUMB   0002H   A   
+CS . . . . . . . .  B ADDR   0080H.7 A   
+DELAY. . . . . . .  C ADDR   002DH   A   
+END0 . . . . . . .  B ADDR   00B0H.3 A   
+END1 . . . . . . .  B ADDR   00B0H.4 A   
+HANDLER. . . . . .  C ADDR   0031H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   000BH   A   
+INTERROMPER. . . .  C ADDR   003AH   A   
+IT0. . . . . . . .  B ADDR   0088H.0 A   
+ITINT0 . . . . . .  N NUMB   0003H   A   
+LOOPINF. . . . . .  C ADDR   0028H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+VOLTA. . . . . . .  C ADDR   0017H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
