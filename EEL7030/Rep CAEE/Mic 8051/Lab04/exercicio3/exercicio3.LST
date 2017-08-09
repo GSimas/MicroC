@@ -1,0 +1,102 @@
+A51 MACRO ASSEMBLER  EXERCICIO3                                                           07/15/2015 15:35:26 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio3.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio3.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0000                 2     reset equ 00h
+  0003                 3     ltint0 equ 03h ; local tratador
+  0013                 4     ltint1 equ 13h
+  0020                 5     state equ 20h
+0000                   6                      org reset ;PC=0 depois de reset
+0000 8013              7                      jmp inicio
+                       8     
+0003                   9                      org ltint0
+0003 8036             10                      jmp handler    ;teve jump pra baixo pra entrar numa regiao de memoria onde
+                              nao se ilimita a 8 bytes
+                      11                      
+0013                  12                      org ltint1
+0013 802A             13                      jmp handler2    
+                      14                      
+0015                  15     inicio:
+0015 75A885           16                      mov ie,#10000101b ; habilita interrupção externa 0
+0018 D2BA             17                      setb px1                       ;IT1 passa a ter prioridade
+001A D288             18                      setb it0                       ;faz com que o mic entenda que a BORDA DE D
+                             ESCIDA seja a solicitação de interrup.
+001C D28A             19                      setb it1
+001E 752000           20                      mov state,#0h ;inicialização
+0021 7820             21                      mov r0,#state
+0023 900054           22                      mov dptr,#tabela
+0026 7900             23                      mov r1,#0
+0028 7B00             24                      MOV R3,#0
+002A                  25     volta:
+002A B601FD           26                     cjne @r0,#1,volta    ;se for diferente, fica no loop, e vai ficar infinito
+002D 752000           27                     mov state,#0h           ;eu faço a interrupção para ele mudar de estado, pq
+                              ai o state recebe 1 e sai do loop
+0030 E9               28                      mov a,r1
+0031 FA               29                      MOV R2,A
+0032 93               30                      movc a,@a+dptr
+0033 F590             31                      mov p1,a
+0035 09               32                      inc r1
+0036 B910F1           33                     cjne r1,#16,volta
+0039 80DA             34                      jmp inicio
+                      35     
+003B 752001           36     handler: mov state,#1h          ;nunca alterar algum registrador na interrupção
+003E 32               37                     reti                            ;ah n ser que tenha q ter operação aritmeti
+                             ca, ai usa push e pop
+                      38     
+003F C0E0             39     handler2: PUSH Acc 
+0041 C083             40                       PUSH DPH
+0043 C082             41                       PUSH DPL
+0045 E590             42                       MOV A,P1
+0047 902000           43                       MOV DPTR,#2000H
+004A 8A82             44                       MOV DPL,R2
+004C F0               45                       MOVX @DPTR,A
+004D D082             46                       POP DPL
+004F D083             47                       POP DPH
+0051 D0E0             48                       POP Acc
+0053 32               49                       RETI
+                      50                       
+                      51     
+0054 4D696372         52     tabela: db 'Microcontrolador'
+0058 6F636F6E                
+005C 74726F6C                
+A51 MACRO ASSEMBLER  EXERCICIO3                                                           07/15/2015 15:35:26 PAGE     2
+
+0060 61646F72                
+                      53                     end
+A51 MACRO ASSEMBLER  EXERCICIO3                                                           07/15/2015 15:35:26 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+DPH. . . . . . . .  D ADDR   0083H   A   
+DPL. . . . . . . .  D ADDR   0082H   A   
+HANDLER. . . . . .  C ADDR   003BH   A   
+HANDLER2 . . . . .  C ADDR   003FH   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0015H   A   
+IT0. . . . . . . .  B ADDR   0088H.0 A   
+IT1. . . . . . . .  B ADDR   0088H.2 A   
+LTINT0 . . . . . .  N NUMB   0003H   A   
+LTINT1 . . . . . .  N NUMB   0013H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PX1. . . . . . . .  B ADDR   00B8H.2 A   
+RESET. . . . . . .  N NUMB   0000H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+TABELA . . . . . .  C ADDR   0054H   A   
+VOLTA. . . . . . .  C ADDR   002AH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
