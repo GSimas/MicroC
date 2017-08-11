@@ -1,0 +1,108 @@
+A51 MACRO ASSEMBLER  EXERCICIO4                                                           07/15/2015 15:35:39 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio4.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio4.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+0000                   2     org 0H
+0000 8013              3     Jmp Inicio                              ; Pular para a label "Inicio"
+                       4     
+  0003                 5                     ltint0 equ 03h ; local tratador
+  0013                 6                     ltint1 equ 13h                  ; Endereço da interrupção 02
+  0020                 7                     flag1 equ 20H                   ; Endereço da flag 01
+  0028                 8                     flag2 equ 28H                   ; Endereço da flag 02
+                       9     
+0003                  10                     org ltint0                              ; Configuração da ação referente à 
+                             interrupção "int01"
+0003 802E             11                     JMP handler0                    ; Label "handler01" referente às instruções
+                              decorrentes da interrupção "int01"
+                      12     
+0013                  13                     org ltint1                              ; Configuração da ação referente à 
+                             interrupção "int01"
+0013 8026             14                     JMP handler1                    ; Label "handler01" referente às instruções
+                              decorrentes da interrupção "int01"
+                      15     
+0015                  16     Inicio: 
+0015 75A885           17                     mov ie,#10000101b ; habilita interrupção externa 0
+0018 D288             18                     setb it0                        ;faz com que o mic entenda que a BORDA DE D
+                             ESCIDA seja a solicitação de interrup.
+001A D28A             19                     setb it1
+001C 7401             20                     MOV A, #00000001B       ; A recebe um valor para representar o Led acesso
+001E 759000           21                     MOV P1, #0                      ; Reseta-se P1
+0021 7828             22                     MOV R0, #flag2          ; R0 recebe o endereço de flag2
+                      23                     
+0023 B600FD           24     TESTE:  CJNE @R0, #0, TESTE                     ; Checa se R0(flag) ainda não foi modificad
+                             o pela interrupção
+0026 BBFF05           25                     CJNE R3, #255, ROTADIR          ; Checa se R3 ainda não foi modificado
+                      26                     
+0029                  27     ROTAESQ:
+0029 23               28                     RL A                                            ; Rotaciona A para a esquer
+                             da
+002A F590             29                     MOV P1, A                                       ; P1 recebe A
+002C 80F5             30                     JMP TESTE                                       ; Volta para "Teste"
+002E                  31     ROTADIR: 
+002E 03               32                     RR A                                            ; Rotaciona A para a direit
+                             a
+002F F590             33                     MOV P1, A                                       ; P1 recebe A
+0031 80F0             34                     JMP TESTE                                       ; Volta para "Teste"
+                      35                     
+0033                  36     handler0:
+0033 C0E0             37                     PUSH Acc                                        ; Salva A na pilha
+0035 EB               38                     MOV A, R3                                       ; A = R3
+0036 F4               39                     CPL A                                           ; Complementa-se A
+0037 FB               40                     MOV R3, A                                       ; R3 = A (complementado)
+0038 D0E0             41                     POP Acc                                         ; Valor anterior de A é rec
+                             arregado
+003A 32               42                     RETI                                            ; Retorna
+                      43                     
+003B                  44     handler1:
+003B C0E0             45                     PUSH Acc                                        ; Salva A na pilha
+003D E528             46                     MOV A, flag2                            ; A recebe valor presente no endere
+                             ço de flag
+003F F4               47                     CPL A                                           ; Complementa-se o valor de
+                              A
+A51 MACRO ASSEMBLER  EXERCICIO4                                                           07/15/2015 15:35:39 PAGE     2
+
+0040 F528             48                     MOV flag2, A                            ; flag2 recebe o valor de A (comple
+                             mentado)
+0042 D0E0             49                     POP Acc                                         ; Valor anterior de A é rec
+                             arregado
+0044 32               50                     RETI                                            ; Retorna
+                      51                     
+                      52     END
+                                             
+                                             
+                                     
+A51 MACRO ASSEMBLER  EXERCICIO4                                                           07/15/2015 15:35:39 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+FLAG1. . . . . . .  N NUMB   0020H   A   
+FLAG2. . . . . . .  N NUMB   0028H   A   
+HANDLER0 . . . . .  C ADDR   0033H   A   
+HANDLER1 . . . . .  C ADDR   003BH   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0015H   A   
+IT0. . . . . . . .  B ADDR   0088H.0 A   
+IT1. . . . . . . .  B ADDR   0088H.2 A   
+LTINT0 . . . . . .  N NUMB   0003H   A   
+LTINT1 . . . . . .  N NUMB   0013H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+ROTADIR. . . . . .  C ADDR   002EH   A   
+ROTAESQ. . . . . .  C ADDR   0029H   A   
+TESTE. . . . . . .  C ADDR   0023H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
