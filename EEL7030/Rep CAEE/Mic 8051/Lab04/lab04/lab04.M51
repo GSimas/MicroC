@@ -1,0 +1,70 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        04/14/2015  18:56:37  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE lab04.obj TO lab04
+
+
+INPUT MODULES INCLUDED:
+  lab04.obj (LAB04)
+
+
+LINK MAP OF MODULE:  lab04 (LAB04)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0038H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  lab04 (LAB04)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LAB04
+  C:0024H         SYMBOL        HANDLER
+  D:00A8H         SYMBOL        IE
+  C:0005H         SYMBOL        INICIO
+  B:0088H.0       SYMBOL        IT0
+  N:0003H         SYMBOL        LTINT0
+  D:0090H         SYMBOL        P1
+  N:0000H         SYMBOL        RESET
+  N:0020H         SYMBOL        STATE
+  C:0028H         SYMBOL        TABELA
+  C:0014H         SYMBOL        VOLTA
+  C:0000H         LINE#         5
+  C:0003H         LINE#         8
+  C:0005H         LINE#         10
+  C:0008H         LINE#         11
+  C:000AH         LINE#         12
+  C:000DH         LINE#         13
+  C:000FH         LINE#         14
+  C:0012H         LINE#         15
+  C:0014H         LINE#         17
+  C:0017H         LINE#         18
+  C:001AH         LINE#         19
+  C:001BH         LINE#         20
+  C:001CH         LINE#         21
+  C:001EH         LINE#         22
+  C:001FH         LINE#         23
+  C:0022H         LINE#         24
+  C:0024H         LINE#         25
+  C:0027H         LINE#         26
+  -------         ENDMOD        LAB04
+
+BL51 BANKED LINKER/LOCATER V6.22                                                      04/14/2015  18:56:37  PAGE 2
+
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0037H BYTE ( 2%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=56
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

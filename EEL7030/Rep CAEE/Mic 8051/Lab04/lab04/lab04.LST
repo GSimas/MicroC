@@ -1,0 +1,68 @@
+A51 MACRO ASSEMBLER  LAB04                                                                04/08/2015 19:21:57 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN lab04.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lab04.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0000                 1     reset equ 00h
+  0003                 2     ltint0 equ 03h ; local tratador
+  0020                 3     state equ 20h
+0000                   4                      org reset ;PC=0 depois de reset
+0000 8003              5                      jmp inicio
+                       6     
+0003                   7                      org ltint0
+0003 801F              8                      jmp handler    ;teve jump pra baixo pra entrar numa regiao de memoria onde
+                              nao se ilimita a 8 bytes
+0005                   9     inicio:
+0005 75A881           10                      mov ie,#10000001b ; habilita interrupção externa 0
+0008 D288             11                      setb it0                       ;faz com que o mic entenda que a BORDA DE D
+                             ESCIDA seja a solicitação de interrup.
+000A 752000           12                      mov state,#0h ;inicialização
+000D 7820             13                      mov r0,# state
+000F 900028           14                      mov dptr,#tabela
+0012 7900             15                      mov r1,#0
+0014                  16     volta:
+0014 B601FD           17                     cjne @r0,#1,volta    ;se for diferente, fica no loop, e vai ficar infinito
+0017 752000           18                     mov state,#0h           ;eu faço a interrupção para ele mudar de estado, pq
+                              ai o state recebe 1 e sai do loop
+001A E9               19                      mov a,r1
+001B 93               20                      movc a,@a+dptr
+001C F590             21                      mov p1,a
+001E 09               22                      inc r1
+001F B910F2           23                     cjne r1,#16,volta
+0022 80FE             24                      jmp $
+0024 752001           25     handler: mov state,#1h          ;nunca alterar algum registrador na interrupção
+0027 32               26                     reti                            ;ah n ser que tenha q ter operação aritmeti
+                             ca, ai usa push e pop
+0028 4D696372         27     tabela: db 'Microcontrolador'
+002C 6F636F6E                
+0030 74726F6C                
+0034 61646F72                
+                      28                     end
+A51 MACRO ASSEMBLER  LAB04                                                                04/08/2015 19:21:57 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+HANDLER. . . . . .  C ADDR   0024H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0005H   A   
+IT0. . . . . . . .  B ADDR   0088H.0 A   
+LTINT0 . . . . . .  N NUMB   0003H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+TABELA . . . . . .  C ADDR   0028H   A   
+VOLTA. . . . . . .  C ADDR   0014H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
