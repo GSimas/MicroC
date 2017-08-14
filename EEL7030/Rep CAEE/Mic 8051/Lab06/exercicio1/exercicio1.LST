@@ -1,0 +1,76 @@
+A51 MACRO ASSEMBLER  EXERCICIO1                                                           07/15/2015 15:36:09 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio1.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio1.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0000                 2     reset     equ   0h
+  000B                 3     ltmr0     equ   0bh ; local tratador
+  0020                 4     state     equ   20h
+                       5         
+0000                   6                 org         reset   ;PC=0 depois de reset
+0000 8013              7             jmp     inicio 
+                       8             
+000B                   9             org       ltmr0
+000B 758CFD           10                     mov       th0,#0fdh
+000E 758A80           11                     mov       tl0,#80h
+0011 752001           12             mov      state,#1h
+0014 32               13             reti    
+0015                  14     inicio: 
+0015 75A882           15             mov     ie,#10000010b     ; habilita
+0018 758901           16             mov     tmod,#01h            ; modo 1
+001B 758CFD           17             mov      th0,#0fDh
+001E 758A80           18             mov      tl0,#80h    ;(2^16 - 640)
+0021 752000           19                 mov         state,#0h ;inicialização
+0024 7820             20             mov     r0,#state 
+0026 90003F           21             mov     dptr,#tabela
+0029 7900             22             mov     r1,#0
+002B D28C             23                 setb        tr0            ; serve pra fechar a chave e assim, o pulso de clock
+                              chega ao contador e ele começa a funcionar, A CONTAGEM JA COMEÇA AQUI, 1 CICLO DE INSTRUÇÃO
+002D B601FD           24     volta:  cjne    @r0,#1,volta  ;vai ter que clicar 100 vezes 
+                      25                     
+0030 752000           26                     mov      state,#0h
+0033 E9               27             mov     a,r1
+0034 93               28             movc    a,@a+dptr 
+0035 F590             29             mov     p1,a
+0037 09               30             inc     r1
+0038 B910F2           31                     cjne    r1,#16,volta
+003B C28C             32                     clr         tr0
+003D 80FE             33             jmp     $
+                      34     
+                      35      
+003F 4D696372         36     tabela:                 db 'Microcontrolador'
+0043 6F636F6E                
+0047 74726F6C                
+004B 61646F72                
+                      37             end 
+A51 MACRO ASSEMBLER  EXERCICIO1                                                           07/15/2015 15:36:09 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0015H   A   
+LTMR0. . . . . . .  N NUMB   000BH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+TABELA . . . . . .  C ADDR   003FH   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+VOLTA. . . . . . .  C ADDR   002DH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
