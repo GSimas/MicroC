@@ -1,0 +1,92 @@
+A51 MACRO ASSEMBLER  EXERCICIO4                                                           07/15/2015 15:36:52 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio4.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio4.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0000                 2     reset     equ   0h
+  001B                 3     ltmr1     equ   1bh ; local tratador,               MUDOU AQUI
+  0020                 4     state     equ   20h
+                       5         
+0000                   6                 org         reset   ;PC=0 depois de reset
+0000 802C              7             jmp     inicio 
+                       8             
+001B                   9             org       ltmr1
+001B 758DF1           10             mov      th1,#0F1H ; queremos 2x 480 que é 960, 2^13 - 480 = F100H , nao ta tanto r
+                             ealmente o valor de 960 
+001E 758B00           11                     MOV      tl1,#0H ;                      ; MUDOU AQUI
+0021 C0E0             12                     PUSH ACC
+0023 E520             13                     MOV A,20H
+0025 6031             14                     JZ ZERO
+0027 D2A3             15                     SETB P2.3
+0029 D0E0             16                     POP ACC         
+002B 0520             17     retorna:INC  state
+002D 32               18             reti    
+002E                  19     inicio: 
+002E 75A888           20             mov     ie,#10001000b     ; habilita         , MUDOU AQUI
+0031 758900           21             mov     tmod,#00000000b            
+0034 758DF1           22             mov      th1,#0F1H ; queremos 2x 480 que é 960, 2^13 - 480 = F100H
+0037 758B00           23                     MOV      tl1,#0H ; 
+003A 752000           24     ciclico:mov     state,#0h ;inicialização
+003D 7820             25             mov     r0,#state 
+003F 90005E           26             mov     dptr,#tabela
+0042 7900             27             mov     r1,#0
+0044 D28E             28                 setb        tr1            ; serve pra fechar a chave e assim, o pulso de clock
+                              chega ao contador                    , MUDOU AQUI
+                      29                                                                     ;e ele começa a funcionar, 
+                             A CONTAGEM JA COMEÇA AQUI, 1 CICLO DE INSTRUÇÃO
+0046 B602FD           30     volta:  cjne    @r0,#2,volta            
+0049 752000           31                     mov      state,#0h                      ;exercio 4 alto na metade de 960 e 
+                             baixo na outra
+004C E9               32             mov     a,r1
+004D 93               33             movc    a,@a+dptr 
+004E F590             34             mov     p1,a
+0050 09               35             inc     r1
+0051 B910F2           36                     cjne    r1,#16,volta
+0054 C28E             37                     clr         tr1
+0056 80E2             38             jmp     ciclico
+                      39     
+0058 C2A3             40     ZERO:   CLR P2.3
+005A D0E0             41                     POP ACC
+005C 80CD             42                     JMP retorna
+                      43     
+005E 4D696372         44     tabela:                 db 'Microcontrolador'
+0062 6F636F6E                
+0066 74726F6C                
+006A 61646F72                
+                      45             end
+A51 MACRO ASSEMBLER  EXERCICIO4                                                           07/15/2015 15:36:52 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+CICLICO. . . . . .  C ADDR   003AH   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   002EH   A   
+LTMR1. . . . . . .  N NUMB   001BH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+RETORNA. . . . . .  C ADDR   002BH   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+TABELA . . . . . .  C ADDR   005EH   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+VOLTA. . . . . . .  C ADDR   0046H   A   
+ZERO . . . . . . .  C ADDR   0058H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
