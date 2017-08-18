@@ -1,0 +1,106 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        07/15/2015  15:37:07  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE exercicio5.obj TO exercicio5
+
+
+INPUT MODULES INCLUDED:
+  exercicio5.obj (EXERCICIO5)
+
+
+LINK MAP OF MODULE:  exercicio5 (EXERCICIO5)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     007DH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  exercicio5 (EXERCICIO5)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        EXERCICIO5
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  C:0024H         SYMBOL        CICLICA
+  C:004BH         SYMBOL        HANDLER
+  D:00A8H         SYMBOL        IE
+  C:0015H         SYMBOL        INICIO
+  N:0013H         SYMBOL        LTINT1
+  N:000BH         SYMBOL        LTMR0
+  D:0090H         SYMBOL        P1
+  D:00A0H         SYMBOL        P2
+  N:0000H         SYMBOL        RESET
+  N:007FH         SYMBOL        STATE
+  C:006DH         SYMBOL        TABELA
+  D:0088H         SYMBOL        TCON
+  B:0088H.5       SYMBOL        TF0
+  D:008CH         SYMBOL        TH0
+  D:008AH         SYMBOL        TL0
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  C:0033H         SYMBOL        VOLTA
+  C:0000H         LINE#         8
+  C:000BH         LINE#         11
+  C:000DH         LINE#         12
+  C:0013H         LINE#         15
+  C:0015H         LINE#         18
+  C:0018H         LINE#         19
+  C:001BH         LINE#         20
+  C:001EH         LINE#         21
+  C:0021H         LINE#         22
+  C:0024H         LINE#         23
+BL51 BANKED LINKER/LOCATER V6.22                                                      07/15/2015  15:37:07  PAGE 2
+
+
+  C:0027H         LINE#         24
+  C:0029H         LINE#         25
+  C:002CH         LINE#         26
+  C:002EH         LINE#         27
+  C:0031H         LINE#         28
+  C:0033H         LINE#         30
+  C:0035H         LINE#         31
+  C:0038H         LINE#         32
+  C:003AH         LINE#         33
+  C:003DH         LINE#         34
+  C:003EH         LINE#         35
+  C:003FH         LINE#         36
+  C:0041H         LINE#         37
+  C:0043H         LINE#         38
+  C:0044H         LINE#         39
+  C:0047H         LINE#         40
+  C:0049H         LINE#         41
+  C:004BH         LINE#         43
+  C:004DH         LINE#         44
+  C:004FH         LINE#         45
+  C:0051H         LINE#         46
+  C:0053H         LINE#         47
+  C:0056H         LINE#         48
+  C:0059H         LINE#         49
+  C:005BH         LINE#         50
+  C:005EH         LINE#         51
+  C:005FH         LINE#         52
+  C:0061H         LINE#         53
+  C:0062H         LINE#         54
+  C:0064H         LINE#         55
+  C:0066H         LINE#         56
+  C:0068H         LINE#         57
+  C:006AH         LINE#         58
+  C:006CH         LINE#         59
+  -------         ENDMOD        EXERCICIO5
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 006FH BYTE ( 5%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=125
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

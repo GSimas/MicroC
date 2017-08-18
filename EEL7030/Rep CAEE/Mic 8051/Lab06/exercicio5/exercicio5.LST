@@ -1,0 +1,115 @@
+A51 MACRO ASSEMBLER  EXERCICIO5                                                           07/15/2015 15:37:06 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio5.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio5.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0000                 2     reset     equ   0h
+  000B                 3     ltmr0     equ   0bh ; local tratador,               MUDOU AQUI
+  0013                 4     ltint1    equ   13h 
+  007F                 5     state     equ   7Fh   ;TAVA 20H
+                       6         
+0000                   7                 org         reset   ;PC=0 depois de reset
+0000 8013              8             jmp     inicio 
+                       9     
+000B                  10             org       ltmr0                         ; MUDOU AQUI
+000B 057F             11                     INC       state 
+000D 32               12             reti
+                      13     
+0013                  14                     org ltint1
+0013 8036             15                     jmp handler
+                      16             
+0015                  17     inicio: 
+0015 75A886           18             mov     ie,#10000110b     ; habilita         , MUDOU AQUI
+0018 758804           19                     mov     TCON,#00000100B
+001B 758902           20             mov     tmod,#00000010b  ;modo 2           
+001E 758C60           21             mov      th0,#96 ;queremos colocar 640, mas no modo 2, vai ate 256, entao 640/2 da 
+                             valor metade, 640/3 da valor com virgula, ai 640/4 é 160
+0021 758A60           22                     MOV      tl0,#96 ; mas para contar 160, a gnt coloca 96, (fundo de escala) 
+                             -160 = 96, pq o fundo de escala agora é 2^8
+0024 757F00           23     ciclica:mov     state,#0h ;inicialização
+0027 787F             24                     mov     r0,#state 
+0029 90006D           25             mov     dptr,#tabela
+002C 7900             26             mov     r1,#0
+002E 753004           27                     MOV 30H,#4H
+0031 D28C             28                 setb        tr0            ; serve pra fechar a chave e assim, o pulso de clock
+                              chega ao contador                    , MUDOU AQUI
+                      29                                                                     ;e ele começa a funcionar, 
+                             A CONTAGEM JA COMEÇA AQUI, 1 CICLO DE INSTRUÇÃO
+0033 E57F             30     volta:  MOV A,state
+0035 B530FB           31                     cjne    A,30H,volta  
+0038 C0E0             32             PUSH ACC        
+003A 757F00           33                     mov      state,#0h                      ;exercio 4 alto na metade de 960 e 
+                             baixo na outra
+003D E9               34             mov     a,r1
+003E 93               35             movc    a,@a+dptr 
+003F F590             36             mov     p1,a
+0041 D0E0             37                     POP ACC
+0043 09               38             inc     r1
+0044 B910EC           39                     cjne    r1,#16,volta
+0047 C28C             40                     clr     tr0
+0049 80D9             41             jmp     ciclica
+                      42     
+004B C0E0             43     handler: PUSH ACC
+004D C0F0             44                      PUSH B
+004F C28C             45                      clr tr0
+0051 C28D             46                      clr tf0
+0053 753002           47                      MOV 30H,#2H
+0056 757F00           48                      MOV 7Fh,#0H    ;state recebe valor
+0059 74FF             49                      MOV A,#255     ; que é 2^8 -1 ´pq 2^8 tem 9 bits
+005B 85A0F0           50                      MOV B,P2
+005E C3               51                      CLR C
+005F 95F0             52                      SUBB A,B
+0061 04               53                      INC A
+A51 MACRO ASSEMBLER  EXERCICIO5                                                           07/15/2015 15:37:06 PAGE     2
+
+0062 F58C             54                      MOV TH0,A
+0064 F58A             55                      MOV TL0,A               
+0066 D28C             56                      setb tr0
+0068 D0F0             57                      POP B
+006A D0E0             58                      POP ACC
+006C 32               59                      reti
+                      60      
+006D 4D696372         61     tabela:                 db 'Microcontrolador'
+0071 6F636F6E                
+0075 74726F6C                
+0079 61646F72                
+                      62             end
+A51 MACRO ASSEMBLER  EXERCICIO5                                                           07/15/2015 15:37:06 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+CICLICA. . . . . .  C ADDR   0024H   A   
+HANDLER. . . . . .  C ADDR   004BH   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0015H   A   
+LTINT1 . . . . . .  N NUMB   0013H   A   
+LTMR0. . . . . . .  N NUMB   000BH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+STATE. . . . . . .  N NUMB   007FH   A   
+TABELA . . . . . .  C ADDR   006DH   A   
+TCON . . . . . . .  D ADDR   0088H   A   
+TF0. . . . . . . .  B ADDR   0088H.5 A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+VOLTA. . . . . . .  C ADDR   0033H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
