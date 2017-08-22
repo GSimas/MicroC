@@ -1,0 +1,77 @@
+A51 MACRO ASSEMBLER  EXERCICIO1                                                           07/15/2015 15:37:23 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio1.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio1.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0000                 2     RESET    EQU 00H
+  0023                 3     LTSERIAL EQU 23H ; local tratador
+  0030                 4     STATE    EQU 30H
+                       5     
+0000                   6                      ORG RESET ;PC=0 depois de reset
+0000 8027              7                      JMP INICIO
+0023                   8                      ORG LTSERIAL
+0023 C298              9                      CLR RI                  ; era TI, agora é RI pq é recepção
+0025 753001           10                      MOV STATE,#1H
+0028 32               11                      RETI
+0029 75A890           12     INICIO:  MOV IE,#10010000B
+002C 759850           13                      MOV SCON,#01010000B
+002F 758920           14                      MOV TMOD,#00100000B   ; C/T = 0, MODE TIMER 1 = 2,
+0032 758DFD           15                      MOV TH1,#0FDH             ; RELOAD FDH
+0035 758BFD           16                      MOV TL1,#0FDH
+0038 758700           17                      MOV PCON,#0H          ;SMOD = 0
+                      18     
+003B D28E             19                      SETB TR1                               ;INICIA A CONTAGEM do timer 1, igua
+                             l qnd configura timer
+003D 753000           20                      MOV STATE,#0H
+0040 7830             21                      MOV R0,#STATE
+0042 7920             22                      MOV R1,#20H
+0044 7A05             23                      MOV R2,#5H
+                      24                      
+0046 B601FD           25     VOLTA:   CJNE @R0,#1,VOLTA
+0049 753000           26                      MOV STATE,#0H
+                      27                      
+                      28                             
+004C A799             29                      MOV @R1,SBUF
+004E 09               30                      INC R1            
+                      31                      
+004F DAF5             32                      DJNZ R2, VOLTA       
+0051 7920             33                      MOV R1,#20H
+0053 80F1             34                      JMP VOLTA
+                      35                     
+0055 80FE             36                      JMP $
+                      37     
+                      38     
+                      39      END 
+A51 MACRO ASSEMBLER  EXERCICIO1                                                           07/15/2015 15:37:23 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0029H   A   
+LTSERIAL . . . . .  N NUMB   0023H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+STATE. . . . . . .  N NUMB   0030H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+VOLTA. . . . . . .  C ADDR   0046H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
