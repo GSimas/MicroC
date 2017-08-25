@@ -1,0 +1,107 @@
+A51 MACRO ASSEMBLER  EXERCICIO3                                                           07/15/2015 15:37:49 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN exercicio3.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE exercicio3.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;MATHEUS FIGUEIREDO
+  0000                 2     RESET    EQU 00H
+  0023                 3     LTSERIAL EQU 23H ; local tratador
+  0020                 4     STATE    EQU 20H
+  0079                 5     flagTI   EQU 2FH.1  ; AQUI SAO aqueles flipflops da IRAM que pode manipular individualmente
+  0078                 6     flagRI   EQU 2FH.0
+                       7             
+0000                   8                      ORG RESET ;PC=0 depois de reset
+0000 8030              9                      JMP INICIO
+                      10                      
+0023                  11                      ORG LTSERIAL
+0023 309907           12                      JNB TI, RECEP    ;ao setar TI, o mic informa a UC para saltar pro tratador
+0026 C299             13                      CLR TI
+0028 D279             14                      SETB flagTI      ;informa que o buff está vazio
+002A 309804           15                      JNB RI, SAI
+                      16     
+002D C298             17     RECEP:   CLR RI
+002F D278             18                      SETB flagRI
+0031 32               19     SAI:     RETI
+                      20     
+0032 75A890           21     INICIO:  MOV IE,#10010000B
+0035 759850           22                      MOV SCON,#01010000B
+0038 758920           23                      MOV TMOD,#00100000B   ; C/T = 0, MODE TIMER 1 = 2,
+003B 758DFF           24                      MOV TH1,#0FFH             ; RELOAD FFH
+003E 758BFF           25                      MOV TL1,#0FFH
+0041 758780           26                      MOV PCON,#80H          ;SMOD = 1
+0044 D28E             27                      SETB TR1                               ;INICIA A CONTAGEM do timer 1, igua
+                             l qnd configura timer
+0046 752000           28                      MOV STATE,#0H
+0049 7820             29                      MOV R0,# STATE
+                      30     
+004B 7441             31                     MOV A,#41H
+004D A2D0             32                     MOV C,P
+004F 929B             33                     MOV TB8,C
+0051 F599             34                     MOV SBUF,A
+                      35     
+0053 7820             36     VOLT:   MOV R0,#20H
+                      37     
+0055 30790E           38     VOLTA:  JNB flagTI, testaRI
+                      39                     
+0058 C279             40                     CLR flagTI                  ;Aqui transmite para a "tela"
+005A 04               41                     INC A
+005B A2D0             42                     MOV C,P
+005D 929B             43                     MOV TB8,C
+005F F599             44                     MOV SBUF,A
+                      45                     
+0061 B46102           46                     CJNE A,#61H,testaRI
+0064 7440             47                     MOV A,#40H
+                      48                     
+0066 3078EC           49     testaRI:JNB flagRI, VOLTA
+0069 C278             50                     CLR flagRI                                      ;aqui recebe do buff recept
+                             or
+006B A699             51                     MOV @R0,SBUF
+006D 08               52                     INC R0
+                      53                     
+006E B826E4           54                     CJNE R0,#26H,VOLTA
+0071 80E0             55                     JMP VOLT
+                      56     
+A51 MACRO ASSEMBLER  EXERCICIO3                                                           07/15/2015 15:37:49 PAGE     2
+
+                      57     END 
+A51 MACRO ASSEMBLER  EXERCICIO3                                                           07/15/2015 15:37:49 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+FLAGRI . . . . . .  B ADDR   002FH.0 A   
+FLAGTI . . . . . .  B ADDR   002FH.1 A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0032H   A   
+LTSERIAL . . . . .  N NUMB   0023H   A   
+P. . . . . . . . .  B ADDR   00D0H.0 A   
+PCON . . . . . . .  D ADDR   0087H   A   
+RECEP. . . . . . .  C ADDR   002DH   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SAI. . . . . . . .  C ADDR   0031H   A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+TB8. . . . . . . .  B ADDR   0098H.3 A   
+TESTARI. . . . . .  C ADDR   0066H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+VOLT . . . . . . .  C ADDR   0053H   A   
+VOLTA. . . . . . .  C ADDR   0055H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
