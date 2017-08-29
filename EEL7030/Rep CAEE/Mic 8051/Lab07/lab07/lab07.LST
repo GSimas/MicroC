@@ -1,0 +1,76 @@
+A51 MACRO ASSEMBLER  LAB07                                                                06/08/2015 19:04:42 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02b
+OBJECT MODULE PLACED IN lab07.OBJ
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lab07.asm SET(SMALL) DEBUG EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0000                 1     RESET    EQU 00H
+  0023                 2     LTSERIAL EQU 23H ; local tratador
+  0020                 3     STATE    EQU 20H
+0000                   4                      ORG RESET ;PC=0 depois de reset
+0000 8027              5                      JMP INICIO
+0023                   6                      ORG LTSERIAL
+0023 C299              7                      CLR TI
+0025 752001            8                      MOV STATE,#1H
+0028 32                9                      RETI
+0029 75A890           10     INICIO:  MOV IE,#10010000B
+002C 759840           11                      MOV SCON,#01000000B
+002F 758920           12                      MOV TMOD,#00100000B   ; C/T = 0, MODE TIMER 1 = 2,
+0032 758DFD           13                      MOV TH1,#0FDH             ; RELOAD FDH
+0035 758BFD           14                      MOV TL1,#0FDH
+0038 758700           15                      MOV PCON,#0H          ;SMOD = 0
+003B D28E             16                      SETB TR1                               ;INICIA A CONTAGEM do timer 1, igua
+                             l qnd configura timer
+003D 752000           17                      MOV STATE,#0H
+0040 7820             18                      MOV R0,# STATE
+0042 90005C           19                      MOV DPTR,#TABELA
+0045 7901             20                      MOV R1,#1
+0047 75994D           21                      MOV SBUF,#'M'
+004A B601FD           22     VOLTA:   CJNE @R0,#1,VOLTA
+004D 752000           23                      MOV STATE,#0H
+0050 E9               24                      MOV A,R1
+0051 93               25                      MOVC A,@A+DPTR
+0052 F599             26                      MOV SBUF,A       ;primeiro coloca o dado no buffer , depois do doub rate q
+                             ue ele é exibido
+0054 09               27                      INC R1
+0055 B910F2           28                      CJNE R1,#16,VOLTA
+0058 C28E             29                      CLR TR1
+005A 80FE             30                      JMP $
+                      31     
+005C 4D696372         32     TABELA: DB 'Microcontrolador'
+0060 6F636F6E                
+0064 74726F6C                
+0068 61646F72                
+                      33      END 
+A51 MACRO ASSEMBLER  LAB07                                                                06/08/2015 19:04:42 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0029H   A   
+LTSERIAL . . . . .  N NUMB   0023H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+TABELA . . . . . .  C ADDR   005CH   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+VOLTA. . . . . . .  C ADDR   004AH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
