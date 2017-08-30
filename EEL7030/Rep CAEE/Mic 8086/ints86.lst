@@ -1,0 +1,109 @@
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+1	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;;;
+2	 	 	 	 	;Ints86.asm - Interrupcoes do 8085
+3	 	 	 	 	;Prof. Roberto M. Ziller - 04.01.2000
+4	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;;;
+5	 0000	 	 	 	PILHA   SEGMENT STACK
+6	 0000     80 [	 	 	        DW 128 DUP (?)
+7	                ????	 	
+8	                      ]	 	
+9	 	 	 	 	
+10	 0100	 	 	 	PILHA   ENDS
+11	 0000	 	 	 	DADOS   SEGMENT
+12	 0000  00	 	 	CONT    DB 0      ; CONTAGEM
+13	 0001  00	 	 	ATRASO  DB 0      ; ATRASO
+14	 0002	 	 	 	DADOS   ENDS
+15	 0000	 	 	 	CODIGO  SEGMENT
+16	 	 	 	 	        ASSUME CS:CODIGO, DS:DADOS, SS:
+	 	 	 	PILHA
+17	 0000  8C C8	 	 	INICIO: MOV AX,CS
+18	 0002  8E D8	 	 	        MOV DS,AX               ; DS = 
+	 	 	 	CS
+19	 0004  B4 25	 	 	        MOV AH,25H              ; FUNCA
+	 	 	 	O SET INT VECTOR
+20	 0006  B0 28	 	 	        MOV AL,28H              ; VETOR
+	 	 	 	 A MODIFICAR
+21	 0008  BA 0016 R	 	        MOV DX,OFFSET CONTA     ; OFFSE
+	 	 	 	T DO TRATADOR
+22	 000B  CD 21	 	 	        INT 21H                 ; SERVI
+	 	 	 	CO DO DOS
+23	 000D  B0 03	 	 	        MOV AL,3                ; RETUR
+	 	 	 	N CODE
+24	 000F  BA 00FF	 	 	        MOV DX,0FFH             ; PARAG
+	 	 	 	RAPHS TO KEEP RESIDENT
+25	 0012  B4 31	 	 	        MOV AH,31H              ; TSR
+26	 0014  CD 21	 	 	        INT 21H                 ; SERVI
+	 	 	 	CO DO DOS
+27	 0016  50	 	 	CONTA:  PUSH AX
+28	 0017  53	 	 	        PUSH BX
+29	 0018  51	 	 	        PUSH CX
+30	 0019  1E	 	 	        PUSH DS
+31	 001A  B8 ---- R	 	        MOV AX,DADOS
+32	 001D  8E D8	 	 	        MOV DS,AX               ; DS ->
+	 	 	 	 DADOS
+33	 001F  FE 06 0001 R	 	        INC ATRASO
+34	 0023  80 3E 0001 R 00	 	        CMP ATRASO,00H
+35	 0028  75 1B	 	 	        JNE SAIDA
+36	 002A  A0 0000 R	 	        MOV AL,CONT
+37	 002D  FE C0	 	 	        INC AL
+38	 002F  3C 0A	 	 	        CMP AL,10
+39	 0031  75 02	 	 	        JNE OK
+40	 0033  32 C0	 	 	        XOR AL,AL       ; ZERA CONTAGEM
+41	 0035  A2 0000 R	 	OK:     MOV CONT,AL
+42	 0038  0C 30	 	 	        OR AL,30H       ; TRANSFORMA EM
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-2
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+	 	 	 	 ASCII
+43	 003A  B4 09	 	 	        MOV AH,09       ; FUNCAO "WRITE
+	 	 	 	 CHAR" DA INT 10H
+44	 003C  B7 00	 	 	        MOV BH,0        ; PAGINA DE VID
+	 	 	 	EO
+45	 003E  B3 07	 	 	        MOV BL,7        ; ATRIBUTO
+46	 0040  B9 0001	 	 	        MOV CX,0001H    ; NUMERO DE CAR
+	 	 	 	ACTERES
+47	 0043  CD 10	 	 	        INT 10H         ; SERVICO DO BI
+	 	 	 	OS
+48	 0045  1F	 	 	SAIDA:  POP DS
+49	 0046  59	 	 	        POP CX
+50	 0047  5B	 	 	        POP BX
+51	 0048  58	 	 	        POP AX
+52	 0049  CF	 	 	        IRET
+53	 004A	 	 	 	CODIGO  ENDS
+54	 	 	 	 	        END INICIO
+
+ Microsoft MACRO Assembler  Version 3.00               	Page	Symbols
+	 	 	 	-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+Segments and Groups:
+
+	 	N a m e	 	 	Size	Align	Combine	Class
+
+CODIGO . . . . . . . . . . . . .	004A	PARA  	NONE	
+DADOS. . . . . . . . . . . . . .	0002	PARA  	NONE	
+PILHA. . . . . . . . . . . . . .	0100	PARA  	STACK 	
+
+Symbols:            
+
+	 	N a m e	 	 	Type	Value	Attr         
+
+ATRASO . . . . . . . . . . . . .	L BYTE 	0001	DADOS
+CONT . . . . . . . . . . . . . .	L BYTE 	0000	DADOS
+CONTA. . . . . . . . . . . . . .	L NEAR 	0016	CODIGO
+INICIO . . . . . . . . . . . . .	L NEAR 	0000	CODIGO
+OK . . . . . . . . . . . . . . .	L NEAR 	0035	CODIGO
+SAIDA. . . . . . . . . . . . . .	L NEAR 	0045	CODIGO
+
+49694 Bytes free   
+
+Warning Severe
+Errors	Errors 
+0	0

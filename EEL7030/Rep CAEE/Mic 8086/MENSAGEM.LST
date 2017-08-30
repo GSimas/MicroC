@@ -1,0 +1,82 @@
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+1	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;
+2	 	 	 	 	;Mensagem.asm - Escrevendo uma mensagem
+	 	 	 	 na tela
+3	 	 	 	 	;Prof. Roberto M. Ziller - 04.01.2000
+4	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;
+5	 0000	 	 	 	PILHA   SEGMENT STACK
+6	 0000     80 [	 	 	        DB 128 DUP(?)
+7	                ??	 	
+8	                    ]	 	
+9	 	 	 	 	
+10	 0080	 	 	 	PILHA   ENDS
+11	 	 	 	 	
+12	 0000	 	 	 	DADOS   SEGMENT
+13	 0000  41 47 4F 52 41 20	MSG1    DB 'AGORA SEI ESCREVER MENSAGEN
+	 	 	 	S NA TELA DO COMPUTADOR: $'
+14	       53 45 49 20 45 53	
+15	       43 52 45 56 45 52	
+16	       20 4D 45 4E 53 41	
+17	       47 45 4E 53 20 4E	
+18	       41 20 54 45 4C 41	
+19	       20 44 4F 20 43 4F	
+20	       4D 50 55 54 41 44	
+21	       4F 52 3A 20 24	 	
+22	 0035  4D 49 43 52 4F 50	MSG2    DB 'MICROPROCESSADORES'
+23	       52 4F 43 45 53 53	
+24	       41 44 4F 52 45 53	
+25	 0047	 	 	 	DADOS   ENDS
+26	 	 	 	 	
+27	 0000	 	 	 	CODIGO  SEGMENT
+28	 	 	 	 	        ASSUME CS:CODIGO, DS:DADOS, SS:
+	 	 	 	PILHA
+29	 0000  B8 ---- R	 	INICIO: MOV AX,DADOS
+30	 0003  8E D8	 	 	        MOV DS,AX           ; INICIALIZ
+	 	 	 	ACAO DE DS
+31	 0005  B4 09	 	 	        MOV AH,09H          ; SERVICO D
+	 	 	 	O DOS
+32	 0007  BA 0000 R	 	        MOV DX,OFFSET MSG1  ; APONTA PA
+	 	 	 	RA O TEXTO 
+33	 000A  CD 21	 	 	        INT 21H             ; EXECUTA F
+	 	 	 	UNCAO DO DOS P/ MSG1
+34	 000C  BA 0035 R	 	        MOV DX,OFFSET MSG2
+35	 000F  CD 21	 	 	        INT 21H             ; IDEM, MSG
+	 	 	 	2
+36	 0011  B4 4C	 	 	        MOV AH,4CH          ; TERMINA E
+	 	 	 	 RETORNA AO DOS
+37	 0013  CD 21	 	 	        INT 21H             ; SERVICO D
+	 	 	 	O DOS
+38	 0015	 	 	 	CODIGO  ENDS
+39	 	 	 	 	        END INICIO
+
+ Microsoft MACRO Assembler  Version 3.00               	Page	Symbols
+	 	 	 	-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+Segments and Groups:
+
+	 	N a m e	 	 	Size	Align	Combine	Class
+
+CODIGO . . . . . . . . . . . . .	0015	PARA  	NONE	
+DADOS. . . . . . . . . . . . . .	0047	PARA  	NONE	
+PILHA. . . . . . . . . . . . . .	0080	PARA  	STACK 	
+
+Symbols:            
+
+	 	N a m e	 	 	Type	Value	Attr         
+
+INICIO . . . . . . . . . . . . .	L NEAR 	0000	CODIGO
+MSG1 . . . . . . . . . . . . . .	L BYTE 	0000	DADOS
+MSG2 . . . . . . . . . . . . . .	L BYTE 	0035	DADOS
+
+49690 Bytes free   
+
+Warning Severe
+Errors	Errors 
+0	0

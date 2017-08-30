@@ -1,0 +1,114 @@
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+1	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;;;
+2	 	 	 	 	;NearFar.asm - Um estudo sobre sub-roti
+	 	 	 	nas near e far
+3	 	 	 	 	;Prof. Roberto M. Ziller - 04.01.2000
+4	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;;;
+5	 0000	 	 	 	PILHA   SEGMENT STACK
+6	 0000     80 [	 	 	        DB 128 DUP(?)
+7	                ??	 	
+8	                    ]	 	
+9	 	 	 	 	
+10	 0080	 	 	 	PILHA   ENDS
+11	 0000	 	 	 	DADOS   SEGMENT
+12	 0000  46 4F 49 20 43 48	MSG1    DB 'FOI CHAMADA UMA SUB-ROTINA 
+	 	 	 	NEAR$'
+13	       41 4D 41 44 41 20	
+14	       55 4D 41 20 53 55	
+15	       42 2D 52 4F 54 49	
+16	       4E 41 20 4E 45 41	
+17	       52 24	 	 	
+18	 0020  46 4F 49 20 43 48	MSG2    DB 'FOI CHAMADA UMA SUB-ROTINA 
+	 	 	 	FAR$'
+19	       41 4D 41 44 41 20	
+20	       55 4D 41 20 53 55	
+21	       42 2D 52 4F 54 49	
+22	       4E 41 20 46 41 52	
+23	       24	 	 	
+24	 003F	 	 	 	DADOS   ENDS
+25	 0000	 	 	 	CODIGO  SEGMENT
+26	 	 	 	 	        ASSUME CS:CODIGO, DS:DADOS, SS:
+	 	 	 	PILHA
+27	 	 	 	 	        PUBLIC SHOW1, INICIO, SHOW2, EN
+	 	 	 	TER
+28	 0000	 	 	 	SHOW1   PROC NEAR       ; APRESENTA MSG
+	 	 	 	 EM DS:DX COM CRLF
+29	 0000  B4 09	 	 	        MOV AH,09H      ; WRITE STRING
+30	 0002  CD 21	 	 	        INT 21H
+31	 0004  9A 000A ---- R	 	        CALL FAR PTR ENTER        
+32	 0009  C3	 	 	        RET
+33	 000A	 	 	 	SHOW1   ENDP
+34	 000A  B8 ---- R	 	INICIO: MOV AX,DADOS
+35	 000D  8E D8	 	 	        MOV DS,AX
+36	 000F  BA 0000 R	 	        MOV DX,OFFSET MSG1
+37	 0012  E8 0000 R	 	        CALL SHOW1
+38	 0015  BA 0020 R	 	        MOV DX,OFFSET MSG2
+39	 0018  9A 0000 ---- R	 	        CALL FAR PTR SHOW2
+40	 001D  B4 4C	 	 	        MOV AH,4CH      ; TERMINATE
+41	 001F  CD 21	 	 	        INT 21H
+42	 0021	 	 	 	CODIGO  ENDS
+43	 0000	 	 	 	ROTINAS SEGMENT        
+44	 	 	 	 	        ASSUME CS:ROTINAS
+45	 0000	 	 	 	SHOW2   PROC FAR        ; APRESENTA MSG
+	 	 	 	 EM DS:DX COM CRLF
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-2
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+46	 0000  B4 09	 	 	        MOV AH,09H      ; WRITE STRING
+47	 0002  CD 21	 	 	        INT 21H
+48	 0004  9A 000A ---- R	 	        CALL FAR PTR ENTER
+49	 0009  CB	 	 	        RET
+50	 000A	 	 	 	SHOW2   ENDP
+51	 000A	 	 	 	ENTER   PROC FAR
+52	 000A  B4 02	 	 	        MOV AH,02H
+53	 000C  B2 0D	 	 	        MOV DL,0DH      ; CARRIAGE RETU
+	 	 	 	RN (CR)
+54	 000E  CD 21	 	 	        INT 21H
+55	 0010  B4 02	 	 	        MOV AH,02H
+56	 0012  B2 0A	 	 	        MOV DL,0AH      ; LINE FEED (LF
+	 	 	 	)
+57	 0014  CD 21	 	 	        INT 21H
+58	 0016  CB	 	 	        RET
+59	 0017	 	 	 	ENTER   ENDP
+60	 0017	 	 	 	ROTINAS ENDS
+61	 	 	 	 	        END INICIO
+
+ Microsoft MACRO Assembler  Version 3.00               	Page	Symbols
+	 	 	 	-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+Segments and Groups:
+
+	 	N a m e	 	 	Size	Align	Combine	Class
+
+CODIGO . . . . . . . . . . . . .	0021	PARA  	NONE	
+DADOS. . . . . . . . . . . . . .	003F	PARA  	NONE	
+PILHA. . . . . . . . . . . . . .	0080	PARA  	STACK 	
+ROTINAS. . . . . . . . . . . . .	0017	PARA  	NONE	
+
+Symbols:            
+
+	 	N a m e	 	 	Type	Value	Attr         
+
+ENTER. . . . . . . . . . . . . .	F PROC	000A	ROTINAS	Global	Length 
+	 	 	 	=000D
+INICIO . . . . . . . . . . . . .	L NEAR 	000A	CODIGO	Global
+MSG1 . . . . . . . . . . . . . .	L BYTE 	0000	DADOS
+MSG2 . . . . . . . . . . . . . .	L BYTE 	0020	DADOS
+SHOW1. . . . . . . . . . . . . .	N PROC	0000	CODIGO	Global	Length 
+	 	 	 	=000A
+SHOW2. . . . . . . . . . . . . .	F PROC	0000	ROTINAS	Global	Length 
+	 	 	 	=000A
+
+49694 Bytes free   
+
+Warning Severe
+Errors	Errors 
+0	0

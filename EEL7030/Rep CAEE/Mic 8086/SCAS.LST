@@ -1,0 +1,195 @@
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+1	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;;;
+2	 	 	 	 	;Scas.asm - Varredura de strings
+3	 	 	 	 	;Prof. Roberto M. Ziller - 04.01.2000
+4	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;;;
+5	 = 000D	 	 	 	ENTER   EQU 0DH
+6	 0000	 	 	 	PILHA   SEGMENT STACK
+7	 0000     64 [	 	 	        DW 100 DUP (?)
+8	                ????	 	
+9	                      ]	 	
+10	 	 	 	 	
+11	 00C8	 	 	 	PILHA   ENDS
+12	 0000	 	 	 	DADOS   SEGMENT
+13	 0000  45 4E 54 52 45 20	MSGSTR  DB 'ENTRE COM A STRING: $'
+14	       43 4F 4D 20 41 20	
+15	       53 54 52 49 4E 47	
+16	       3A 20 24	 	 	
+17	 0015  45 4E 54 52 45 20	MSGCHAR DB 'ENTRE COM O CARACTER A PROC
+	 	 	 	URAR: $'
+18	       43 4F 4D 20 4F 20	
+19	       43 41 52 41 43 54	
+20	       45 52 20 41 20 50	
+21	       52 4F 43 55 52 41	
+22	       52 3A 20 24	 	
+23	 0037  4F 20 43 41 52 41	MSGFND  DB 'O CARACTER FOI ENCONTRADO N
+	 	 	 	A POSICAO $'
+24	       43 54 45 52 20 46	
+25	       4F 49 20 45 4E 43	
+26	       4F 4E 54 52 41 44	
+27	       4F 20 4E 41 20 50	
+28	       4F 53 49 43 41 4F	
+29	       20 24	 	 	
+30	 005D  4F 20 43 41 52 41	MSGNOT  DB 'O CARACTER NAO FOI ENCONTRA
+	 	 	 	DO.'
+31	       43 54 45 52 20 4E	
+32	       41 4F 20 46 4F 49	
+33	       20 45 4E 43 4F 4E	
+34	       54 52 41 44 4F 2E	
+35	 007B  0D 0A 24	 	 	CRLF    DB 0DH, 0AH, '$'
+36	 007E     65 [	 	 	BUFFER  DB 101 DUP (?)
+37	                ??	 	
+38	                    ]	 	
+39	 	 	 	 	
+40	 00E3	 	 	 	DADOS   ENDS
+41	 0000	 	 	 	CODE    SEGMENT
+42	 	 	 	 	        ASSUME CS:CODE,ES:DADOS,SS:PILH
+	 	 	 	A
+43	 0000  B8 ---- R	 	START:  MOV AX,DADOS
+44	 0003  8E D8	 	 	        MOV DS,AX
+45	 0005  8E C0	 	 	        MOV ES,AX
+46	 0007  8D 06 0000 R	 	        LEA AX,MSGSTR
+47	 000B  50	 	 	        PUSH AX
+48	 000C  E8 006E R	 	        CALL SHOW       ;SOLICITA STRIN
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-2
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+	 	 	 	G
+49	 000F  83 C4 02	 	 	        ADD SP,2
+50	 0012  8D 06 007E R	 	        LEA AX,BUFFER
+51	 0016  50	 	 	        PUSH AX
+52	 0017  E8 0080 R	 	        CALL GETSTR     ;STRING EM BUFF
+	 	 	 	ER E COMPRIMENTO EM CX
+53	 001A  83 C4 02	 	 	        ADD SP,2
+54	 001D  8D 06 0015 R	 	        LEA AX,MSGCHAR
+55	 0021  50	 	 	        PUSH AX
+56	 0022  E8 006E R	 	        CALL SHOW       ; SOLICITA CARA
+	 	 	 	CTER
+57	 0025  83 C4 02	 	 	        ADD SP,2
+58	 0028  E8 009F R	 	        CALL GETCHAR    ; CARACTER EM A
+	 	 	 	L
+59	 002B  8D 3E 007E R	 	        LEA DI,BUFFER
+60	 002F  FC	 	 	        CLD
+61	 0030  F2/ AE	 	 	REPNE   SCASB           ; VARRE STRING 
+	 	 	 	EM BUSCA DO CARACTER
+62	 0032  75 2B	 	 	        JNZ NO
+63	 0034  8D 06 0037 R	 	        LEA AX,MSGFND
+64	 0038  50	 	 	        PUSH AX
+65	 0039  E8 006E R	 	        CALL SHOW       ; CARACTER ENCO
+	 	 	 	NTRADO
+66	 003C  83 C4 02	 	 	        ADD SP,2
+67	 003F  81 EF 007E R	 	        SUB DI,OFFSET BUFFER
+68	 0043  4F	 	 	        DEC DI          ; DI = OFFSET D
+	 	 	 	O CARACTER EM BUFFER
+69	 0044  8B C7	 	 	        MOV AX,DI
+70	 0046  B3 0A	 	 	        MOV BL,10       
+71	 0048  F6 F3	 	 	        DIV BL          ; DIVIDE OFFSET
+	 	 	 	 DO CARACTER POR 10; 
+72	 004A  8B D0	 	 	        MOV DX,AX       ; DEZENA EM DL 
+	 	 	 	E UNIDADE EM DH
+73	 004C  81 C2 3030	 	        ADD DX,3030H    ; CONVERTE P/ A
+	 	 	 	SCII
+74	 0050  B4 02	 	 	        MOV AH,02H
+75	 0052  CD 21	 	 	        INT 21H         ; APRESENTA DEZ
+	 	 	 	ENA
+76	 0054  8A D6	 	 	        MOV DL,DH
+77	 0056  CD 21	 	 	        INT 21H         ; APRESENTA UNI
+	 	 	 	DADE
+78	 0058  B2 2E	 	 	        MOV DL,'.'
+79	 005A  CD 21	 	 	        INT 21H         ; PONTO FINAL D
+	 	 	 	A FRASE
+80	 005C  EB 0C 90	 	 	        JMP FIM
+81	 005F  8D 06 005D R	 	NO:     LEA AX,MSGNOT
+82	 0063  50	 	 	        PUSH AX
+83	 0064  E8 006E R	 	        CALL SHOW       ; CARACTER NAO 
+	 	 	 	ENCONTRADO
+84	 0067  83 C4 02	 	 	        ADD SP,2
+85	 006A  B4 4C	 	 	FIM:    MOV AH,4CH
+86	 006C  CD 21	 	 	        INT 21H
+87	 006E	 	 	 	SHOW    PROC NEAR
+88	 006E  55	 	 	        PUSH BP
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-3
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+89	 006F  8B EC	 	 	        MOV BP,SP
+90	 0071  B4 09	 	 	        MOV AH,09H
+91	 0073  8D 16 007B R	 	        LEA DX,CRLF
+92	 0077  CD 21	 	 	        INT 21H
+93	 0079  8B 56 04	 	 	        MOV DX,[BP+4]
+94	 007C  CD 21	 	 	        INT 21H
+95	 007E  5D	 	 	        POP BP
+96	 007F  C3	 	 	        RET
+97	 0080	 	 	 	SHOW    ENDP
+98	 0080	 	 	 	GETSTR  PROC NEAR
+99	 0080  55	 	 	        PUSH BP
+100	 0081  8B EC	 	 	        MOV BP,SP
+101	 0083  8B 5E 04	 	 	        MOV BX,[BP+4]
+102	 0086  B9 0000	 	 	        MOV CX,00H
+103	 0089  B4 01	 	 	LOOP:   MOV AH,01H
+104	 008B  CD 21	 	 	        INT 21H
+105	 008D  3C 0D	 	 	        CMP AL,ENTER
+106	 008F  74 09	 	 	        JZ OK
+107	 0091  88 07	 	 	        MOV [BX],AL
+108	 0093  43	 	 	        INC BX          ; OFFSET DO CAR
+	 	 	 	ACTER EM BUFFER
+109	 0094  41	 	 	        INC CX          ; NUMERO DE CAR
+	 	 	 	ACTERES LIDOS
+110	 0095  83 F9 64	 	 	        CMP CX,100
+111	 0098  72 EF	 	 	        JB LOOP
+112	 009A  C6 07 24	 	 	OK:     MOV BYTE PTR [BX],'$'
+113	 009D  5D	 	 	        POP BP
+114	 009E  C3	 	 	        RET
+115	 009F	 	 	 	GETSTR  ENDP
+116	 009F	 	 	 	GETCHAR PROC NEAR
+117	 009F  B4 01	 	 	        MOV AH,01H
+118	 00A1  CD 21	 	 	        INT 21H
+119	 00A3  C3	 	 	        RET
+120	 00A4	 	 	 	GETCHAR ENDP
+121	 00A4	 	 	 	CODE    ENDS        
+122	 	 	 	 	        END START
+
+ Microsoft MACRO Assembler  Version 3.00               	Page	Symbols
+	 	 	 	-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+Segments and Groups:
+
+	 	N a m e	 	 	Size	Align	Combine	Class
+
+CODE . . . . . . . . . . . . . .	00A4	PARA  	NONE	
+DADOS. . . . . . . . . . . . . .	00E3	PARA  	NONE	
+PILHA. . . . . . . . . . . . . .	00C8	PARA  	STACK 	
+
+Symbols:            
+
+	 	N a m e	 	 	Type	Value	Attr         
+
+BUFFER . . . . . . . . . . . . .	L BYTE 	007E	DADOS	Length =0065
+CRLF . . . . . . . . . . . . . .	L BYTE 	007B	DADOS
+ENTER. . . . . . . . . . . . . .	Number	000D	
+FIM. . . . . . . . . . . . . . .	L NEAR 	006A	CODE
+GETCHAR. . . . . . . . . . . . .	N PROC	009F	CODE	Length =0005
+GETSTR . . . . . . . . . . . . .	N PROC	0080	CODE	Length =001F
+LOOP . . . . . . . . . . . . . .	L NEAR 	0089	CODE
+MSGCHAR. . . . . . . . . . . . .	L BYTE 	0015	DADOS
+MSGFND . . . . . . . . . . . . .	L BYTE 	0037	DADOS
+MSGNOT . . . . . . . . . . . . .	L BYTE 	005D	DADOS
+MSGSTR . . . . . . . . . . . . .	L BYTE 	0000	DADOS
+NO . . . . . . . . . . . . . . .	L NEAR 	005F	CODE
+OK . . . . . . . . . . . . . . .	L NEAR 	009A	CODE
+SHOW . . . . . . . . . . . . . .	N PROC	006E	CODE	Length =0012
+START. . . . . . . . . . . . . .	L NEAR 	0000	CODE
+
+49594 Bytes free   
+
+Warning Severe
+Errors	Errors 
+0	0

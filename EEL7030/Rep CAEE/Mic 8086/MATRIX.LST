@@ -1,0 +1,86 @@
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+1	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;;;
+2	 	 	 	 	;Matrix.asm - Matrizes com enderecament
+	 	 	 	o baseado indexado
+3	 	 	 	 	;Prof. Roberto M. Ziller - 04.01.2000
+4	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;;;
+5	 = 000A	 	 	 	M       EQU 10
+6	 = 0014	 	 	 	N       EQU 20
+7	 	 	 	 	
+8	 0000	 	 	 	PILHA   SEGMENT STACK
+9	 0000     80 [	 	 	        DW 80H DUP(?)
+10	                ????	 	
+11	                      ]	 	
+12	 	 	 	 	
+13	 0100	 	 	 	PILHA   ENDS
+14	 	 	 	 	
+15	 0000	 	 	 	M1      SEGMENT
+16	 0000     C8 [	 	 	        DB M * N DUP (10H)
+17	                10	 	
+18	                    ]	 	
+19	 	 	 	 	
+20	 00C8	 	 	 	M1      ENDS
+21	 0000	 	 	 	M2      SEGMENT
+22	 0000     C8 [	 	 	        DB M * N DUP (25H)
+23	                25	 	
+24	                    ]	 	
+25	 	 	 	 	
+26	 00C8	 	 	 	M2      ENDS
+27	 	 	 	 	
+28	 0000	 	 	 	CODIGO  SEGMENT
+29	 	 	 	 	        ASSUME CS:CODIGO, SS:PILHA, DS:
+	 	 	 	M1, ES:M2
+30	 	 	 	 	        PUBLIC ROW, COL
+31	 0000  B8 ---- R	 	INICIO: MOV AX,M1
+32	 0003  8E D8	 	 	        MOV DS,AX
+33	 0005  B8 ---- R	 	        MOV AX,M2
+34	 0008  8E C0	 	 	        MOV ES,AX
+35	 000A  BB 0000	 	 	        MOV BX,0
+36	 000D  BE 0000	 	 	ROW:    MOV SI,0
+37	 0010  26: 8A 00	 	COL:    MOV AL,ES:[BX+SI]
+38	 0013  00 00	 	 	        ADD [BX+SI],AL
+39	 0015  46	 	 	        INC SI
+40	 0016  83 FE 14	 	 	        CMP SI,N
+41	 0019  75 F5	 	 	        JNZ COL
+42	 001B  83 C3 14	 	 	        ADD BX,N
+43	 001E  81 FB 00C8	 	        CMP BX,M*N
+44	 0022  75 E9	 	 	        JNZ ROW
+45	 0024  B4 4C	 	 	        MOV AH,4CH
+46	 0026  CD 21	 	 	        INT 21H
+47	 0028	 	 	 	CODIGO  ENDS
+48	 	 	 	 	        END INICIO
+
+ Microsoft MACRO Assembler  Version 3.00               	Page	Symbols
+	 	 	 	-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+Segments and Groups:
+
+	 	N a m e	 	 	Size	Align	Combine	Class
+
+CODIGO . . . . . . . . . . . . .	0028	PARA  	NONE	
+M1 . . . . . . . . . . . . . . .	00C8	PARA  	NONE	
+M2 . . . . . . . . . . . . . . .	00C8	PARA  	NONE	
+PILHA. . . . . . . . . . . . . .	0100	PARA  	STACK 	
+
+Symbols:            
+
+	 	N a m e	 	 	Type	Value	Attr         
+
+COL. . . . . . . . . . . . . . .	L NEAR 	0010	CODIGO	Global
+INICIO . . . . . . . . . . . . .	L NEAR 	0000	CODIGO
+M. . . . . . . . . . . . . . . .	Number	000A	
+N. . . . . . . . . . . . . . . .	Number	0014	
+ROW. . . . . . . . . . . . . . .	L NEAR 	000D	CODIGO	Global
+
+49694 Bytes free   
+
+Warning Severe
+Errors	Errors 
+0	0

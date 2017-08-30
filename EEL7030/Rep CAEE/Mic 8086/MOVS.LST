@@ -1,0 +1,85 @@
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+1	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;;;
+2	 	 	 	 	;Movs.asm - Copia de strings
+3	 	 	 	 	;Prof. Roberto M. Ziller - 04.01.2000
+4	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;;;
+5	 = 0010	 	 	 	WCOUNT  EQU 10H
+6	 0000	 	 	 	PILHA   SEGMENT STACK
+7	 0000     80 [	 	 	        DW 80H DUP (?)
+8	                ????	 	
+9	                      ]	 	
+10	 	 	 	 	
+11	 0100	 	 	 	PILHA   ENDS
+12	 	 	 	 	
+13	 0000	 	 	 	DADOS   SEGMENT
+14	 0000     10 [	 	 	BUFFER  DW WCOUNT DUP(?)
+15	                ????	 	
+16	                      ]	 	
+17	 	 	 	 	
+18	 0020	 	 	 	DADOS   ENDS
+19	 	 	 	 	
+20	 0000	 	 	 	CODE    SEGMENT
+21	 	 	 	 	        ASSUME CS:CODE,SS:PILHA,ES:DADO
+	 	 	 	S
+22	 	 	 	 	        PUBLIC SUJAR, START
+23	 0000  B8 ---- R	 	START:  MOV AX,DADOS
+24	 0003  8E C0	 	 	        MOV ES,AX
+25	 0005  8D 3E 0000 R	 	        LEA DI,BUFFER
+26	 0009  B9 0010	 	 	        MOV CX,WCOUNT
+27	 000C  B8 1111	 	 	        MOV AX,1111H    ; VALOR INICIAL
+	 	 	 	 DOS WORDS DE BUFFER
+28	 000F  FC	 	 	        CLD             ; STRINGS MOVID
+	 	 	 	AS COM AUTO-INCREMENTO
+29	 0010  F3/ AB	 	 	REP     STOSW
+30	 	 	 	 	
+31	 0012  B9 0010	 	 	        MOV CX,WCOUNT
+32	 0015  51	 	 	SUJAR:  PUSH CX         ; COLOCA WCOUNT
+	 	 	 	 WORDS NA PILHA
+33	 0016  E0 FD	 	 	LOOPNE  SUJAR
+34	 0018  8C D0	 	 	        MOV AX,SS
+35	 001A  8E D8	 	 	        MOV DS,AX       ; DS = SS
+36	 001C  8B F4	 	 	        MOV SI,SP       ; SI = TOP OF S
+	 	 	 	TACK
+37	 001E  B9 0010	 	 	        MOV CX,WCOUNT
+38	 0021  8D 3E 0000 R	 	        LEA DI,BUFFER
+39	 0025  F3/ A5	 	 	REP     MOVSW           ; WCOUNT WORDS 
+	 	 	 	DO STACK P/ BUFFER
+40	 	 	 	 	
+41	 0027  83 C4 20	 	 	        ADD SP,2*WCOUNT ; LIMPA A PILHA
+42	 002A  B4 4C	 	 	        MOV AH,4CH
+43	 002C  CD 21	 	 	        INT 21H         ; FIM
+44	 002E	 	 	 	CODE    ENDS
+45	 	 	 	 	        END START
+
+ Microsoft MACRO Assembler  Version 3.00               	Page	Symbols
+	 	 	 	-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+Segments and Groups:
+
+	 	N a m e	 	 	Size	Align	Combine	Class
+
+CODE . . . . . . . . . . . . . .	002E	PARA  	NONE	
+DADOS. . . . . . . . . . . . . .	0020	PARA  	NONE	
+PILHA. . . . . . . . . . . . . .	0100	PARA  	STACK 	
+
+Symbols:            
+
+	 	N a m e	 	 	Type	Value	Attr         
+
+BUFFER . . . . . . . . . . . . .	L WORD 	0000	DADOS	Length =0010
+START. . . . . . . . . . . . . .	L NEAR 	0000	CODE	Global
+SUJAR. . . . . . . . . . . . . .	L NEAR 	0015	CODE	Global
+WCOUNT . . . . . . . . . . . . .	Number	0010	
+
+49698 Bytes free   
+
+Warning Severe
+Errors	Errors 
+0	0

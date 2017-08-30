@@ -1,0 +1,158 @@
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+1	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;;;
+2	 	 	 	 	;VarLoc.asm - Variaveis locais
+3	 	 	 	 	;Prof. Roberto M. Ziller - 04.01.2000
+4	 	 	 	 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+	 	 	 	;;;;;;;;;;;;;;;;;;;;;;
+5	 0000	 	 	 	PILHA   SEGMENT STACK
+6	 0000     40 [	 	 	        DW 40H DUP(?)
+7	                ????	 	
+8	                      ]	 	
+9	 	 	 	 	
+10	 0080	 	 	 	PILHA   ENDS
+11	 	 	 	 	
+12	 0000	 	 	 	DADOS   SEGMENT
+13	 0000  45 53 54 45 20 50	MSG1    DB 'ESTE PROGRAMA JUNTA DUAS ME
+	 	 	 	NASGENS $'
+14	       52 4F 47 52 41 4D	
+15	       41 20 4A 55 4E 54	
+16	       41 20 44 55 41 53	
+17	       20 4D 45 4E 41 53	
+18	       47 45 4E 53 20 24	
+19	 0024  45 4D 20 55 4D 41	MSG2    DB 'EM UMA UNICA.$'
+20	       20 55 4E 49 43 41	
+21	       2E 24	 	 	
+22	 0032  0D 0A 41 20 4C 49	MSG3    DB 0DH,0AH,'A LINHA ACIMA TEM $
+	 	 	 	'
+23	       4E 48 41 20 41 43	
+24	       49 4D 41 20 54 45	
+25	       4D 20 24	 	 	
+26	 0047  20 43 41 52 41 43	MSG4    DB ' CARACTERES.$'
+27	       54 45 52 45 53 2E	
+28	       24	 	 	
+29	 0054  00 00 24	 	 	N       DB 00H,00H,'$'
+30	 0057	 	 	 	DADOS   ENDS
+31	 	 	 	 	
+32	 0000	 	 	 	CODE    SEGMENT
+33	 	 	 	 	        ASSUME CS:CODE, DS:DADOS, SS:PI
+	 	 	 	LHA
+34	 0000  B8 ---- R	 	INICIO: MOV AX,DADOS
+35	 0003  8E D8	 	 	        MOV DS,AX
+36	 0005  B8 0000 R	 	        MOV AX,OFFSET MSG1  ; ENDERECO 
+	 	 	 	DA MSG1
+37	 0008  50	 	 	        PUSH AX
+38	 0009  B8 0024 R	 	        MOV AX,OFFSET MSG2  ; ENDERECO 
+	 	 	 	DA MSG2
+39	 000C  50	 	 	        PUSH AX
+40	 000D  E8 003F R	 	        CALL SHOW
+41	 0010  83 C4 04	 	 	        ADD SP,4            ; ELIMINA P
+	 	 	 	ARAMETROS DA PILHA
+42	 0013  B3 0A	 	 	        MOV BL,10           ; 
+43	 0015  F6 F3	 	 	        DIV BL              ; CONVERTE 
+	 	 	 	AX PARA DECIMAL
+44	 0017  80 CC 30	 	 	        OR AH,30H           ; ASCII
+45	 001A  88 26 0055 R	 	        MOV N+1,AH          ; UNIDADE
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-2
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+46	 001E  0C 30	 	 	        OR AL,30H           ; ASCII
+47	 0020  A2 0054 R	 	        MOV N,AL            ; DEZENA
+48	 0023  B4 09	 	 	        MOV AH,09H          ;
+49	 0025  8D 16 0032 R	 	        LEA DX,MSG3         ;
+50	 0029  CD 21	 	 	        INT 21H             ; ESCREVE M
+	 	 	 	SG3
+51	 002B  B4 09	 	 	        MOV AH,09H
+52	 002D  8D 16 0054 R	 	        LEA DX,N
+53	 0031  CD 21	 	 	        INT 21H             ; ESCREVE V
+	 	 	 	ALOR DE N
+54	 0033  B4 09	 	 	        MOV AH,09H
+55	 0035  8D 16 0047 R	 	        LEA DX,MSG4
+56	 0039  CD 21	 	 	        INT 21H             ; ESCREVE M
+	 	 	 	SG4
+57	 003B  B4 4C	 	 	        MOV AH,4CH          ; TERMINA P
+	 	 	 	ROGRAMA
+58	 003D  CD 21	 	 	        INT 21H 
+59	 	 	 	 	
+60	 003F	 	 	 	SHOW    PROC NEAR
+61	 003F  55	 	 	        PUSH BP
+62	 0040  8B EC	 	 	        MOV BP,SP
+63	 0042  83 EC 02	 	 	        SUB SP,2            ; VAR DE CO
+	 	 	 	NTAGEM TEMPORARIA
+64	 0045  C7 46 FE 0000	 	        MOV WORD PTR [BP-2],00H
+65	 004A  8B 5E 06	 	 	        MOV BX,[BP+6]       ; PRIMEIRA 
+	 	 	 	STRING
+66	 004D  80 3F 24	 	 	LOOP1:  CMP BYTE PTR [BX],'$'
+67	 0050  74 06	 	 	        JZ OK1
+68	 0052  FF 46 FE	 	 	        INC WORD PTR [BP-2] ; CONTANDO 
+	 	 	 	CARACTERES DA MSG1
+69	 0055  43	 	 	        INC BX
+70	 0056  EB F5	 	 	        JMP LOOP1
+71	 0058  B4 09	 	 	OK1:    MOV AH,09H
+72	 005A  8B 56 06	 	 	        MOV DX,[BP+6]
+73	 005D  CD 21	 	 	        INT 21H             ; ESCREVE M
+	 	 	 	SG1
+74	 005F  8B 5E 04	 	 	        MOV BX,[BP+4]       ; SEGUNDA S
+	 	 	 	TRING
+75	 0062  80 3F 24	 	 	LOOP2:  CMP BYTE PTR [BX],'$'
+76	 0065  74 06	 	 	        JZ OK2
+77	 0067  FF 46 FE	 	 	        INC WORD PTR [BP-2] ; CONTANDO 
+	 	 	 	CARACTERES DA MSG2
+78	 006A  43	 	 	        INC BX
+79	 006B  EB F5	 	 	        JMP LOOP2
+80	 006D  B4 09	 	 	OK2:    MOV AH,09H
+81	 006F  8B 56 04	 	 	        MOV DX,[BP+4]
+82	 0072  CD 21	 	 	        INT 21H             ; ESCREVE M
+	 	 	 	SG2
+83	 0074  8B 46 FE	 	 	        MOV AX,[BP-2]       ; VALOR A R
+	 	 	 	ETORNAR
+84	 0077  83 C4 02	 	 	        ADD SP,2            ; DESTROI V
+	 	 	 	ARIAVEL LOCAL
+85	 007A  5D	 	 	        POP BP
+86	 007B  C3	 	 	        RET
+ Microsoft MACRO Assembler  Version 3.00               	Page	1-3
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+87	 007C	 	 	 	SHOW    ENDP
+88	 007C	 	 	 	CODE    ENDS
+89	 	 	 	 	        END INICIO
+
+ Microsoft MACRO Assembler  Version 3.00               	Page	Symbols
+	 	 	 	-1
+	 	 	 	 	 	 	 	02-21-:0    
+
+
+Segments and Groups:
+
+	 	N a m e	 	 	Size	Align	Combine	Class
+
+CODE . . . . . . . . . . . . . .	007C	PARA  	NONE	
+DADOS. . . . . . . . . . . . . .	0057	PARA  	NONE	
+PILHA. . . . . . . . . . . . . .	0080	PARA  	STACK 	
+
+Symbols:            
+
+	 	N a m e	 	 	Type	Value	Attr         
+
+INICIO . . . . . . . . . . . . .	L NEAR 	0000	CODE
+LOOP1. . . . . . . . . . . . . .	L NEAR 	004D	CODE
+LOOP2. . . . . . . . . . . . . .	L NEAR 	0062	CODE
+MSG1 . . . . . . . . . . . . . .	L BYTE 	0000	DADOS
+MSG2 . . . . . . . . . . . . . .	L BYTE 	0024	DADOS
+MSG3 . . . . . . . . . . . . . .	L BYTE 	0032	DADOS
+MSG4 . . . . . . . . . . . . . .	L BYTE 	0047	DADOS
+N. . . . . . . . . . . . . . . .	L BYTE 	0054	DADOS
+OK1. . . . . . . . . . . . . . .	L NEAR 	0058	CODE
+OK2. . . . . . . . . . . . . . .	L NEAR 	006D	CODE
+SHOW . . . . . . . . . . . . . .	N PROC	003F	CODE	Length =003D
+
+49670 Bytes free   
+
+Warning Severe
+Errors	Errors 
+0	0
