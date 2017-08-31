@@ -1,0 +1,68 @@
+
+
+
+
+
+
+              2500 A.D. 8085 CROSS ASSEMBLER   -   VERSION 3.41a
+              --------------------------------------------------
+
+                       INPUT  FILENAME :  MULT.ASM
+                       OUTPUT FILENAME :  MULT.OBJ
+
+
+
+    1                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    2                         	;Mult.asm - Multiplicacao de numeros de dois digitos
+    3                         	;Prof. Roberto M. Ziller - 04.01.2000
+    4                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    5          E7 02          	LETECLA EQU 02E7H       ; 
+    6          63 03          	MOSTRAD EQU 0363H       ; sinonimos para sub-rotinas em ROM
+    7   2000                  	        ORG 2000H       ; endereco inicial do programa
+    8   2000   31 C0 20       	INICIO: LXI SP,20C0H    ; define inicio da pilha
+    9   2003   CD 14 20       	LOOP0:  CALL LE_DADO    ; leitura de N1 (acumulador)
+   10   2006   47             	        MOV B,A         ; copia N1 para o registrador B
+   11   2007   CD 14 20       	        CALL LE_DADO    ; leitura de N2 (acumulador)
+   12   200A   4F             	        MOV C,A         ; copia N2 para o registrador C
+   13   200B   CD 21 20       	        CALL MULT       ; DE = C * B
+   14   200E   CD 63 03       	        CALL MOSTRAD    ; apresenta resultado
+   15   2011   C3 03 20       	        JMP LOOP0       ; reinicia
+   16   
+   17   2014   CD E7 02       	LE_DADO:CALL LETECLA    ; le o digito mais significativo
+   18   2017   07             	        RLC
+   19   2018   07             	        RLC
+   20   2019   07             	        RLC
+   21   201A   07             	        RLC             ; multiplica-o por 16
+   22   201B   5F             	        MOV E,A         ; digito mais significativo em E
+   23   201C   CD E7 02       	        CALL LETECLA    ; le digito menos significativo
+   24   201F   B3             	        ORA E           ; compoe numero de dois digitos
+   25   2020   C9             	        RET             ; retorna com numero em A
+   26   2021   16 00          	MULT:   MVI D,00        ; inicializacoes
+   27   2023   3E 00          	        MVI A,00
+   28   2025   80             	LOOP1:  ADD B           ; soma N1 ao acumulador
+   29   2026   D2 2A 20       	        JNC CONT        ; "vai 1"? 
+   30   2029   14             	        INR D           ; incrementa D se a soma passa de FF
+   31   202A   0D             	CONT:   DCR C 
+   32   202B   C2 25 20       	        JNZ LOOP1       ; repete a soma N2 vezes
+   33   202E   5F             	        MOV E,A         ; transfere o resultado para E
+   34   202F   C9             	        RET             ; retorno com resultado no par DE
+   35   
+   36   2030                  	        END
+                                                                                                                          PAGE 2
+
+
+
+
+
+*************  S Y M B O L I C   R E F E R E N C E   T A B L E  *************
+
+
+CONT        202A    INICIO      2000    LETECLA   = 02E7    LE_DADO     2014
+LOOP0       2003    LOOP1       2025    MOSTRAD   = 0363    MULT        2021
+
+
+
+
+         LINES ASSEMBLED :    36             ASSEMBLY ERRORS :    0   
+
+

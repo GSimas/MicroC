@@ -1,0 +1,94 @@
+
+
+
+
+
+
+              2500 A.D. 8085 CROSS ASSEMBLER   -   VERSION 3.41a
+              --------------------------------------------------
+
+                       INPUT  FILENAME :  JULIANA.ASM
+                       OUTPUT FILENAME :  JULIANA.OBJ
+
+
+
+    1                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    2                         	;Juliana.asm - conversor de datas
+    3                         	;Prof. Roberto M. Ziller - 04.01.2000
+    4                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    5          E7 02          	LETECLA EQU 02E7H
+    6          63 03          	MOSTRAD EQU 0363H
+    7   
+    8   2000                  	        ORG 2000H
+    9   
+   10   2000   31 C0 20       	        LXI SP,20C0H
+   11   
+   12   2003   CD E7 02       	LE1:    CALL LETECLA    ; 1. digito do dia
+   13   2006   FE 0A          	        CPI 0AH
+   14   2008   F2 03 20       	        JP LE1
+   15   200B   07             	        RLC
+   16   200C   07             	        RLC
+   17   200D   07             	        RLC
+   18   200E   07             	        RLC
+   19   200F   5F             	        MOV E,A
+   20   2010   CD E7 02       	LE2:    CALL LETECLA    ; 2. digito do dia
+   21   2013   FE 0A          	        CPI 0AH
+   22   2015   F2 10 20       	        JP LE2
+   23   2018   B3             	        ORA E
+   24   2019   5F             	        MOV E,A         
+   25   201A   16 00          	        MVI D,00H       ; E contem dia em BCD e D = 0
+   26   201C   CD E7 02       	LE3:    CALL LETECLA    ; 1. digito do mes
+   27   201F   FE 0A          	        CPI 0AH
+   28   2021   F2 1C 20       	        JP LE3
+   29   2024   0E 00          	        MVI C,00H
+   30   2026   FE 00          	        CPI 00
+   31   2028   CA 2D 20       	        JZ LE4
+   32   202B   0E 0A          	        MVI C,10D
+   33   202D   CD E7 02       	LE4:    CALL LETECLA    ; 2. digito do mes
+   34   2030   FE 0A          	        CPI 0AH
+   35   2032   F2 2D 20       	        JP LE4
+   36   2035   81             	        ADD C
+   37   2036   D6 01          	        SUI 01H
+   38   2038   4F             	        MOV C,A         ; C = mes-1 = numero de meses a somar
+   39   2039   FE 00          	        CPI 00H
+   40   203B   CA 4E 20       	        JZ MOSTRA       ; se mes = janeiro, esta pronto  
+   41   203E   21 54 20       	        LXI H,DIAS
+   42   2041   7B             	        MOV A,E         ; A inicia com o dia...
+   43   2042   86             	SOMA:   ADD M           ; ... e recebe os dias de cada mes
+   44   2043   27             	        DAA
+   45   2044   D2 48 20       	        JNC CONT
+   46   2047   14             	        INR D           ; "vai 1"
+   47   2048   23             	CONT:   INX H
+   48   2049   0D             	        DCR C
+                                                                                                                          PAGE 2
+
+
+
+
+   49   204A   C2 42 20       	        JNZ SOMA
+   50   204D   5F             	        MOV E,A
+   51   204E   CD 63 03       	MOSTRA: CALL MOSTRAD    ; resultado no campo de enderecos
+   52   2051   C3 03 20       	        JMP LE1         ; volta ao passo 1 do enunciado
+   53   
+   54   2054   31 28 31 30    	DIAS    DB 31H,28H,31H,30H,31H,30H,31H,31H,30H,31H,30H,31H
+        2058   31 30 31 31 
+        205C   30 31 30 31 
+   55   2060                  	        END
+                                                                                                                          PAGE 3
+
+
+
+
+
+*************  S Y M B O L I C   R E F E R E N C E   T A B L E  *************
+
+
+CONT        2048    DIAS        2054    LE1         2003    LE2         2010
+LE3         201C    LE4         202D    LETECLA   = 02E7    MOSTRA      204E
+MOSTRAD   = 0363    SOMA        2042    
+
+
+
+         LINES ASSEMBLED :    55             ASSEMBLY ERRORS :    0   
+
+

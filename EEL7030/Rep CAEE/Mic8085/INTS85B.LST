@@ -1,0 +1,71 @@
+
+
+
+
+
+
+              2500 A.D. 8085 CROSS ASSEMBLER   -   VERSION 3.41a
+              --------------------------------------------------
+
+                       INPUT  FILENAME :  INTS85B.ASM
+                       OUTPUT FILENAME :  INTS85B.OBJ
+
+
+
+    1                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    2                         	;Ints85b.asm - Interrupcoes do 8085
+    3                         	;Prof. Roberto M. Ziller - 04.01.2000
+    4                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    5          6E 03          	MOSTRAA EQU 036EH
+    6          F1 05          	DELAY   EQU 05F1H
+    7          CE 20          	RST7.5  EQU 20CEH
+    8   2000                  	        ORG 2000H
+    9   2000   31 C0 20       	        LXI SP,20C0H    ; Inicializa pilha
+   10   2003   3E 18          	        MVI A,18H
+   11   2005   30             	        SIM             ; Habilita 5.5, 6.5 e 7.5
+   12   2006   3E 00          	        MVI A,00H 
+   13   2008   32 3C 20       	        STA STATE       ; Flag de reset da contagem
+   14   200B   32 3D 20       	        STA COUNT       ; Inicializa contagem
+   15   200E   FB             	        EI
+   16   200F   3A 3D 20       	LOOP:   LDA COUNT
+   17   2012   C6 01          	        ADI 01H         ; INR A nco serve, nco atualiza CY
+   18   2014   27             	        DAA             ; Utiliza CY na corregco
+   19   2015   32 3D 20       	        STA COUNT
+   20   2018   CD 6E 03       	        CALL MOSTRAA
+   21   201B   16 05          	        MVI D,05H       ; Atraso de 500ms
+   22   201D   CD F1 05       	        CALL DELAY
+   23   2020   3A 3C 20       	        LDA STATE
+   24   2023   FE 00          	        CPI 00H         ; Testa critirio de reinicializagco
+   25   2025   CA 0F 20       	        JZ LOOP         ; Continua contando se STATE = 0
+   26   2028   3E 00          	        MVI A,00H
+   27   202A   32 3D 20       	        STA COUNT       ; Caso contrario, zera a contagem
+   28   202D   32 3C 20       	        STA STATE       ; Reinicializa flag
+   29   2030   C3 0F 20       	        JMP LOOP
+   30   2033   F5             	HNDLR:  PUSH PSW
+   31   2034   3E 01          	        MVI A,01H
+   32   2036   32 3C 20       	        STA STATE
+   33   2039   FB             	        EI
+   34   203A   F1             	        POP PSW
+   35   203B   C9             	        RET
+   36   203C   00             	STATE   DB 00H          ; Flag global alterado pelo tratador
+   37   203D   00             	COUNT   DB 00H          ; Contagem
+   38   20CE                  	        ORG RST7.5      ; Desvio da RST 7.5
+   39   20CE   C3 33 20       	        JMP HNDLR
+   40   20D1                  	        END
+                                                                                                                          PAGE 2
+
+
+
+
+
+*************  S Y M B O L I C   R E F E R E N C E   T A B L E  *************
+
+
+COUNT       203D    DELAY     = 05F1    HNDLR       2033    LOOP        200F
+MOSTRAA   = 036E    RST7.5    = 20CE    STATE       203C    
+
+
+
+         LINES ASSEMBLED :    40             ASSEMBLY ERRORS :    0   
+
+

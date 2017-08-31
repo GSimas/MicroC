@@ -1,0 +1,52 @@
+
+
+
+
+
+
+              2500 A.D. 8085 CROSS ASSEMBLER   -   VERSION 3.41a
+              --------------------------------------------------
+
+                       INPUT  FILENAME :  LEDS.ASM
+                       OUTPUT FILENAME :  LEDS.OBJ
+
+
+
+    1                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    2                         	;Leds.asm - Utilizacao de perifericos
+    3                         	;Prof. Roberto M. Ziller - 04.01.2000
+    4                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    5          20 00          	COMMAND EQU 20H
+    6          22 00          	LEDS    EQU 22H
+    7          F1 05          	DELAY   EQU 05F1H
+    8   2000                  	        ORG 2000H
+    9   2000   31 C0 20       	        LXI SP,20C0H    ; Inicializa pilha
+   10   2003   3E 02          	        MVI A,02H       ; Porta B como saida
+   11   2005   D3 20          	        OUT COMMAND
+   12   2007   3E 01          	        MVI A,01H
+   13   2009   D3 22          	LOOP:   OUT LEDS        ; Acende o LED correspondente a A
+   14   200B   07             	        RLC             ; Rotaciona LED a acender
+   15   200C   F5             	        PUSH PSW
+   16   200D   16 02          	        MVI D,02H       ; Atraso de 200ms
+   17   200F   CD F1 05       	        CALL DELAY      ; Espera para ver LED aceso
+   18   2012   F1             	        POP PSW
+   19   2013   C3 09 20       	        JMP LOOP
+   20   2016   C9             	        RET
+   21   2017                  	        END 
+                                                                                                                          PAGE 2
+
+
+
+
+
+*************  S Y M B O L I C   R E F E R E N C E   T A B L E  *************
+
+
+COMMAND   = 0020    DELAY     = 05F1    LEDS      = 0022    LOOP        2009
+
+
+
+
+         LINES ASSEMBLED :    21             ASSEMBLY ERRORS :    0   
+
+

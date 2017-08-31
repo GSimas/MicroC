@@ -1,0 +1,192 @@
+
+
+
+
+
+
+              2500 A.D. 8085 CROSS ASSEMBLER   -   VERSION 3.41a
+              --------------------------------------------------
+
+                       INPUT  FILENAME :  BASECONV.ASM
+                       OUTPUT FILENAME :  BASECONV.OBJ
+
+
+
+    1                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    2                         	;BaseConv.asm - programa de conversao de base
+    3                         	;Recebe a base de entrada (numero decimal de 2 digitos)
+    4                         	;Recebe um numero de 4 digitos nessa base, sem verifica-lo
+    5                         	;Recebe a base de saida (um numero decimal de 2 digitos)
+    6                         	;Ambas as bases devem estar entre 2 e 16, inclusive
+    7                         	;Converte o numero da base de entrada para a base de saida
+    8                         	;Apresenta o resultado no display
+    9                         	;Campos de enderecos e dados formam um numero de 6 digitos
+   10                         	;Prof. Roberto m. Ziller - 04.01.2000
+   11                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   12          E7 02          	LETECLA EQU 02E7H
+   13          63 03          	MOSTRAD EQU 0363H
+   14          6E 03          	MOSTRAA EQU 036EH
+   15   
+   16   2000                  	        ORG 2000H
+   17   2000   31 00 21       	        LXI SP,2100H
+   18   2003   CD 93 20       	LOOP:   CALL LENUM10 ; BASE DE ENTRADA LIDA (DECIMAL)
+   19   2006   4F             	        MOV C,A
+   20   2007   CD 7D 20       	        CALL LENUM   ; LE NUMERO DE 4 DIGS, CONVERTE P/ HEXA
+   21   200A   D5             	        PUSH D
+   22   200B   CD 63 03       	        CALL MOSTRAD ; APRESENTA NUMERO A CONVERTER EM HEXA
+   23   200E   D1             	        POP D   
+   24   200F   CD 93 20       	        CALL LENUM10 ; BASE DE SAIDA
+   25   2012   4F             	        MOV C,A
+   26   2013   CD 21 20       	        CALL HEXCONV ; CONVERTE. RESULTADO EM D, E e A
+   27   2016   F5             	        PUSH PSW
+   28   2017   CD 63 03       	        CALL MOSTRAD
+   29   201A   F1             	        POP PSW
+   30   201B   CD 6E 03       	        CALL MOSTRAA
+   31   201E   C3 03 20       	        JMP LOOP
+   32   
+   33                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   34                         	;HEXCONV - converte numero hexa para a base de saida
+   35                         	;Recebe numero no par DE e base de saida em C
+   36                         	;Retorna resultado como numero de 6 digitos em D, E e A
+   37                         	;Utiliza todos os regs
+   38                         	;Chama a sub-rotina DIV
+   39   2021                  	HEXCONV:
+   40   2021   06 00          	        MVI B,00H       ; CONTADOR DE DIGITOS DO RESULTADO
+   41   2023   CD 4D 20       	MORE:   CALL DIV        ; QUOCIENTE EM DE E RESTO EM L
+   42   2026   E5             	        PUSH H          ; L CONTEM DIGITO DO RESULTADO 
+   43   2027   04             	        INR B           ; CONTA DIGITOS
+   44   2028   7A             	        MOV A,D         
+   45   2029   FE 00          	        CPI 00H         ; SE D <> 0, TEM MAIS
+   46   202B   C2 23 20       	        JNZ MORE 
+   47   202E   7B             	        MOV A,E
+   48   202F   FE 00          	        CPI 00H         ; SE D == 0 MAS E <> 0, TEM MAIS
+                                                                                                                          PAGE 2
+
+
+
+
+   49   2031   C2 23 20       	        JNZ MORE
+   50   2034   3E 00          	        MVI A,00H       ; TRIPLA DEA CONTEM 0 PARA COMECAR
+   51   2036   26 04          	GETDIG: MVI H,04H       ; RESGATE DOS DIGITOS DA PILHA
+   52   2038   B7             	ROTATE: ORA A           ; ZERA CARRY FLAG
+   53   2039   17             	        RAL             ; BIT MAIS SIGNIFICATIVO DE A EM CY
+   54   203A   6F             	        MOV L,A
+   55   203B   7B             	        MOV A,E         ; ROTACIONA DIGITOS DA TRIPLA DEA
+   56   203C   17             	        RAL             ; BIT MAIS SIGNIFICATIVO DE A EM E
+   57   203D   5F             	        MOV E,A
+   58   203E   7A             	        MOV A,D
+   59   203F   17             	        RAL             ; BIT MAIS SIGNIFICATIVO DE E EM D
+   60   2040   57             	        MOV D,A
+   61   2041   7D             	        MOV A,L
+   62   2042   25             	        DCR H
+   63   2043   C2 38 20       	        JNZ ROTATE
+   64   2046   E1             	        POP H           ; L CONTEM DIGITO PARA A TRIPLA DEA
+   65   2047   B5             	        ORA L           ; INTRODUZ DIGITO RESGATADO DA PILHA
+   66   2048   05             	        DCR B           ; TEM MAIS DIGITOS?
+   67   2049   C2 36 20       	        JNZ GETDIG      
+   68   204C   C9             	        RET             ; NUMERO CONVERTIDO EM DEA
+   69   204D                  	        
+   70                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   71                         	;DIV - sub-rotina para divisao
+   72                         	;Recebe dividendo em DE e divisor em C
+   73                         	;Retorna quociente em DE e resto em L
+   74                         	;Utiliza regs A, C, D, E, H e L
+   75   204D   21 00 00       	DIV:    LXI H,0000H
+   76   2050   7B             	        MOV A,E
+   77   2051   B9             	TEST1:  CMP C
+   78   2052   DA 5A 20       	        JC TEST2
+   79   2055   91             	BACK:   SUB C
+   80   2056   23             	        INX H
+   81   2057   C3 51 20       	        JMP TEST1
+   82   205A   5F             	TEST2:  MOV E,A
+   83   205B   7A             	        MOV A,D
+   84   205C   FE 00          	        CPI 00H
+   85   205E   CA 66 20       	        JZ DONE
+   86   2061   15             	        DCR D
+   87   2062   7B             	        MOV A,E
+   88   2063   C3 55 20       	        JMP BACK
+   89   2066   EB             	DONE:   XCHG
+   90   2067   C9             	        RET
+   91   
+   92                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+   93                         	;MULT - sub-rotina para multiplicacao
+   94                         	;Recebe multiplicando em DE e multiplicador em C
+   95                         	;Retorna resultado em DE, preservando o multiplicador em C
+   96                         	;Utiliza regs A, C, D, E, H e L
+   97   2068   EB             	MULT:   XCHG
+   98   2069   11 00 00       	        LXI D,0000H
+   99   206C   79             	        MOV A,C
+  100   206D   FE 00          	        CPI 00H
+  101   206F   C8             	        RZ
+  102   2070   C5             	        PUSH B
+  103   2071   7B             	MUL:    MOV A,E
+  104   2072   85             	        ADD L
+  105   2073   5F             	        MOV E,A
+                                                                                                                          PAGE 3
+
+
+
+
+  106   2074   7A             	        MOV A,D
+  107   2075   8C             	        ADC H
+  108   2076   57             	        MOV D,A
+  109   2077   0D             	        DCR C
+  110   2078   C2 71 20       	        JNZ MUL
+  111   207B   C1             	        POP B
+  112   207C   C9             	        RET
+  113   
+  114                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  115                         	;LENUM
+  116                         	;Le numero de 4 digitos na base contida em C 
+  117                         	;Converte p/ hexa e retorna esse valor no par DE
+  118                         	;Utiliza todos os regs
+  119                         	;Chama MULT
+  120   207D   11 00 00       	LENUM:  LXI D,0000H
+  121   2080   06 04          	        MVI B,04H
+  122   2082   CD 68 20       	MULBAS: CALL MULT      ; MULTIPLICA PAR DE PELA BASE EM C
+  123   2085   CD E7 02       	        CALL LETECLA
+  124   2088   83             	        ADD E
+  125   2089   5F             	        MOV E,A
+  126   208A   D2 8E 20       	        JNC CONT
+  127   208D   14             	        INR D
+  128   208E   05             	CONT:   DCR B
+  129   208F   C2 82 20       	        JNZ MULBAS
+  130   2092   C9             	        RET
+  131   
+  132                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  133                         	;LENUM10 - le um numero decimal de dois digitos
+  134                         	;Retorna valor hexa do numero lido no acumulador
+  135                         	;Utiliza os regs A, B, H e L
+  136                         	;Chama LETECLA
+  137   2093                  	LENUM10:
+  138   2093   CD E7 02       	        CALL LETECLA
+  139   2096   07             	        RLC
+  140   2097   47             	        MOV B,A
+  141   2098   07             	        RLC
+  142   2099   07             	        RLC
+  143   209A   80             	        ADD B
+  144   209B   47             	        MOV B,A
+  145   209C   CD E7 02       	        CALL LETECLA
+  146   209F   80             	        ADD B
+  147   20A0   C9             	        RET
+  148   20A1                  	        END
+                                                                                                                          PAGE 4
+
+
+
+
+
+*************  S Y M B O L I C   R E F E R E N C E   T A B L E  *************
+
+
+BACK        2055    CONT        208E    DIV         204D    DONE        2066
+GETDIG      2036    HEXCONV     2021    LENUM       207D    LENUM10     2093
+LETECLA   = 02E7    LOOP        2003    MORE        2023    MOSTRAA   = 036E
+MOSTRAD   = 0363    MUL         2071    MULBAS      2082    MULT        2068
+ROTATE      2038    TEST1       2051    TEST2       205A    
+
+
+
+         LINES ASSEMBLED :   148             ASSEMBLY ERRORS :    0   
+
+

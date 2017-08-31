@@ -1,0 +1,57 @@
+
+
+
+
+
+
+              2500 A.D. 8085 CROSS ASSEMBLER   -   VERSION 3.41a
+              --------------------------------------------------
+
+                       INPUT  FILENAME :  TECLADO.ASM
+                       OUTPUT FILENAME :  TECLADO.OBJ
+
+
+
+    1                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    2                         	;Teclado.asm - leitura de numeros do teclado
+    3                         	;Prof. Roberto M. Ziller - 04.01.2000
+    4                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    5          E7 02          	LETECLA EQU 02E7H       ; Sinonimos utilizados abaixo
+    6          63 03          	MOSTRAD EQU 0363H       ;
+    7          6E 03          	MOSTRAA EQU 036EH       ;
+    8   0000                  	       
+    9   2000                  	        ORG 2000H
+   10   2000                  	       
+   11   2000   31 C0 20       	        LXI SP,20C0H    ; Inicializa pilha
+   12   2003   CD E7 02       	LOOP:   CALL LETECLA    ; Le primeiro numero
+   13   2006   57             	        MOV D,A
+   14   2007   1E 00          	        MVI E,0H
+   15   2009   D5             	        PUSH D
+   16   200A   CD 63 03       	        CALL MOSTRAD    ; Apresenta primeiro numero
+   17   200D   D1             	        POP D
+   18   200E   CD E7 02       	        CALL LETECLA    ; Le segundo numero
+   19   2011   5F             	        MOV E,A
+   20   2012   82             	        ADD D           ; Resultado em A
+   21   2013   F5             	        PUSH PSW
+   22   2014   CD 63 03       	        CALL MOSTRAD    ; Apresenta os dois numeros
+   23   2017   F1             	        POP PSW
+   24   2018   CD 6E 03       	        CALL MOSTRAA    ; Apresenta resultado
+   25   201B   C3 03 20       	        JMP LOOP
+   26   201E                  	        END
+                                                                                                                          PAGE 2
+
+
+
+
+
+*************  S Y M B O L I C   R E F E R E N C E   T A B L E  *************
+
+
+LETECLA   = 02E7    LOOP        2003    MOSTRAA   = 036E    MOSTRAD   = 0363
+
+
+
+
+         LINES ASSEMBLED :    26             ASSEMBLY ERRORS :    0   
+
+

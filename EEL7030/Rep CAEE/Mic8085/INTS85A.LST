@@ -1,0 +1,56 @@
+
+
+
+
+
+
+              2500 A.D. 8085 CROSS ASSEMBLER   -   VERSION 3.41a
+              --------------------------------------------------
+
+                       INPUT  FILENAME :  INTS85A.ASM
+                       OUTPUT FILENAME :  INTS85A.OBJ
+
+
+
+    1                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    2                         	;Ints85a.asm - Interrupcoes do 8085
+    3                         	;Prof. Roberto M. Ziller - 04.01.2000
+    4                         	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    5          6E 03          	MOSTRAA EQU 036EH
+    6          F1 05          	DELAY   EQU 05F1H
+    7          CE 20          	RST7.5  EQU 20CEH
+    8   2000                  	        ORG 2000H
+    9   2000   31 C0 20       	        LXI SP,20C0H   ; Inicializa pilha
+   10   2003   3E 18          	        MVI A,18H      ; Habilita 5.5, 6.5 e 7.5
+   11   2005   30             	        SIM
+   12   2006   3E 00          	        MVI A,00H
+   13   2008   FB             	        EI
+   14   2009   C6 01          	LOOP:   ADI 01H        ; INR A nao serve, nao atualiza CY
+   15   200B   27             	        DAA            ; utiliza CY flag na correcao
+   16   200C   F5             	        PUSH PSW       ; Salva contagem
+   17   200D   CD 6E 03       	        CALL MOSTRAA
+   18   2010   16 05          	        MVI D,05H      ; Atraso de 500ms
+   19   2012   CD F1 05       	        CALL DELAY
+   20   2015   F1             	        POP PSW        ; Recupera contagem
+   21   2016   C3 09 20       	        JMP LOOP
+   22   20CE                  	        ORG RST7.5     ; Desvio da RST 7.5
+   23   20CE   76             	        HLT
+   24   20CF   C9             	        RET
+   25   20D0                  	        END
+                                                                                                                          PAGE 2
+
+
+
+
+
+*************  S Y M B O L I C   R E F E R E N C E   T A B L E  *************
+
+
+DELAY     = 05F1    LOOP        2009    MOSTRAA   = 036E    RST7.5    = 20CE
+
+
+
+
+         LINES ASSEMBLED :    25             ASSEMBLY ERRORS :    0   
+
+
