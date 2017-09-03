@@ -1,0 +1,39 @@
+C51 COMPILER V9.02   EXERCICO2                                                             06/07/2012 14:13:20 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE EXERCICO2
+OBJECT MODULE PLACED IN exercico2.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE exercico2.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.h> // Arquivo com os endereços dos registradores do 8051
+   2          
+   3          void main()
+   4          {
+   5   1              short i;
+   6   1              //unsigned char j;
+   7   1              P0 = 0x80;      //Habilita apenas o CS do decoder dos 7seg
+   8   1              P3 = 0xFF;      //Mantem todos os pinos P3 em alto (P3.3 (A0) e P3.4 (A1) estão ligados ao decoder)
+   9   1      
+  10   1              while(1)
+  11   1              {
+  12   2                      for(i=0; i<6000; i++);  //Criando delay
+  13   2                      P1 = ~P2;                       
+  14   2              }
+  15   1      
+  16   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =     27    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
