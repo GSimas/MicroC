@@ -1,0 +1,69 @@
+C51 COMPILER V9.02   EXERCICIO5                                                            06/07/2012 15:32:02 PAGE 1   
+
+
+C51 COMPILER V9.02, COMPILATION OF MODULE EXERCICIO5
+OBJECT MODULE PLACED IN exercicio5.OBJ
+COMPILER INVOKED BY: C:\Keil\C51\BIN\C51.EXE exercicio5.c BROWSE DEBUG OBJECTEXTEND
+
+line level    source
+
+   1          #include <reg51.h> // Arquivo com os endereços dos registradores do 8051
+   2          
+   3          unsigned char timerRounds = 0;
+   4          void main()
+   5          {
+   6   1              short i;
+   7   1              P0 = 0x00;              //Desabilita 7 seg
+   8   1              P1 = 0xFF;
+   9   1              P3 = 0xFF;              //Mantem todos os pinos P3 em alto (P3.3 (A0) e P3.4 (A1) estão ligados ao decoder)
+  10   1              IE = 0x82;              //Ativa a interrupção do timer 0
+  11   1              TMOD = 0x02;    //Timer 0 no modo 2
+  12   1              TH0     = 0xFF;         //Valor alto do timer 0 (usado para o reload)
+  13   1              TL0 = 0x00;             //Valor baixo do timer 0 (usado para contagem)
+  14   1              TR0 = 1;                //Ativa timer 0
+  15   1      
+  16   1              while(1)
+  17   1              {
+  18   2                      unsigned char data deslocated;          //Variável utilizada para salvar valor que irá para os LEDs
+  19   2                      for(i = 0;i<8;i++)                                      //Rotaciona 8 vezes os LEDs (ligando eles no EDSIM)
+  20   2                      {
+  21   3                              deslocated = 0xFF << i;                 //Desloca i vezes para a esquerda o valor FFh
+  22   3                              while(timerRounds != 0x0020){}  //Aguarda o timerRounds ficar no valor desejado. Para tal está sendo uti
+             -lizado o timer 0
+  23   3                              P1 = deslocated;                                //Joga o valor de deslocated para P1, exibindo nos LEDs
+  24   3                              timerRounds = 0x00;                             //Zera o timerRounds para uma nova contagem
+  25   3                      }
+  26   2                      for(i = 0;i<8;i++)                                      //Rotaciona 8 vezes os LEDs (desligando eles no EDSIM)
+  27   2                      {
+  28   3                              deslocated = 0xFF << i;                 //Desloca i vezes para a esquerda o valor FFh
+  29   3                              while(timerRounds != 0x0020){}  //Aguarda o timerRounds ficar no valor desejado. Para tal está sendo uti
+             -lizado o timer 0
+  30   3                              P1 = ~deslocated;                               //Joga o valor de deslocated para P1, exibindo nos LEDs
+  31   3                              timerRounds = 0x00;                             //Zera o timerRounds para uma nova contagem
+  32   3                      }
+  33   2              }
+  34   1      
+  35   1      }
+  36          
+  37          void isr_timer0 (void) interrupt 1
+  38          //Função que é utilizada para tratar a interrupção 1 (endereço 0x0B) que é relativa ao timer 0
+  39          {
+  40   1              timerRounds++; //Incrementa timerRounds toda vez que é feito TL0 vai de FFh para 00h
+  41   1              TL0 = 0x00;
+  42   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    117    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      1       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+C51 COMPILER V9.02   EXERCICIO5                                                            06/07/2012 15:32:02 PAGE 2   
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
