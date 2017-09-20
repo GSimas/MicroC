@@ -1,0 +1,18 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Soma.asm - soma de dois numeros em hexadecimal
+;Prof. Fernando M. de Azevedo - 15.03.2005
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+        ORG 2000H
+	LXI SP,20FFH	; CARREGA O SP COM O VALOR 20FF
+	PUSH PSW	; SALVA O PSW
+	PUSH B		; SALVA O PAR B,C
+	LDA 2015H	; CARREGA NO ACUMULADOR O CONTEUDO DE 2015
+	MOV B,A		; MOVE O CONTEUDO DO ACUMULADOR PARA B
+	LDA 2016H	; CARREGA NO ACUMULADOR O CONTEUDO DE 2016
+	ADD B		; SOMA O A COM B COLOCANDO O RESULTADO EM A
+	STA 2017H	; ARMAZENA NA POSICAO DE MEMORIA 2017
+	POP B		; RESTAURA O PAR B,C
+	POP PSW		; RESTAURA O PSW
+	HLT		; UMA MANEIRA DE FINALIZAR. nA REALIDADE ELE PARA
+			; ATE QUE HAJA NOVO COMANDO	
+	END

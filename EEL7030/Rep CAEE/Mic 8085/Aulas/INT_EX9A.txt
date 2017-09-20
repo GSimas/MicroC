@@ -1,0 +1,135 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;INT_EX9A
+; Ex Prof. Hari Bruno Mohr
+; Fazer um contador no campo de Enderecos
+; 1) Ler um numero de 2 digitos para
+; iniciar a contagem ( dever ser menor que 40)
+; 2) as chaves 6 e 7 controlam a velocidade
+; 3) as chaves 3,4 e 5 definem o incremento
+; 4) a chave 2 define se mostra nos LEDS ou Display
+; 5) a chave 1 alterna entre cont de 8 e 16 bits
+  6) a chave 8 - trava tudo se estiver ON
+; 7) a INT rst55 reinicia o contador em 55H
+; 8) a INT rst65 faz a leitura de novo valor
+;     para o contador - 2 digitos
+; 9) a INT rst75 liga os 4 LEDS mais significativos
+; 10 a INT TRAP liga os 4 LEDS mais significativos
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+TRAP	EQU 20D1H		; Definições de constantes
+RST5.5	EQU 20C8H
+RST6.5	EQU 20CBH
+RST7.5	EQU 20CEH
+DELAY 	EQU 05F1H
+LETECLA EQU 02E7H
+MOSTRAA EQU 036EH
+MOSTRAD EQU 0363H
+COMANDO EQU 20H
+CHAVES 	EQU 21H
+        ORG 2000H
+        LXI SP,20C0H    ; Inicializa pilha
+        MVI A,18H
+        SIM             ; Habilita 5.5, 6.5 e 7.5
+        MVI A,00H 
+        STA STATE       ; Flag de reset da contagem
+        STA COUNT       ; Inicializa contagem
+        EI
+LOOP:   IN CHAVES 
+         ANI 00011100B
+	 RAR
+	 RAR
+	 MOV C,A
+        LDA COUNT
+	 ADD C
+        ;ADI 01H         ; INR A não serve, não atualiza CY
+        DAA             ; Utiliza CY na correção
+        STA COUNT
+	mvi D,0
+	mov e,a
+        CALL MOSTRAD
+	IN CHAVES
+	ANI 11100000B
+	RAR
+	RAR
+	RAR
+	RAR
+	RAR
+	INR A
+	       push psw
+	       call MOSTRAA
+	       pop psw
+        mov d,a
+        CALL DELAY      
+        LDA STATE
+        CPI 00H         ; Testa critério de reinicialização
+        JZ LOOP         ; Continua contando se STATE = 0
+
+	CPI 01
+	JNZ DOIS
+        MVI A,54H
+        STA COUNT       ; incia contagem em 55
+	mvi a,0
+        STA STATE       ; Reinicializa flag
+        JMP LOOP
+
+DOIS:   LDA STATE
+        CPI 2
+	JNZ QUATRO
+	MVI A,64H
+        STA COUNT       ; incia contagem em 55
+	mvi a,0
+        STA STATE       ; Reinicializa flag
+        JMP LOOP
+QUATRO: LDA STATE
+        CPI 4
+	JNZ OITO
+	MVI A,74H
+        STA COUNT       ; incia contagem em 55
+	mvi a,0
+        STA STATE       ; Reinicializa flag
+        JMP LOOP
+OITO:   LDA STATE
+        CPI 8
+	JNZ FIM
+	MVI A,22H
+        STA COUNT       ; incia contagem em 55
+	mvi a,0
+        STA STATE       ; Reinicializa flag
+        JMP LOOP
+FIM:    JMP FIM
+
+T55:    PUSH PSW
+        MVI A,01H
+        STA STATE
+        EI
+        POP PSW
+        RET
+T65:    PUSH PSW
+        MVI A,02H
+        STA STATE
+        EI
+        POP PSW
+        RET
+T75:    PUSH PSW
+        MVI A,05H
+        STA STATE
+        EI
+        POP PSW
+        RET
+TTRAP:  PUSH PSW
+        MVI A,08H
+        STA STATE
+        EI
+        POP PSW
+        RET
+STATE   DB 00H          ; Flag global alterado pelo tratador
+COUNT   DB 00H          ; Contagem
+		ORG RST5.5
+	       	JMP T55
+  	        ORG RST6.5
+	       	JMP T65
+		ORG RST7.5
+	       	JMP T75
+ 		ORG TRAP
+   	    	JMP TTRAP	
+        	END

@@ -1,0 +1,209 @@
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Soma.asm - soma de dois numeros em hexadecimal COM CARRY
+;Prof. Fernando M. de Azevedo - 15.03.2005
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+        ORG 2000H
+	LXI SP,23FFH	; CARREGA O SP COM O VALOR 23FF
+	LXI B,0000H	; CARREGA O PAR B,C COM O VALOR 0000
+	PUSH PSW	; SALVA O PSW
+	PUSH B		; SALVA O PAR B,C
+	XRA A		; ZERA O ACUMULADOR E OS FLAGS
+	LDA 2020H	; CARREGA NO ACUMULADOR O CONTEUDO DE 2020H
+	MOV B,A		; MOVE O CONTEUDO DO ACUMULADOR PARA B
+	LDA 2021H	; CARREGA NO ACUMULADOR O CONTEUDO DE 2021H
+	ADD B		; SOMA O A COM B COLOCANDO O RESULTADO EM A
+	STA 2023H	; ARMAZENA NA POSICAO DE MEMORIA 2023H
+	JNC X1		; TESTA O FLAG CARRY PAARA VER SE TEM VAI UM
+	MVI A,01	; MOVE 01 PARA O ACUMULADOR
+	STA 2022H	; ARMAZENA NA POSICAO DE MEMORIA 2022H
+X1:	POP B		; RESTAURA O PAR B,C
+	POP PSW		; RESTAURA O PSW
+	HLT		; UMA MANEIRA DE FINALIZAR. nA REALIDADE ELE PARA
+			; ATE QUE HAJA NOVO COMANDO	
+	END
+	
+---------------------------------------------------------------------------
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Teclado.asm - Leitura do teclado, soma e mostra de resultados
+;Prof. Fernando M. de Azevedo - 28.03.2005
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+LETECLA	EQU 02E7H	; Enderecos das sub-rotinas
+MOSTRAD EQU 0363H
+MOSTRAA EQU 036eH
+
+        ORG 2000H
+
+	LXI SP, 20C0H	; Inicializa o SP (o apontador da pilha)
+LOOP:   CALL LETECLA	; Le o primeiro numero
+	MOV D,A         ; carrega D com o conteudo de A
+        MVI E,00        ; zera o registro E 
+        PUSH D          ; salva o conteudo de DE pois a rotina
+			; MOSTRAD altera todos os registros e os
+			; registros DE estao sendo usados
+        CALL MOSTRAD    ; mostra o primeiro numero em enderecos
+        POP D          	; restaura o par DE
+        CALL LETECLA    ; le o segundo numero
+        MOV E,A		; move para E
+        ADD D        	; "soma" o primeiro numero com o segundo
+        PUSH PSW        ; salva o conteudo de AF pois a rotina
+			; MOSTRAD altera todos os registros e os
+			; registros AF estao sendo usados
+	CALL MOSTRAD	; motra o segundo numero em endercos
+	POP PSW		; restaura o AF
+	CALL MOSTRAA	; mostra o resultado da soma no campo de dados
+	JMP LOOP
+        END
+
+---------------------------------------------------------------------------
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Teclado2.asm - Leitura do teclado, soma e mostra de resultados !!!! SOMA DE NUMEROS DE 2 BYTES !!!!
+;Prof. Fernando M. de Azevedo - 28.03.2005
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+LETECLA	EQU 02E7H	; Enderecos das sub-rotinas
+MOSTRAD EQU 0363H
+MOSTRAA EQU 036eH
+
+        ORG 2000H
+
+	LXI SP, 20C0H	; Inicializa o SP (o apontador da pilha)
+LOOP:   CALL LETECLA	; Le o digito mais significativo do primeiro numero
+	RLC
+	RLC
+	RLC
+	RLC		; desloca quatro posicoes p/ esquerda
+	MOV D,A         ; carrega D com o conteudo de A
+	CALL LETECLA	; le o digito menos significativo do primeiro numero
+	ADD D		; Numero de dois digitos em A
+	MOV D,A		; Carrega D com o novo valor de A, desta vez com dois digitos
+        MVI E,00        ; zera o registro E 
+        PUSH D          ; salva o conteudo de DE pois a rotina
+			; MOSTRAD altera todos os registros e os
+			; registros DE estao sendo usados
+        CALL MOSTRAD    ; mostra o primeiro numero em enderecos
+        POP D          	; restaura o par DE
+ 	CALL LETECLA	; Le o digito mais significativo do segundo numero
+	RLC
+	RLC
+	RLC
+	RLC		; desloca quatro posicoes p/ esquerda
+	MOV E,A         ; carrega D com o conteudo de A
+	CALL LETECLA	; le o digito menos significativo do segundo numero
+	ADD E		; Numero de dois digitos em A
+	MOV E,A		; Carrega D com o novo valor de A, desta vez com dois digitos
+        PUSH PSW        
+	PUSH D		; salva o conteudo de AF e DE pois a rotina
+			; MOSTRAD altera todos os registros e os
+			; registros AF e DE estao sendo usados
+	CALL MOSTRAD	; motra o segundo numero em enderEcos
+	POP D		; restaura DE
+	POP PSW		; restaura o AF
+	MOV A,D
+	ADD E
+	CALL MOSTRAA	; mostra o resultado da soma no campo de dados
+	JMP LOOP
+        END
+---------------------------------------------------------------------------
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;Leds.asm - Utilização da porta de saida p/ Leds --> 			!MOVE LEDS!
+;Prof. Fernando M. de Azevedo - 28.03.2005
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+COMMAND	 EQU 20H	; Enderecos da PALAVRA DE COMANDO DA PORTA
+LEDS	 EQU 22H	; Endereco da porta A
+DELAY	 EQU 05F1H	; endereco da rotina de atrazo
+
+        ORG 2000H
+
+	LXI SP, 20C0H	; Inicializa o SP (o apontador da pilha)
+	MVI A, 02H	; Programa a PPI com a porta B como saida
+	OUT COMMAND
+	MVI A, 01H	; joga 01 para os leds
+LOOP:   OUT LEDS
+	RLC
+	PUSH PSW	; Zerar o campo de dados
+	MVI D,03H	; atrazo para a rotina de atrazo
+	CALL DELAY
+	POP PSW
+	JMP LOOP
+	RET
+	END
+
+
+---------------------------------------------------------------------------
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  !!!CONTADOR BINARIO DE LEDS!!!
+;Leds3.asm - Utilização da porta de saida p/ Leds junto com
+;           a rotina de mostra no campo de dados para implementar
+;           um contador em binario
+;Prof. Fernando M. de Azevedo - 28.03.2005
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+COMMAND	 EQU 20H	; Enderecos da PALAVRA DE COMANDO DA PORTA
+LEDS	 EQU 22H	; Endereco da porta A
+DELAY	 EQU 05f1H	; endereco da rotina de atrazo
+MOSTRAA  EQU 036EH	; endereco da rotina mostra dados
+
+        ORG 2000H
+
+	LXI SP, 20C0H	; Inicializa o SP (o apontador da pilha)
+	MVI A, 02H	; Programa a PPI com a porta B como saida
+	OUT COMMAND
+	MVI E,00
+LOOP:	MOV A,E
+	OUT LEDS	; joga o valor do contador p/ para os leds
+	PUSH PSW
+	PUSH D
+	CALL MOSTRAA
+	POP D
+	POP PSW
+	PUSH PSW	; Zerar o campo de dados
+	PUSH D
+	MVI D,03H	; atrazo para a rotina de atrazo
+	CALL DELAY
+	POP D
+	POP PSW
+	INR E		; incrementa o contador
+	JMP LOOP
+	END
+
+
+---------------------------------------------------------------------------
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  			!!!MOSTRA LEDS CONFORME CHAVES!!!
+;Leds4.asm - Utilização da porta de saida p/ Leds junto com
+;           a rotina de mostra no campo de dados para 
+;           mostrar as chaves que estao abertas e fechadas
+;Prof. Fernando M. de Azevedo - 28.03.2005
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+COMMAND	 EQU 20H	; Enderecos da PALAVRA DE COMANDO DA PORTA
+CHAVES   EQU 21H	; endereco das chaves
+LEDS	 EQU 22H	; Endereco da porta A
+DELAY	 EQU 05f1H	; endereco da rotina de atrazo
+MOSTRAA  EQU 036EH	; endereco da rotina mostra dados
+
+        ORG 2000H
+
+	LXI SP, 20C0H	; Inicializa o SP (o apontador da pilha)
+	MVI A, 02H	; Programa a PPI com a porta B como saida
+	OUT COMMAND
+LOOP:	IN CHAVES
+	OUT LEDS	; joga o valor do contador p/ para os leds
+	PUSH PSW
+	PUSH D
+	CALL MOSTRAA
+	POP D
+	POP PSW
+	PUSH PSW	; Zerar o campo de dados
+	PUSH D
+	MVI D,03H	; atrazo para a rotina de atrazo
+	CALL DELAY
+	POP D
+	POP PSW
+	INR E		; incrementa o contador
+	JMP LOOP
+	END
+
+
+---------------------------------------------------------------------------
+
