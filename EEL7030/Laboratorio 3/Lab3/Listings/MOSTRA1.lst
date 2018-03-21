@@ -1,0 +1,69 @@
+A51 MACRO ASSEMBLER  MOSTRA1                                                              03/21/2018 11:36:04 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\MOSTRA1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE MOSTRA1.asm SET(SMALL) DEBUG PRINT(.\Listings\MOSTRA1.lst) OBJECT(.\Obj
+                      ects\MOSTRA1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;UFSC - CTC - Eng Eletronica
+                       2     ;Gustavo Simas da Silva
+                       3     ;2018.1
+                       4     ;Programa MOSTRA1.asm
+                       5     
+  0087                 6     CS                      EQU P0.7
+  00B3                 7     END0            EQU P3.3;
+  00B4                 8     END1            EQU P3.4;
+0000                   9                             ORG 0h
+0000 D2B3             10                             SETB END0
+0002 C2B4             11                             CLR END1
+0004 D287             12                             SETB CS
+0006 E5A0             13     VOLTA:          MOV A,P2
+0008 F4               14                             CPL A
+0009 7E08             15                             MOV R6,#8
+000B 7C00             16                             MOV R4,#0
+000D 33               17     DNOVO:          RLC A
+000E 5001             18                             JNC SALTA
+0010 0C               19                             INC R4
+0011 DEFA             20     SALTA:          DJNZ R6, DNOVO
+0013 EC               21                             MOV A,R4
+0014 111A             22                             CALL CONVERTE
+0016 F590             23                             MOV P1,A
+0018 80EC             24                             JMP VOLTA
+001A 04               25     CONVERTE:       INC A
+001B 83               26                             MOVC A,@A+PC
+001C 22               27                             RET
+001D 40792430         28     TABELA:         DB 40H, 79H, 24H, 30H, 19H, 12H, 02H, 78H, 00H, 10H, 08H, 03H, 46H, 21H, 06
+                             H, 0EH
+0021 19120278                
+0025 00100803                
+0029 4621060E                
+                      29                             END
+A51 MACRO ASSEMBLER  MOSTRA1                                                              03/21/2018 11:36:04 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+CONVERTE . . . . .  C ADDR   001AH   A   
+CS . . . . . . . .  B ADDR   0080H.7 A   
+DNOVO. . . . . . .  C ADDR   000DH   A   
+END0 . . . . . . .  B ADDR   00B0H.3 A   
+END1 . . . . . . .  B ADDR   00B0H.4 A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+P3 . . . . . . . .  D ADDR   00B0H   A   
+SALTA. . . . . . .  C ADDR   0011H   A   
+TABELA . . . . . .  C ADDR   001DH   A   
+VOLTA. . . . . . .  C ADDR   0006H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

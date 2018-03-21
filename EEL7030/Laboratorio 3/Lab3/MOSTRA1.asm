@@ -1,0 +1,29 @@
+;UFSC - CTC - Eng Eletronica
+;Gustavo Simas da Silva
+;2018.1
+;Programa MOSTRA1.asm
+
+CS 			EQU P0.7
+END0 		EQU P3.3;
+END1 		EQU P3.4;
+			ORG 0h
+			SETB END0
+			CLR END1
+			SETB CS
+VOLTA:		MOV A,P2
+			CPL A
+			MOV R6,#8
+			MOV R4,#0
+DNOVO:		RLC A
+			JNC SALTA
+			INC R4
+SALTA:		DJNZ R6, DNOVO
+			MOV A,R4
+			CALL CONVERTE
+			MOV P1,A
+			JMP VOLTA
+CONVERTE: 	INC A
+			MOVC A,@A+PC
+			RET
+TABELA: 	DB 40H, 79H, 24H, 30H, 19H, 12H, 02H, 78H, 00H, 10H, 08H, 03H, 46H, 21H, 06H, 0EH
+			END
