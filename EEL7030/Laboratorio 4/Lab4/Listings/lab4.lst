@@ -1,0 +1,77 @@
+A51 MACRO ASSEMBLER  LAB4                                                                 03/28/2018 11:13:30 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\lab4.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lab4.asm SET(SMALL) DEBUG PRINT(.\Listings\lab4.lst) OBJECT(.\Objects\l
+                      ab4.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0000                 1     reset           equ 00h
+  0003                 2     ltint0          equ 03h ; local tratador 0
+  0013                 3     ltint1          equ 13h ; local tratador 1
+  0020                 4     state           equ 20h
+                       5     
+0000                   6     org reset ; PC=0 depois de reset
+0000 8014              7             jmp     inicio
+                       8     
+0003                   9     org ltint0
+0003 752001           10             mov     state,#1h
+0006 32               11             reti
+                      12     
+0013                  13     org     ltint1
+0013 B2A8             14             cpl             ex0
+0015 32               15             reti
+                      16     
+0016                  17     inicio:
+0016 75A885           18             mov     ie,#10000101b ; habilita interrupção
+0019 D288             19             setb    it0 ; borda
+001B D28A             20             setb    it1 ; borda
+001D 752000           21             mov     state,#0h ;inicialização
+0020 7820             22             mov     r0,#state
+0022 900037           23             mov     dptr,#tabela
+0025 7900             24             mov     r1,#0
+                      25             
+0027                  26     volta:
+0027 B601FD           27             cjne    @r0,#1,volta
+002A 752000           28             mov     state,#0h
+002D E9               29             mov     a,r1
+002E 93               30             movc    a,@a+dptr
+002F F590             31             mov     p1,a
+0031 09               32             inc     r1
+0032 B910F2           33             cjne    r1,#16,volta
+0035 80FE             34             jmp     $
+                      35             
+0037 4D696372         36     tabela: db 'Microcontrolador'
+003B 6F636F6E                
+003F 74726F6C                
+0043 61646F72                
+                      37             
+                      38     end
+A51 MACRO ASSEMBLER  LAB4                                                                 03/28/2018 11:13:30 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+EX0. . . . . . . .  B ADDR   00A8H.0 A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0016H   A   
+IT0. . . . . . . .  B ADDR   0088H.0 A   
+IT1. . . . . . . .  B ADDR   0088H.2 A   
+LTINT0 . . . . . .  N NUMB   0003H   A   
+LTINT1 . . . . . .  N NUMB   0013H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+TABELA . . . . . .  C ADDR   0037H   A   
+VOLTA. . . . . . .  C ADDR   0027H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
