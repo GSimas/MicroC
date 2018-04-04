@@ -1,0 +1,116 @@
+A51 MACRO ASSEMBLER  LAB5                                                                 04/04/2018 10:50:03 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\lab5.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lab5.asm SET(SMALL) DEBUG PRINT(.\Listings\lab5.lst) OBJECT(.\Objects\l
+                      ab5.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;UFSC - CTC - Eng Eletronica
+                       2     ;Gustavo Simas da Silva
+                       3     ;2018.1
+                       4     ;Programa ESCREVE_MSG.asm
+  0087                 5     CS                      EQU P0.7
+  0092                 6     EN                      EQU P1.2
+  0000                 7     RS_0            EQU 0
+  0008                 8     RS_1            EQU 00001000b
+  0050                 9     Atraso          EQU 50H
+                      10     
+0000                  11                             ORG 0H
+                      12     
+0000 C287             13                             CLR CS ; INIBE DECODIFICADOR DOS DISPLAYS DE 7 SEGMENTOS
+0002 1112             14                             CALL INITDSP ; ROTINA QUE CONFIGURA CONTROLADOR LCD
+                      15     
+                      16                             ;ESCREVE MENSAGEM
+0004 90004C           17                             MOV DPTR,#MENS
+0007 7A08             18                             MOV R2,#RS_1 ; SETB P1.3 (RS) - ENVIO DE DADO para LCD
+0009 1123             19                             CALL WRT
+000B 80FE             20                             JMP $
+                      21     
+000D 7850             22     DELAY:          MOV R0, #Atraso
+000F D8FE             23                             DJNZ R0, $
+0011 22               24                             RET
+                      25     
+0012                  26     INITDSP:        ; subrotina para inicializar o display
+                      27                             ; 001(DL)_NFxx = 0010 1000b (function set)
+                      28                             ; DL=0: interface 4 bits; N=1: 2 linhas; F=0: caractere 5x8
+                      29                             ; En (P1.2): 1-> 0 = escreve; RS (P1.3): 0=comando;1=dado
+0012 759020           30                             MOV P1,#20H ; FUNCTION SET - high nibble = 0010b -- interface 4 bit
+                             s
+0015 D292             31                             SETB EN ; GERA EN
+0017 C292             32                             CLR EN
+0019 110D             33                             CALL DELAY ; AGUARDA LCD FICAR PRONTO
+                      34                             ; Nibble alto do Function Set é enviado 2x.
+001B 7A00             35                             MOV R2,#RS_0 ; CLR P1.3 (RS) - comando vai ser enviado para LCD
+001D 900048           36                             MOV DPTR,#comando
+0020 1123             37                             CALL WRT ; escreve dados para o LCD
+0022 22               38                             RET
+                      39     
+0023 7400             40     WRT:            MOV A,#0 ; OFFSET de END. do NRO de COMANDOS/DADOS
+0025 93               41                             MOVC A,@A+DPTR
+0026 FE               42                             MOV R6,A ; R6=NRO DE COMANDOS/DADOS
+0027 7901             43                             MOV R1,#1H ; DESLOCAMENTO DO COMANDO/MENSAGEM INICIAL
+                      44                             
+0029 E9               45                             LOOP:   MOV A,R1 ; OFFSET de END. de DADO/COMANDO em A
+002A 93               46                                             MOVC A,@A+DPTR
+002B F5F0             47                                             MOV B,A ; BYTE A SER ESCRITO EM B
+002D 54F0             48                                             ANL A,#0F0H ; APAGA NIBBLE LS
+002F 4A               49                                             ORL A,R2 ; R2 DEVE CONTER RS (0: COMANDO; 8: DADO) 
+                             ou seja valor de P1.3
+0030 F590             50                                             MOV P1,A ; ENVIA PARA LCD
+0032 D292             51                                             SETB EN ; GERA EN - SETB P1.2
+0034 C292             52                                             CLR EN
+0036 E5F0             53                                             MOV A,B ;RECUPERA BYTE a SER ESCRITO de B
+0038 C4               54                                             SWAP A ;TROCA NIBBLES MS-LS
+0039 54F0             55                                             ANL A,#0F0H ; APAGA NIBBLE LS
+A51 MACRO ASSEMBLER  LAB5                                                                 04/04/2018 10:50:03 PAGE     2
+
+003B 4A               56                                             ORL A,R2 ; (RS) se R2 =RS_1;
+003C F590             57                                             MOV P1,A ; ENVIA PARA LCD
+003E D292             58                                             SETB EN ; GERA EN
+0040 C292             59                                             CLR EN
+0042 110D             60                                             CALL DELAY ; AGUARDA LCD ESTAR PRONTO PARA NOVO COM
+                             ANDO
+0044 09               61                                             INC R1 ; R1 APONTA PARA PRÓXIMO COMANDO/DADO
+0045 DEE2             62                                             DJNZ R6,LOOP ; VERIFICA SE ÚLTIMO DADO/COMANDO
+0047 22               63                             RET
+                      64     
+0048 03280F06         65     comando:        DB 03h,28h,0fh,06h ; nro. decomandos - function set - display on/off - entr
+                             y mode
+                      66     
+004C 0D45454C         67     MENS:           DB 13,"EEL7030 - LCD"
+0050 37303330                
+0054 202D204C                
+0058 4344                    
+                      68                     
+                      69     END
+A51 MACRO ASSEMBLER  LAB5                                                                 04/04/2018 10:50:03 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ATRASO . . . . . .  N NUMB   0050H   A   
+B. . . . . . . . .  D ADDR   00F0H   A   
+COMANDO. . . . . .  C ADDR   0048H   A   
+CS . . . . . . . .  B ADDR   0080H.7 A   
+DELAY. . . . . . .  C ADDR   000DH   A   
+EN . . . . . . . .  B ADDR   0090H.2 A   
+INITDSP. . . . . .  C ADDR   0012H   A   
+LOOP . . . . . . .  C ADDR   0029H   A   
+MENS . . . . . . .  C ADDR   004CH   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+RS_0 . . . . . . .  N NUMB   0000H   A   
+RS_1 . . . . . . .  N NUMB   0008H   A   
+WRT. . . . . . . .  C ADDR   0023H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
