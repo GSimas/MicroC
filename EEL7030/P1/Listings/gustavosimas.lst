@@ -1,0 +1,79 @@
+A51 MACRO ASSEMBLER  GUSTAVOSIMAS                                                         04/18/2018 11:09:32 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\gustavosimas.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE gustavosimas.asm SET(SMALL) DEBUG PRINT(.\Listings\gustavosimas.lst) OB
+                      JECT(.\Objects\gustavosimas.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;Gustavo Simas da Silva
+                       2     
+  0000                 3     RESET   EQU     0h
+  000A                 4     ATRASO  EQU 0AH
+  0013                 5     LTINT1  EQU 13H
+  0020                 6     STATE   EQU 20H
+                       7             
+0000                   8                     ORG RESET
+0000 8013              9                     JMP INICIO
+0013                  10                     ORG     LTINT1
+0013 8025             11                     JMP HANDLER
+                      12                     
+0015 75A884           13     INICIO: MOV     IE, #10000100b ; ATIVA INTERRUPCAO 1
+0018 D28A             14                     SETB IT1 ;BORDA DE DESCIDA
+001A 7520FF           15                     MOV STATE,#0FFH ;INICIALIZAÁ„O
+001D 7820             16                     MOV R0,#STATE
+001F 7401             17                     MOV A, #01H ;APENAS UM BIT SETADO / LED ACESO
+0021 F5A0             18                     MOV P2, A 
+0023 7A00             19                     MOV R2, #00H
+                      20                     
+0025 B6FF03           21     ROT_DIR: CJNE @R0,#0FFH, ROT_ESQ ;SALTO CONDICIONAL PARA ROTACAO ESQUERDA
+0028 03               22                     RR A ;ROTACIONA PARA DIREITA
+0029 8001             23                     JMP REPETE
+                      24     
+002B 23               25     ROT_ESQ: RL A ;ROTACIONA PARA ESQUERDA
+                      26                     
+002C F5A0             27     REPETE: MOV P2, A
+002E FA               28                     MOV R2, A ;REGISTRA CONTEUDO ATUAL DO ACUMULADOR
+002F 740A             29                     MOV A,#ATRASO
+0031 1136             30                     CALL DELAY
+0033 EA               31                     MOV A, R2 ;RETORNA VALOR REGISTRADO
+0034 80EF             32                     JMP ROT_DIR
+                      33                     
+0036 D5E0FD           34     DELAY:  DJNZ ACC,DELAY ; subrotina DELAY
+0039 22               35                     RET
+                      36                     
+003A 6320FF           37     HANDLER: XRL STATE,#0FFH ;COMPLEMENTA CONTEUDO DE STATE
+003D 32               38                     RETI
+                      39                     
+                      40                     END
+                                     
+A51 MACRO ASSEMBLER  GUSTAVOSIMAS                                                         04/18/2018 11:09:32 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+ACC. . . . . . . .  D ADDR   00E0H   A   
+ATRASO . . . . . .  N NUMB   000AH   A   
+DELAY. . . . . . .  C ADDR   0036H   A   
+HANDLER. . . . . .  C ADDR   003AH   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0015H   A   
+IT1. . . . . . . .  B ADDR   0088H.2 A   
+LTINT1 . . . . . .  N NUMB   0013H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+REPETE . . . . . .  C ADDR   002CH   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+ROT_DIR. . . . . .  C ADDR   0025H   A   
+ROT_ESQ. . . . . .  C ADDR   002BH   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
