@@ -1,0 +1,43 @@
+;MATHEUS FIGUEIREDO
+reset 	equ 00h
+ltint1 	equ 13h ; local tratador
+state 	equ 7Fh
+		 org reset ;PC=0 depois de reset
+		 jmp inicio
+		 org ltint1
+		 jmp handler
+inicio:
+		 mov ie,#10000100b ; habilita int
+		 setb it1 ; borda
+		 mov state,#0h ;inicialização
+		 mov R0,#state
+repete:	 MOV R4,#0
+		
+dado1:	cjne @r0,#1,dado1
+		MOV R2,P0           
+		MOV state,#0h
+
+dado2:	cjne @r0,#1,dado2
+		MOV R3,P1			
+		MOV state,#0h
+	
+		MOV A,R2
+		MOV B,R3
+		DIV AB
+		MOV R1,A
+
+		MOV DPTR,#0020H ;escrevendo na memoria externa
+		MOV A,DPL
+		ADD A,R4         
+		MOV DPL,A
+		MOV A,R1
+		MOVX @DPTR,A    ;terminando de escrever na mem. externa
+		INC R4
+		CJNE R4,#9,dado1
+		JMP repete
+		
+
+handler: mov state,#1h
+		reti
+
+ end

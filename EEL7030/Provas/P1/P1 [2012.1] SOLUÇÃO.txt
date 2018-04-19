@@ -1,0 +1,40 @@
+;MATHEUS FIGUEIREDO
+reset   equ 00h
+ltint0  equ 03h ; local tratador
+ATRASO 	EQU 03H
+
+	 org reset ;PC=0 depois de reset
+	 jmp inicio
+	 org ltint0
+	 JMP handler
+
+
+inicio:
+	 mov ie,#10000001b ; habilita int1
+	 setb it0 ; borda de decida
+
+comeco:	 
+	 MOV A,P2
+	 CPL A
+	 MOV P2,A
+	 MOV A,#ATRASO
+	 CALL DELAY	
+	 JMP comeco
+	 
+	 
+ 		
+handler:      	PUSH ACC
+				PUSH DPH
+				PUSH DPL
+				MOV A,P1
+				MOV DPTR,#0H
+				MOVX @DPTR,A
+				POP DPL
+				POP DPH
+				POP ACC
+				reti
+
+DELAY:	DJNZ Acc,DELAY 
+	 	RET	
+		
+		 end

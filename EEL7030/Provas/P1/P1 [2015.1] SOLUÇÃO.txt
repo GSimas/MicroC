@@ -1,0 +1,42 @@
+;MATHEUS FIGUEIREDO BRITO DE GODOI
+
+
+reset equ 00h
+ltint1 equ 13h ; local tratador
+state equ 20h
+		 org reset 
+		 jmp inicio
+
+		 org ltint1
+		 jmp handler	
+inicio:
+		 mov ie,#10000100b 
+		 setb it1 			
+		 mov state,#0h 
+		 mov r0,#state
+
+volta:
+		cjne @r0,#1,volta   
+		MOV A,P1
+		mov state,#0h		
+		 MOV B,#9h
+		
+		  CJNE A,B,MENOR		
+MAIOR :              
+		  MOV R3,#30H
+		  ADD A,R3
+		  MOV P2,A
+		  JMP volta
+		  
+MENOR:    JC MAIOR          
+		  MOV R3,#40H
+		  MOV A,P1
+		  CLR C
+		  SUBB A,#9H
+		  ADD A,R3
+		  MOV P2,A
+		  JMP volta
+		  
+handler: mov state,#1h		
+		reti				
+		end

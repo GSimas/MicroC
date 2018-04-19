@@ -1,0 +1,227 @@
+A51 MACRO ASSEMBLER  2017_2_VERS_O_1                                                      11/13/2017 12:39:30 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.5.0
+OBJECT MODULE PLACED IN .\Objects\2017.2 Versão 1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE 2017.2 Versão 1.asm SET(SMALL) DEBUG PRINT(.\Listings\2017.2 Versão 1.l
+                      st) OBJECT(.\Objects\2017.2 Versão 1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0000                 1     RESET           EQU     00H
+
+  000B                 2     TRATT0          EQU             00BH                            ; Local do tratador do time
+                             r 0
+
+  0023                 3     LTSERIAL        EQU     23H                             ; local tratador
+
+  0020                 4     STATE           EQU     20H
+
+  0021                 5     STATE1          EQU             21H
+
+0000                   6                             ORG     RESET                           ; PC=0 depois de reset
+
+0000 8030              7                             JMP     INICIO
+
+                       8                             
+
+000B                   9                             ORG             TRATT0                          ; Tratador do timer
+                              0
+
+000B 758CF8           10                             MOV     TH0,#0F8H                       ; 
+
+000E 758A3A           11                             MOV     TL0,#03AH                       ; Recarrega Timer
+
+0011 752001           12                             MOV     STATE,#1H                       ; Libera o JUMP VOLTAB
+
+0014 32               13                             RETI
+
+                      14                             
+
+0023                  15                             ORG     LTSERIAL
+
+0023 752001           16                             MOV     STATE,#1H                       ; Libera o JUMP VOLTA
+
+0026 209803           17                             JB              RI,RECEIVE                      ; Flag de buffer de
+                              recebimento cheio
+
+0029 C299             18     TRANSMIT:       CLR     TI                                      ; Limpa o flag de buffer de
+                              tranmissão vazio
+
+002B 32               19                             RETI
+
+                      20                             
+
+002C 752101           21     RECEIVE:        MOV     STATE1,#1H                      ; Libera o JUMP VOLTA1
+
+002F C298             22                             CLR     RI                                      ; Limpa o flag de b
+                             uffer de recebimento cheio
+
+0031 32               23                             RETI                                            ; Retorna da interr
+                             upção
+
+                      24                             
+
+0032 75A892           25     INICIO:         MOV     IE,#10010010B           ; Enable interrupção serial e timer 0
+
+0035 759840           26                             MOV     SCON,#01000000B         ; programa comunicação serial no mo
+                             do 01b = 1
+
+0038 D29C             27                             SETB    REN                                     ; Enable recebiment
+                             o de dados
+
+003A 758921           28                             MOV     TMOD,#00100001B         ; Timer 1 modo 2, Timer 0 no modo 1
+
+                      29                             
+
+                      30                             ;TIMER 0
+
+003D 758CF8           31                             MOV     TH0,#0F8H                       ; 
+
+0040 758A3A           32                             MOV     TL0,#03AH                       ; 10000H-1990=F83A
+
+                      33                             
+
+                      34                             ;TIMER 1
+
+0043 758DE8           35                             MOV     TH1,#0E8H                       ; 
+
+0046 758BE8           36                             MOV     TL1,#0E8H                       ; Valor de recarga para 1.2
+                              kbauds
+
+0049 758700           37                             MOV             PCON,#00000000B         ; SMOD=0 -> não ocorre a do
+                             bra do baudrate
+
+                      38                             
+
+004C D28E             39                             SETB    TR1                                     ; Enable contagem t
+                             imer 1
+
+004E 752000           40                             MOV     STATE,#0H                       ; Inicializa STATE com 0
+
+0051 7820             41                             MOV     R0,#STATE                       ; R0 passa a apontar para o
+                              STATE
+
+0053 7921             42                             MOV             R1,#STATE1                      ; R1 passa a aponta
+                             r para o STATE1
+
+                      43                             
+
+0055 900087           44                             MOV     DPTR,#TABELA            ; O segundo dado de transmissão ser
+A51 MACRO ASSEMBLER  2017_2_VERS_O_1                                                      11/13/2017 12:39:30 PAGE     2
+
+                             á 42H
+
+0058 759941           45                             MOV     SBUF,#'A'                       ; Primeiro caractere a ser 
+                             enviado
+
+005B 7A01             46                             MOV             R2,#1                           ; R2 aponta para o 
+                             caractere da tabela a ser enviado
+
+                      47     
+
+005D B601FD           48     VOLTA:          CJNE    @R0,#1,VOLTA            ; Trava o programa até que a interrupção se
+                             rial seja solicitada
+
+0060 752000           49                             MOV     STATE,#0H                       ; Zera o STATE
+
+0063 B70017           50                             CJNE    @R1,#0,RECEBE           ; Caso STATE1 seja 1 desvia para a 
+                             rotina de recebimento de dado
+
+                      51                             
+
+0066 EA               52                             MOV             A, R2
+
+0067 93               53                             MOVC    A,@A+DPTR                       ; A recebe o caractere a se
+                             r enviado
+
+0068 F599             54                             MOV             SBUF,A                          ; SBUF recebe o car
+                             actere a ser enviado
+
+006A 0A               55                             INC     R2                                      ; R2 é incrementado
+                              passando a conter a localização do próximo caractere a ser enviado
+
+006B BA18EF           56     VOLTAA:         CJNE    R2,#24,VOLTA            ; Limita a transmissão aos caracteres da ta
+                             bela
+
+006E C28E             57                             CLR     TR1
+
+0070 D28C             58                             SETB    TR0
+
+                      59                             
+
+                      60                             ;Onda quadrada
+
+0072 B601FD           61     VOLTAB:         CJNE    @R0,#1,VOLTAB           ; Trava o programa até que a interrupção de
+                              recebimento serial ou a do timer 0 sejam solicitadas
+
+0075 752000           62                             MOV     STATE,#0H                       ; Zera o STATE
+
+0078 B70002           63                             CJNE    @R1,#0,RECEBE           ; Caso STATE1 seja 1 desvia para a 
+                             rotina de recebimento de dado
+
+007B B296             64                             CPL             P1.6
+
+                      65                             
+
+007D 752100           66     RECEBE:         MOV     STATE1,#0H                      ; Zera o STATE1
+
+0080 8599A0           67                             MOV             P2,SBUF                         ; P2 recebe o dado 
+                             recebido
+
+0083 80E6             68                             JMP             VOLTAA                          ; Volta ao "Wait"
+
+0085 80FE             69                             JMP $
+
+0087 41727475         70     TABELA:         DB 'Artur Nunes Pires Lopes'
+
+008B 72204E75                
+008F 6E657320                
+0093 50697265                
+0097 73204C6F                
+009B 706573                  
+                      71     END
+
+A51 MACRO ASSEMBLER  2017_2_VERS_O_1                                                      11/13/2017 12:39:30 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0032H   A   
+LTSERIAL . . . . .  N NUMB   0023H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+RECEBE . . . . . .  C ADDR   007DH   A   
+RECEIVE. . . . . .  C ADDR   002CH   A   
+REN. . . . . . . .  B ADDR   0098H.4 A   
+RESET. . . . . . .  N NUMB   0000H   A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+STATE1 . . . . . .  N NUMB   0021H   A   
+TABELA . . . . . .  C ADDR   0087H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+TRANSMIT . . . . .  C ADDR   0029H   A   
+TRATT0 . . . . . .  N NUMB   000BH   A   
+VOLTA. . . . . . .  C ADDR   005DH   A   
+VOLTAA . . . . . .  C ADDR   006BH   A   
+VOLTAB . . . . . .  C ADDR   0072H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

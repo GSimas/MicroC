@@ -1,0 +1,45 @@
+;MATHEUS FIGUEIREDO
+reset 	equ 00h
+ltint1 	equ 13h ; local tratador
+state 	equ 7Fh
+		 org reset ;PC=0 depois de reset
+		 jmp inicio
+		 org ltint1
+		 jmp handler
+inicio:
+		 mov ie,#10000100b ; habilita int
+		 setb it1 ; borda
+		 mov state,#0h ;inicialização
+		 mov r0,#state
+
+		MOV P2,#11111101B
+		
+dado1:	cjne @r0,#1,dado1
+		MOV R4,P1           ; esquerda ou direita
+		MOV state,#0h
+
+dado2:	cjne @r0,#1,dado2
+		MOV R5,P1			;nro de casas a ser rotacionadas
+		MOV state,#0h
+	
+		MOV A,R4
+		JZ ROTE
+		JNZ ROTD
+
+ROTE:	MOV A,P2
+		RL A
+		MOV P2,A
+		DJNZ R5,ROTE
+		JMP dado1
+
+ROTD:	MOV A,P2
+		RR A
+		MOV P2,A
+		DJNZ R5,ROTD
+		JMP dado1
+		
+
+handler: mov state,#1h
+		reti
+
+ end

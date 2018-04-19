@@ -1,0 +1,189 @@
+A51 MACRO ASSEMBLER  2013_2                                                               11/13/2017 10:28:29 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.5.0
+OBJECT MODULE PLACED IN .\Objects\2013.2.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE 2013.2.asm SET(SMALL) DEBUG PRINT(.\Listings\2013.2.lst) OBJECT(.\Objec
+                      ts\2013.2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0000                 1     RESET           EQU     00H
+
+  0023                 2     LTSERIAL        EQU     23H                             ; local tratador
+
+  0020                 3     STATE           EQU     20H
+
+0000                   4                             ORG     RESET                           ; PC=0 depois de reset
+
+0000 8027              5                             JMP     INICIO
+
+                       6                             
+
+0023                   7                             ORG     LTSERIAL                        
+
+0023 C299              8                             CLR     TI                                      ; Limpa o flag de b
+                             uffer de tranmissão vazio
+
+0025 752001            9                             MOV     STATE,#1H                       ; Libera o JUMP VOLTA
+
+0028 32               10                             RETI                                            ; Retorna da interr
+                             upção
+
+                      11                             
+
+0029 75A890           12     INICIO:         MOV     IE,#10010000B           ; Enable interrupção serial
+
+002C 759840           13                             MOV     SCON,#01000000B         ; programa comunicação serial no mo
+                             do 01b = 1
+
+002F 758920           14                             MOV     TMOD,#00100000B         ; Timer 1 modo 2
+
+0032 758DF4           15                             MOV     TH1,#0F4H                       ; 
+
+0035 758BF4           16                             MOV     TL1,#0F4H                       ; Valor de recarga para 2.4
+                              kbauds
+
+0038 758700           17                             MOV     PCON,#0H                        ; SMOD=0 -> não ocorre a do
+                             bra do baudrate
+
+003B D28E             18                             SETB    TR1                                     ; Enable contagem t
+                             imer 1
+
+003D 752000           19                             MOV     STATE,#0H                       ; Inicializa STATE com 0
+
+0040 7820             20                             MOV     R0,#STATE                       ; R0 passa a apontar para o
+                              STATE
+
+0042 7A00             21                             MOV             R2,#0                           ; Utilizado para co
+                             ntar o número de vezes a MSG1 é transmitida
+
+0044 7B00             22                             MOV             R3,#0                           ; Utilizado para co
+                             ntar o número de vezes as duas MSGs são transmitida
+
+                      23     
+
+                      24     
+
+0046                  25     RESTART:        ;MOV            C,P0.0                          ; Lê porta P0.0, Caso P0.0 
+                             = 1 redireciona o programa para a mensagem 2
+
+0046 20800B           26                             JB              P0.0,MSG2                       ; Lê porta P0.0, Ca
+                             so P0.0 = 1 redireciona o programa para a mensagem 2
+
+                      27     
+
+0049 900073           28                             MOV     DPTR,#TABELA0           ; DPTR passa a apontar para a tabel
+                             a
+
+004C 7901             29                             MOV     R1,#1                           ; A transmissão da tabela o
+                             correrá a partir da posição 1
+
+004E 759932           30                             MOV     SBUF,#'2'                       ; Primeiro caractere a ser 
+                             enviado
+
+0051 0A               31                             INC             R2                                      ; Uma mensa
+                             gem 1 a mais
+
+0052 8008             32                             JMP             VOLTA
+
+                      33     
+
+0054 900080           34     MSG2:           MOV     DPTR,#TABELA1           ; DPTR passa a apontar para a tabela
+
+0057 7901             35                             MOV     R1,#1                           ; A transmissão da tabela o
+                             correrá a partir da posição 1
+
+0059 759951           36                             MOV     SBUF,#'Q'                       ; Primeiro caractere a ser 
+                             enviado
+
+                      37     
+
+                      38     
+
+005C B601FD           39     VOLTA:          CJNE    @R0,#1,VOLTA            ; Trava o programa até que o buffer de tran
+                             smissão esteja vazio
+
+A51 MACRO ASSEMBLER  2013_2                                                               11/13/2017 10:28:29 PAGE     2
+
+005F 752000           40                             MOV     STATE,#0H                       ; Zera o STATE
+
+0062 E9               41                             MOV     A,R1                            ; A recebe a posição do car
+                             actere a ser enviado
+
+0063 93               42                             MOVC    A,@A+DPTR                       ; A recebe o caractere a se
+                             r enviado
+
+0064 F599             43                             MOV     SBUF,A                          ; SBUF recebe o caractere a
+                              ser enviado
+
+0066 09               44                             INC     R1                                      ; R1 é incrementado
+                              passando a conter a localização do próximo caractere a ser enviado
+
+0067 B90EF2           45                             CJNE    R1,#14,VOLTA            ; Limita a transmissão aos 16 carac
+                             teres contidos na TABELA
+
+                      46     
+
+006A 0B               47                             INC             R3                                      ; Uma mensa
+                             gem a mais
+
+006B 8A90             48                             MOV             P1,R2                           ; Número de mensage
+                             ns 1 é mandado à porta P1
+
+006D 8BA0             49                             MOV             P2,R3                           ; Número de mensage
+                             ns   é mandado à porta P2
+
+006F 80D5             50                             JMP             RESTART
+
+0071 80FE             51                             JMP $
+
+                      52     
+
+0073 32303133         53     TABELA0:        DB '2013, fuiiii!'
+
+0077 2C206675                
+007B 69696969                
+007F 21                      
+0080 5176656E         54     TABELA1:        DB 'Qvenha 2014!!'
+
+0084 68612032                
+0088 30313421                
+008C 21                      
+                      55     END
+
+A51 MACRO ASSEMBLER  2013_2                                                               11/13/2017 10:28:29 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0029H   A   
+LTSERIAL . . . . .  N NUMB   0023H   A   
+MSG2 . . . . . . .  C ADDR   0054H   A   
+P0 . . . . . . . .  D ADDR   0080H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+RESTART. . . . . .  C ADDR   0046H   A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+TABELA0. . . . . .  C ADDR   0073H   A   
+TABELA1. . . . . .  C ADDR   0080H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+VOLTA. . . . . . .  C ADDR   005CH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

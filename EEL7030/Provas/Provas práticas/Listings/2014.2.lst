@@ -1,0 +1,114 @@
+A51 MACRO ASSEMBLER  2014_2                                                               11/13/2017 10:35:51 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.5.0
+OBJECT MODULE PLACED IN .\Objects\2014.2.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE 2014.2.asm SET(SMALL) DEBUG PRINT(.\Listings\2014.2.lst) OBJECT(.\Objec
+                      ts\2014.2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0000                 1     RESET           EQU     0H
+
+  000B                 2     LTMR0           EQU     0BH                     ; LOCAL DO TRATADOR
+
+  0020                 3     STATE           EQU     20H                             ; STATE se localiza na posição de m
+                             emória 20H
+
+0000                   4                             ORG     RESET                   ; PC=0 DEPOIS DE RESET
+
+0000 800C              5                             JMP     INICIO
+
+                       6                             
+
+000B                   7                             ORG     LTMR0                   ; Tratador de interrupção externa d
+                             e timer
+
+000B 0520              8                             INC     STATE                   ; STATE é incrementado
+
+000D 32                9                             RETI
+
+                      10     
+
+000E                  11     INICIO:
+
+000E 75A882           12                             MOV     IE,#10000010B   ; HABILITA TMR0
+
+0011 758902           13                             MOV     TMOD,#10b               ; MODO 2 - Contador de 8 bits com r
+                             eload
+
+0014 758C00           14                             MOV     TH0,#0                  ; Reload com 00H (100H - 256decimal
+                              = 0)
+
+0017 758A00           15                             MOV     TL0,#0                  ; Gera tratador a cada 256 ciclos d
+                             e instrução
+
+001A 752000           16                             MOV     STATE,#0H               ; INICIALIZAÇÃO
+
+001D 7820             17                             MOV     R0,#STATE               ; R0 passa a apontar para o STATE
+
+001F 901140           18                             MOV     DPTR,#1140H             ; DPTR recebe o endereço onde os da
+                             dos serão salvos
+
+0022 7900             19                             MOV     R1,#0
+
+0024 D28C             20                             SETB    TR0                             ; Enable contagem
+
+                      21     
+
+0026 B605FD           22     VOLTA:          CJNE    @R0,#5,VOLTA    ; só libera a sequência do programa se a posição de
+                              momória para a qual o R0 aponta (STATE)
+
+                      23                                                                             ; tiver conteúdo ig
+                             ual a 5 indicando 5 contagens de 256 ciclos de programa (5*256=1280)
+
+0029 752000           24                             MOV     STATE,#0H               ; Zera o STATE
+
+002C E590             25                             MOV     A, P1                   ; A lê os dados da porta P1
+
+002E F0               26                             MOVX    @DPTR,A                 ; os dados da porta P1 são enviados
+                              para a posição de memória externa para a qual o DPTR aponta
+
+002F 09               27                             INC     R1                      ; 
+
+0030 A3               28                             INC     DPTR                    ; O DPTR é incrementado para aponta
+                             r para a nova memória a ser ocupada
+
+0031 B910F2           29                             CJNE    R1,#10H,VOLTA           ; Volta ao VOLTA a não ser que já t
+                             enham sido ocupados os espaços de memória de 1140H a 114FH
+
+0034 7900             30                             MOV     R1, #0                  ;
+
+0036 901140           31                             MOV     DPTR,#1140H             ; Volta à unidade de memória 1140H
+
+0039 80EB             32                             JMP             VOLTA
+
+003B 80FE             33                             JMP $
+
+                      34     END 
+
+A51 MACRO ASSEMBLER  2014_2                                                               11/13/2017 10:35:51 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   000EH   A   
+LTMR0. . . . . . .  N NUMB   000BH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+VOLTA. . . . . . .  C ADDR   0026H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

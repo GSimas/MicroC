@@ -1,0 +1,143 @@
+A51 MACRO ASSEMBLER  2015_1                                                               11/13/2017 11:41:32 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.5.0
+OBJECT MODULE PLACED IN .\Objects\2015.1.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE 2015.1.asm SET(SMALL) DEBUG PRINT(.\Listings\2015.1.lst) OBJECT(.\Objec
+                      ts\2015.1.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+  0000                 1     RESET           EQU     00H
+
+  0023                 2     LTSERIAL        EQU     23H                             ; local tratador
+
+  0020                 3     STATE           EQU     20H
+
+0000                   4                             ORG     RESET                           ; PC=0 depois de reset
+
+0000 8027              5                             JMP     INICIO
+
+                       6                             
+
+0023                   7                             ORG     LTSERIAL                        
+
+0023 C298              8                             CLR     RI                                      ; Limpa o flag de b
+                             uffer de recepção cheio
+
+0025 752001            9                             MOV     STATE,#1H                       ; Libera o JUMP VOLTA
+
+0028 32               10                             RETI                                            ; Retorna da interr
+                             upção
+
+                      11                             
+
+0029 75A890           12     INICIO:         MOV     IE,#10010000B           ; Enable interrupção serial
+
+002C 7598C0           13                             MOV     SCON,#11000000B         ; programa comunicação serial no mo
+                             do 11b = 3
+
+002F D29C             14                             SETB    REN                                     ; Enable recebiment
+                             o de dados
+
+0031 758920           15                             MOV     TMOD,#00100000B         ; Timer 1 modo 2
+
+0034 758DF4           16                             MOV     TH1,#0F4H                       ; 
+
+0037 758BF4           17                             MOV     TL1,#0F4H                       ; Valor de recarga para 2.4
+                              kbauds
+
+003A 758700           18                             MOV     PCON,#0H                        ; SMOD=0 -> não ocorre a do
+                             bra do baudrate
+
+003D D28E             19                             SETB    TR1                                     ; Enable contagem t
+                             imer 1
+
+003F 752000           20                             MOV     STATE,#0H                       ; Inicializa STATE com 0
+
+0042 7820             21                             MOV     R0,#STATE                       ; R0 passa a apontar para o
+                              STATE
+
+0044 900020           22                             MOV             DPTR,#20H                       ; DPTR passa a apon
+                             tar para a posição de memória externa solicitada
+
+0047 7930             23     RESTART:        MOV     R1,#30H                         ; A recepção de dados vai ocorrer a
+                              partir da memória 30H
+
+                      24     
+
+0049 B601FD           25     VOLTA:          CJNE    @R0,#1,VOLTA            ; Trava o programa até que o buffer de tran
+                             smissão esteja vazio
+
+004C 752000           26                             MOV     STATE,#0H                       ; Zera o STATE
+
+004F 209A05           27                             JB              RB8,BIT9ALTO            ; Caso o nono bit recebido 
+                             for 1, redireciona o programa para BIT9ALTO
+
+                      28     
+
+0052 E599             29                             MOV             A, SBUF
+
+0054 F0               30                             MOVX    @DPTR,A                         ; Caso o nono bit for nível
+                              lógico baixo, salva o dado na posição 20H da memória externa
+
+0055 80F2             31                             JMP             VOLTA
+
+                      32                             
+
+0057 A799             33     BIT9ALTO:       MOV             @R1,SBUF                        ; O endereço de memória par
+                             a o qual R1 aponta recebe o valor em SBUF 
+
+0059 09               34                             INC     R1                                      ; R1 é incrementado
+                              passando a conter a localização da próxima posição de memória a ser preenchida
+
+005A B940EC           35                             CJNE    R1,#40H,VOLTA           ; Limita o recebimento entre as pos
+                             ições de memória 30H a 3FH
+
+005D 80E8             36                             JMP             RESTART                         ; Volta a salvar na
+                              posição de memória 30H
+
+005F 80FE             37                             JMP $
+
+0061 4D696372         38     TABELA:         DB 'Microcontrolador'
+
+0065 6F636F6E                
+0069 74726F6C                
+A51 MACRO ASSEMBLER  2015_1                                                               11/13/2017 11:41:32 PAGE     2
+
+006D 61646F72                
+                      39     END
+
+A51 MACRO ASSEMBLER  2015_1                                                               11/13/2017 11:41:32 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+BIT9ALTO . . . . .  C ADDR   0057H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0029H   A   
+LTSERIAL . . . . .  N NUMB   0023H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+RB8. . . . . . . .  B ADDR   0098H.2 A   
+REN. . . . . . . .  B ADDR   0098H.4 A   
+RESET. . . . . . .  N NUMB   0000H   A   
+RESTART. . . . . .  C ADDR   0047H   A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+TABELA . . . . . .  C ADDR   0061H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+VOLTA. . . . . . .  C ADDR   0049H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

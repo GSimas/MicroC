@@ -1,0 +1,41 @@
+; p1 - 13.2
+reset        equ  00h
+ltint1       equ  13h ; local do tratador da int. extr. 1
+state        equ  20h
+
+    org reset  	;PC=0 depois de reset
+    jmp inicio 	
+
+    org   ltint1
+    mov   state,#1h
+    reti
+
+inicio: 
+    mov     ie,#10000100b     ; habilita int. extr. 1
+    setb    it1		      ; especifica identificacao de solicitacao da interrupcao por borda
+
+    mov 	state,#0h ;inicializacao
+    mov 	r0,#state
+
+    mov		a,#11111110b	
+    mov		p2,a		; mostra led apagado (nivel logico baixo em P2)
+
+volta:  cjne 	@r0,#1,volta
+	mov 	 state,#0h
+	mov	r1,p1		; le, de P1, a direcao de rotacao
+
+volt:  cjne 	@r0,#1,volt
+      mov 	 state,#0h
+      mov	r2,p1		; le, de P1,  o nro de casas a rotacionar 
+
+      cjne     r1,#0,rotd
+rote: rl	a
+      djnz	r2,rote
+      mov	p2,a		; mostra resultado na porta P2
+      jmp	volta
+
+rotd: rr	a
+      djnz	r2,rotd
+      mov	p2,a		; mostra resultado na porta P2
+      jmp	volta
+      end

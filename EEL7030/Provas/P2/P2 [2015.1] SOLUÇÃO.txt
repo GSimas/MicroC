@@ -1,0 +1,37 @@
+RESET 	 EQU 00H
+LTSERIAL EQU 23H 
+STATE 	 EQU 7FH
+
+		 ORG RESET 
+		 JMP INICIO
+		 ORG LTSERIAL
+		 CLR RI                 
+		 MOV STATE,#1H
+		 RETI
+INICIO:  MOV IE,#10010000B
+		 MOV SCON,#11010000B
+		 MOV TMOD,#00100000B   
+		 MOV TH1,#0F4H		  
+		 MOV TL1,#0F4H
+		 MOV PCON,#0H        
+		 SETB TR1				
+		 MOV STATE,#0H
+		 MOV R0,#STATE
+
+CICLICO: MOV R1,#30H
+		 MOV R2,#10H
+		 
+VOLTA: 	 CJNE @R0,#1,VOLTA
+		 MOV STATE,#0H
+		  
+         JB RB8, IRAM			;verifica o nono bit se é 1 ou 0
+		 MOV DPTR,#0020H
+		 MOV A,SBUF             ; copia o dado na XRAM
+		 MOVX @DPTR,A
+		 JMP VOLTA                     
+		 
+IRAM:	 MOV @R1,SBUF           ;copia o dado na IRAM de maneira ciclica
+		 INC R1            
+		 DJNZ R2, VOLTA       
+		 JMP CICLICO
+		 END

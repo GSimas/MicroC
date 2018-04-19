@@ -1,0 +1,105 @@
+;MATHEUS FIGUEIREDO
+
+reset   equ 00h
+ltint1  equ 13h ; local tratador
+ATRASO 	EQU 03H
+flag 	equ 20h
+flag2   equ 28H	
+
+	 org reset ;PC=0 depois de reset
+	 jmp inicio
+	 org ltint1
+	 JMP handler
+
+
+inicio:
+	 mov ie,#10000100b ; habilita int1
+	 setb it1 ; borda de decida
+	 MOV P1,#11111111B
+	 MOV flag2,#0H
+ZERA:MOV flag,#0H
+	 MOV R0, #flag
+	 
+rel0: 	CJNE @R0, #0, rel0			; Checa se R0(flag) ainda não foi modificado pela interrupção
+rel1:	CJNE @R0, #1, zero
+rel2:	CJNE @R0, #2, um
+rel3:	CJNE @R0, #3, dois
+rel4: 	CJNE @R0, #4, tres			; Checa se R0(flag) ainda não foi modificado pela interrupção
+rel5:	CJNE @R0, #5, quatro
+rel6:	CJNE @R0, #6, cinco
+rel7:	CJNE @R0, #7, seis
+rel8:   CJNE @R0, #8, sete
+rel9:   CJNE @R0, #9, ZERA	 
+
+zero:SETB P1.7	  
+   	 CPL P1.0         
+	 MOV A,#ATRASO
+	 CALL DELAY	
+	 JMP rel1
+	 
+um:	 SETB P1.0	
+	 CPL P1.1         
+	 MOV A,#ATRASO
+	 CALL DELAY	
+	 JMP rel2
+	
+dois:SETB P1.1	
+	 CPL P1.2        
+	 MOV A,#ATRASO
+	 CALL DELAY	
+	 JMP rel3
+	 
+tres:SETB P1.2  
+   	 CPL P1.3        
+	 MOV A,#ATRASO
+	 CALL DELAY	
+	 JMP rel4
+	 
+quatro:	 SETB P1.3	
+	 CPL P1.4         
+	 MOV A,#ATRASO
+	 CALL DELAY	
+	 JMP rel5
+	
+cinco:SETB P1.4	
+	 CPL P1.5        
+	 MOV A,#ATRASO
+	 CALL DELAY	
+	 JMP rel6
+	 
+seis:SETB P1.5	
+	 CPL P1.6        
+	 MOV A,#ATRASO
+	 CALL DELAY	
+	 JMP rel7
+	
+sete:SETB P1.6	
+	 CPL P1.7        
+	 MOV A,#ATRASO
+	 CALL DELAY	
+	 JMP rel8
+	 
+oito:SETB P1.7	
+	 CPL P1.0        
+	 MOV A,#ATRASO
+	 CALL DELAY	
+	 JMP rel9
+
+		
+handler:      	PUSH ACC
+				PUSH DPH
+				PUSH DPL
+				INC flag
+				INC flag2
+				MOV A,flag2
+				MOV DPTR,#0010H
+				MOVX @DPTR,A
+				POP DPL
+				POP DPH
+				POP ACC
+				reti
+
+DELAY:	DJNZ Acc,DELAY 
+	 	RET	
+		
+		 end

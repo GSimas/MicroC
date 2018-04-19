@@ -1,0 +1,118 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        11/13/2017  12:39:47  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\2017.2 Versão 1.obj TO .\Objects\Provas práticas PRINT (.\Listings\Provas práticas
+>> .m51)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\2017.2 Versão 1.obj (2017_2_VERS_O_1)
+
+
+LINK MAP OF MODULE:  .\Objects\Provas práticas (2017_2_VERS_O_1)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     009EH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\Provas práticas (2017_2_VERS_O_1)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        2017_2_VERS_O_1
+  D:00A8H         SYMBOL        IE
+  C:0032H         SYMBOL        INICIO
+  N:0023H         SYMBOL        LTSERIAL
+  D:0090H         SYMBOL        P1
+  D:00A0H         SYMBOL        P2
+  D:0087H         SYMBOL        PCON
+  C:007DH         SYMBOL        RECEBE
+  C:002CH         SYMBOL        RECEIVE
+  B:0098H.4       SYMBOL        REN
+  N:0000H         SYMBOL        RESET
+  B:0098H.0       SYMBOL        RI
+  D:0099H         SYMBOL        SBUF
+  D:0098H         SYMBOL        SCON
+  N:0020H         SYMBOL        STATE
+  N:0021H         SYMBOL        STATE1
+  C:0087H         SYMBOL        TABELA
+  D:008CH         SYMBOL        TH0
+  D:008DH         SYMBOL        TH1
+  B:0098H.1       SYMBOL        TI
+  D:008AH         SYMBOL        TL0
+  D:008BH         SYMBOL        TL1
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  B:0088H.6       SYMBOL        TR1
+  C:0029H         SYMBOL        TRANSMIT
+  N:000BH         SYMBOL        TRATT0
+  C:005DH         SYMBOL        VOLTA
+  C:006BH         SYMBOL        VOLTAA
+  C:0072H         SYMBOL        VOLTAB
+BL51 BANKED LINKER/LOCATER V6.22                                                      11/13/2017  12:39:47  PAGE 2
+
+
+  C:0000H         LINE#         7
+  C:000BH         LINE#         10
+  C:000EH         LINE#         11
+  C:0011H         LINE#         12
+  C:0014H         LINE#         13
+  C:0023H         LINE#         16
+  C:0026H         LINE#         17
+  C:0029H         LINE#         18
+  C:002BH         LINE#         19
+  C:002CH         LINE#         21
+  C:002FH         LINE#         22
+  C:0031H         LINE#         23
+  C:0032H         LINE#         25
+  C:0035H         LINE#         26
+  C:0038H         LINE#         27
+  C:003AH         LINE#         28
+  C:003DH         LINE#         31
+  C:0040H         LINE#         32
+  C:0043H         LINE#         35
+  C:0046H         LINE#         36
+  C:0049H         LINE#         37
+  C:004CH         LINE#         39
+  C:004EH         LINE#         40
+  C:0051H         LINE#         41
+  C:0053H         LINE#         42
+  C:0055H         LINE#         44
+  C:0058H         LINE#         45
+  C:005BH         LINE#         46
+  C:005DH         LINE#         48
+  C:0060H         LINE#         49
+  C:0063H         LINE#         50
+  C:0066H         LINE#         52
+  C:0067H         LINE#         53
+  C:0068H         LINE#         54
+  C:006AH         LINE#         55
+  C:006BH         LINE#         56
+  C:006EH         LINE#         57
+  C:0070H         LINE#         58
+  C:0072H         LINE#         61
+  C:0075H         LINE#         62
+  C:0078H         LINE#         63
+  C:007BH         LINE#         64
+  C:007DH         LINE#         66
+  C:0080H         LINE#         67
+  C:0083H         LINE#         68
+  C:0085H         LINE#         69
+  -------         ENDMOD        2017_2_VERS_O_1
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0087H BYTE ( 6%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=158
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

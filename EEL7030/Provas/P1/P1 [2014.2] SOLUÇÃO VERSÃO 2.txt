@@ -1,0 +1,39 @@
+;MATHEUS FIGUEIREDO
+reset 	equ 00h
+ltint0 	equ 03h ; local tratador
+state 	equ 7Fh
+		 org reset ;PC=0 depois de reset
+		 jmp inicio
+		 org ltint0
+		 jmp handler
+inicio:
+		 mov ie,#10000001b ; habilita int
+		 setb it0 ; borda
+		 mov state,#0h ;inicialização
+		 mov R0,#state
+		
+dado:	cjne @r0,#1,dado          
+		MOV state,#0h
+		MOV A,P1
+		MOV B,#40H
+		
+		CJNE A,B, MAIOR        
+
+MENOR: 	XCH A,B
+		DIV AB
+		JMP MEM1
+
+MAIOR: JC MENOR
+	   DIV AB
+	   JMP MEM2
+
+MEM1:   MOV 30H,A
+		JMP dado
+		
+MEM2:	MOV 31H,A
+		JMP dado
+		
+handler: mov state,#1h
+		 reti
+
+		 end

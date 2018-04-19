@@ -1,0 +1,64 @@
+;Prova 02 	
+
+
+reset equ 0H			; Endereço Inicio
+ltmr1 equ 1bh 			; Endereço interrupção timer1
+state equ 20H.0			; Bit de Flag "state"
+
+org reset 				; Inicio do programa
+jmp INICIO
+
+org ltmr1				; Interrupção de timer1: pular para handler
+jmp handler
+
+INICIO:
+	mov ie,#10001000B 		; habilita interrupção por timer 1
+	mov tmod,#00000000B 	; Configura o Timer 1 ( 4 LSB de TMOD) para funcionar no modo 00, lembrando que Gate=0 e C/T = 0
+	mov th1,#11111010B 		; Conforme equação 2^13 - 192 = 8000 (11111010 00000)
+	mov tl1,#00000B 		; Conforme equação 2^13 - 192 = 8000 (11111010 00000)
+	SETB state				; Seta-se state pela primeira vez
+	
+
+	mov DPTR,#0120H			; DPTR recebe o endereço de 120H, pois assim será possível dividir em dois valores de 8 bits
+	mov A, DPH				; A recebe MSB de DPTR
+	mov B, DPL				; B recebe LSB de DPTR
+	Push Acc				; Salva-se A na pilha
+	Push B					; Salva-se B na pilha
+	mov dptr,#tabela		; DPTR = tabela (caracteres)
+	mov r1,#0				; R1 é resetado
+	mov r2,#0				; R2 é resetado
+	setb tr1				; TR1 = 1
+
+LOOP: 	JNB state, LOOP		; Checa se houve interrupção pelo flag "state"
+		CLR state			; Reseta-se "state"
+		mov th1,#11111010B 	; Reseta-se TH1
+		mov tl1,#00000B 	; Reseta-se TL1 
+		
+		mov A, R1			; A = R1
+		movc A,@A+dptr		; Acumulador recebe proximo caractere de tabela
+		mov r2, A			; Salva-se esse caractere na tabela
+		Pop B				; Recupera-se o LSB do endereço de memoria externa que será salvo o dado
+		Pop Acc				; Recupera-se o MSB do endereço de memoria externa que será salvo o dado
+		mov DPH, A 			; Carrega-se em DPH o MSB do endereço de memoria externa que será salvo o dado
+		mov DPL, B 			; Carrega-se em DPL o LSB do endereço de memoria externa que será salvo o dado
+		mov A, r2			; A recebe dado
+		movx @DPTR, A		; Envia-se o dado para o endereço de memoria externa especificado
+		
+		INC DPTR			; Incrementa-se o endereço p/ o próximo envio
+		mov A, DPH			; Salva-se o MSB do endereço de memoria externa que será salvo o dado na proxima interrupção em A
+		mov B, DPL			; Salva-se o LSB do endereço de memoria externa que será salvo o dado na proxima interrupção em B
+		Push Acc			; Salva-se A na pilha
+		Push B				; Salva-se B na pilha
+		
+		inc r1				; R1 é incrementado
+		mov dptr,#tabela	; DPTR = tabela (caracteres)
+		
+		cjne r1,#12,LOOP	; Checa se já foi terminado todos os caracteres
+		jmp Inicio			; Recomeça o programa.
+
+	
+HANDLER: SETB state			; Seta-se o flag state
+		  reti				; Retorna da interrupção
+		  
+tabela: db 'Microcontrol'	; Caracteres
+end

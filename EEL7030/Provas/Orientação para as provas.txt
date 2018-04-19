@@ -1,0 +1,23 @@
+//Matheus Figueiredo 
+
+Prova 1
+
+- Um código para analisar (TEM QUE SABER TODOS MNEMÔNICOS) e indicar quais são os conteúdos de cada registrador e os SFR
+- Decorar todos endereços de registradores "normais" e também, decorar quais são os SFR
+- Decorar como mudar os bancos de registradores.
+- Decorar cada função de cada flipflop dos registradores IE, IP, TMOD
+- Decorar que a posição de memoria 20h até 2FH pode ser manipulado por flipflop individualmente
+- Decorar que a posição de memoria 20h até 2FH e 30H até 7FH pode ser usada para auxilio na programação (guardar alguns dados dentro da interrupção por exemplo)
+- Decorar subrotina, vantagens e suas desvantagens.
+- Decorar polling e interrupção incluse a posição de memoria dos tratadores de interrupção
+
+
+Prova 2
+
+- Um código em C para analisar
+- Decorar cada função de cada flipflop dos registradores IE,IP,TMOD,SCON,TCON,PCON
+- Decorar como funciona um sistema de varios microprocessadores
+- Decorar como configurar um timer ou contador e serial, nos 4 modos 
+- Saber como fazer o calculo do numero de ciclos de acordo com o clock, por exemplo, modo 2 timer com 600 ciclos ( 2^16 - 600) carrega 8 bits no TH1 e o no TL1
+- Saber como consultar na tabela de reload do serial para configura-lo
+ 

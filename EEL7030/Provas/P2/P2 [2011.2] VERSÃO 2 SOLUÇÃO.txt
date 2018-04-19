@@ -1,0 +1,48 @@
+;MATHEUS FIGUEIREDO
+RESET 	 EQU 00H
+LTSERIAL EQU 23H ; local tratador
+STATE 	 EQU 20H
+		 ORG RESET ;PC=0 depois de reset
+		 JMP INICIO
+		 ORG LTSERIAL
+		 CLR TI
+		 MOV STATE,#1H
+		 RETI
+INICIO:  MOV IE,#10010000B
+		 MOV SCON,#01000000B
+		 MOV TMOD,#00100000B   ; C/T = 0, MODE TIMER 1 = 2,
+		 MOV TH1,#0FAH		   ; RELOAD FDH
+		 MOV TL1,#0FAH
+		 MOV PCON,#0H          ;SMOD = 0
+		 MOV R2,#0H		 
+ciclica: SETB TR1				;INICIA A CONTAGEM do timer 1, igual qnd configura timer
+		 MOV STATE,#0H
+		 MOV R0,#STATE
+		 MOV DPTR,#TABELA
+		 MOV R1,#1
+		 MOV SBUF,#'E'
+VOLTA: 	 CJNE @R0,#1,VOLTA
+		 MOV STATE,#0H
+		 MOV A,R1
+		 MOVC A,@A+DPTR
+		 MOV SBUF,A       ;primeiro coloca o dado no buffer , depois do doub rate que ele é exibido
+		 
+		 INC R2
+		 PUSH ACC
+		 PUSH DPH
+		 PUSH DPL
+		 MOV DPTR,#0020H
+		 MOV A, R2
+		 MOVX @DPTR, A
+		 POP DPL
+		 POP DPH
+		 POP ACC
+
+
+		 INC R1
+		 CJNE R1,#29,VOLTA
+		 CLR TR1
+		 JMP ciclica
+
+TABELA: DB 'EEL7030 - Microprocessadores'
+ END 
