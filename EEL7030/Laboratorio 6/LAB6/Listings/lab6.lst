@@ -1,0 +1,82 @@
+A51 MACRO ASSEMBLER  LAB6                                                                 04/25/2018 11:09:07 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\lab6.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE lab6.asm SET(SMALL) DEBUG PRINT(.\Listings\lab6.lst) OBJECT(.\Objects\l
+                      ab6.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;Universidade Federal de Santa Catarina - UFSC
+                       2     ;Engenharia Eletrônica - EEL7030 Microprocessadores
+                       3     ;Gustavo Simas da Silva 2018.1
+                       4     
+  0000                 5     reset equ 0h
+  001B                 6     ltmr1 equ 1bh ; local do tratador
+  0020                 7     state equ 20h
+                       8             
+0000                   9             org reset ;PC=0 depois de reset
+0000 8023             10             jmp inicio
+                      11             
+001B                  12             org ltmr1
+001B 758D75           13             mov th1,#075h
+001E 758B75           14             mov tl1,#75h
+0021 752001           15             mov state,#1h
+0024 32               16             reti
+                      17     
+0025                  18     inicio:
+0025 75A888           19             mov ie,#10001000b ; habilita tmr0
+0028 758900           20             mov tmod,#00h ; modo 0
+002B 752000           21             mov state,#0h ;inicialização
+002E 7820             22             mov r0,#state
+0030 90004F           23             mov dptr,#tabela
+0033 7900             24             mov r1,#0
+0035 758D75           25             mov th1,#75h
+0038 758B52           26             mov tl1,#52h
+003B D28E             27             setb tr1
+                      28     
+003D                  29     volta: 
+003D B601FD           30             cjne @r0,#1,volta
+0040 752000           31             mov state,#0h
+0043 E9               32             mov a,r1
+0044 93               33             movc a,@a+dptr
+0045 F590             34             mov p1,a
+0047 09               35             inc r1
+0048 B910F2           36             cjne r1,#16,volta
+004B C28C             37             clr tr0
+004D 80FE             38             jmp $
+                      39     
+004F 4D696372         40     tabela: db 'Microcontrolador'
+0053 6F636F6E                
+0057 74726F6C                
+005B 61646F72                
+                      41      
+                      42     end 
+A51 MACRO ASSEMBLER  LAB6                                                                 04/25/2018 11:09:07 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0025H   A   
+LTMR1. . . . . . .  N NUMB   001BH   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+STATE. . . . . . .  N NUMB   0020H   A   
+TABELA . . . . . .  C ADDR   004FH   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+VOLTA. . . . . . .  C ADDR   003DH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
