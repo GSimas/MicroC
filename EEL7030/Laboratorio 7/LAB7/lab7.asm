@@ -1,0 +1,45 @@
+RESET		EQU     00H
+LTSERIAL	EQU    	23H ; local tratador
+STATE       EQU     20H
+
+ORG RESET  ;PC=0 depois de reset
+JMP INICIO 
+
+ORG	LTSERIAL
+CLR TI
+MOV STATE,#1H
+RETI
+
+INICIO:  	MOV IE,#10010000B
+			MOV SCON,#11000000B
+			MOV TMOD,#00100000B
+			MOV TH1,#0FFH
+			MOV TL1,#0FFH
+			MOV PCON,#80H
+			SETB TR1
+			MOV STATE,#0H
+			MOV R0,#STATE
+			;MOV DPTR,#TABELA -- Exemplo
+;VOLTA1:	MOV R1,#30H
+VOLTA0:		MOV A,#41H
+VOLTA1:		MOV SBUF,A
+			MOV C,P
+			MOV TB8,C
+			;MOV SBUF,#'M' -- Exemplo
+
+VOLTA2:		CJNE @R0,#1,VOLTA2
+			MOV STATE,#0H
+			;MOV @R1,SBUF
+			;MOV A,R1 -- Exemplo
+			;MOVC A,@A+DPTR -- Exemplo
+			;MOV SBUF,A -- Exemplo
+			;INC R1
+			INC A
+			CJNE A,62H,VOLTA1
+			;CJNE R1,#36H,VOLTA2
+			;JMP VOLTA1
+			JMP VOLTA0
+				
+;TABELA: 	DB 'Microcontrolador' -- Exemplo
+	
+END
