@@ -1,0 +1,89 @@
+C51 COMPILER V9.57.0.0   LAB8                                                              05/16/2018 11:17:13 PAGE 1   
+
+
+C51 COMPILER V9.57.0.0, COMPILATION OF MODULE LAB8
+OBJECT MODULE PLACED IN .\Objects\lab8.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE lab8.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\lab8
+                    -.lst) TABS(2) OBJECT(.\Objects\lab8.obj)
+
+line level    source
+
+   1          //Programa que escreve números hexadecimais (0 a F) no display 3 do EDSIM51
+   2          
+   3          #include <reg51.h> // declaração de specialfunctionregisters para 8051
+   4          
+   5          unsigned char converte_7seg (unsigned char);
+   6          
+   7          void main (void) 
+   8          {
+   9   1        short i;
+  10   1        //unsigned char j=9;
+  11   1        unsigned char leP2, cntchaves;
+  12   1        
+  13   1        P0=0x80;
+  14   1        P3=0xEF;
+  15   1        
+  16   1        while (1){
+  17   2          leP2 = ~P2;
+  18   2          
+  19   2          for(i=0; i<9; i++){
+  20   3            if(leP2 & 0x80) cntchaves++;
+  21   3            leP2 <<= 1;}
+  22   2          //leP2 &= 0x0f; //leP2 = leP2 & 0x0f;
+  23   2          
+  24   2          P1 = converte_7seg(cntchaves);
+  25   2          cntchaves = 0;
+  26   2          
+  27   2          /*if (j == -1) j=9;
+  28   2          for (i = 0; i <15000; i++); // atraso para Edsim 2.1.15– Update freq=50000 
+  29   2          P1 = converte_7seg(j);
+  30   2          j--;
+  31   2          }*/
+  32   2      // end of while 
+  33   2        }
+  34   1      }
+  35          
+  36          // end of main
+  37          unsigned char converte_7seg (unsigned char dado) //função que retorna valor a ser escrito...
+  38          {
+  39   1        //... nos displays para formar o caractere
+  40   1        unsigned char led;
+  41   1        switch(dado) 
+  42   1        // GFEDCBA
+  43   1        {
+  44   2          case 0:   led  = 0x40; break;   // "1000000";
+  45   2          case 1:   led  = 0x79; break;   // "1111001";
+  46   2          case 2:   led  = 0x24; break;   // "0100100";
+  47   2          case 3:   led  = 0x30; break;   // "0110000";
+  48   2          case 4:   led  = 0x19; break;   // "0011001";
+  49   2          case 5:   led  = 0x12; break;   // "0010010";
+  50   2          case 6:   led  = 0x02; break;   // "0000010";
+  51   2          case 7:   led  = 0x78; break;   // "1111000";
+  52   2          case 8:   led  = 0x00; break;   // "0000000";
+  53   2          case 9:   led  = 0x10; break;   // "0010000";
+  54   2          case 10:  led  = 0x08; break;   // "0001000";
+C51 COMPILER V9.57.0.0   LAB8                                                              05/16/2018 11:17:13 PAGE 2   
+
+  55   2          case 11:  led  = 0x03; break;   // "0000011";
+  56   2          case 12:  led  = 0x46; break;   // "1000110";
+  57   2          case 13:  led  = 0x21; break;   // "0100001";
+  58   2          case 14:  led  = 0x06; break;   // "0000110";
+  59   2          case 15:  led  = 0x0E; break;   // "0001110";
+  60   2          default:  led  = 0x80;          // "0000000";
+  61   2          }
+  62   1      return led;
+  63   1      } // end converte
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    176    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

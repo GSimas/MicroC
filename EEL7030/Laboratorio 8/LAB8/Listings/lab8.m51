@@ -1,0 +1,159 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    05/16/2018  11:17:13  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\lab8.obj TO .\Objects\lab8 PRINT (.\Listings\lab8.m51)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\STARTUP.obj (?C_STARTUP)
+  .\Objects\lab8.obj (LAB8)
+
+
+LINK MAP OF MODULE:  .\Objects\lab8 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         _DATA_GROUP_
+            IDATA   0009H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     0082H     UNIT         ?PR?_CONVERTE_7SEG?LAB8
+            CODE    0882H     002EH     UNIT         ?PR?MAIN?LAB8
+            CODE    08B0H     000CH     UNIT         ?C_C51STARTUP
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\lab8 (?C_STARTUP)
+
+
+SEGMENT                           DATA_GROUP 
+  +--> CALLED SEGMENT           START    LENGTH
+-----------------------------------------------
+?C_C51STARTUP                   -----    -----
+  +--> ?PR?MAIN?LAB8
+
+?PR?MAIN?LAB8                   0008H    0001H
+  +--> ?PR?_CONVERTE_7SEG?LAB8
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\lab8 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:08B0H         SEGMENT       ?C_C51STARTUP
+  I:0009H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/16/2018  11:17:13  PAGE 2
+
+
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:08B3H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:08B0H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:08B0H         LINE#         133
+  C:08B2H         LINE#         134
+  C:08B3H         LINE#         135
+  C:08B4H         LINE#         136
+  C:08B6H         LINE#         185
+  C:08B9H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        LAB8
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00A0H         PUBLIC        P2
+  D:00B0H         PUBLIC        P3
+  C:0882H         PUBLIC        main
+  C:0800H         PUBLIC        _converte_7seg
+  -------         PROC          MAIN
+  -------         DO            
+  D:0004H         SYMBOL        i
+  D:0007H         SYMBOL        leP2
+  D:0008H         SYMBOL        cntchaves
+  -------         ENDDO         
+  C:0882H         LINE#         7
+  C:0882H         LINE#         8
+  C:0882H         LINE#         13
+  C:0885H         LINE#         14
+  C:0888H         LINE#         16
+  C:0888H         LINE#         17
+  C:088CH         LINE#         19
+  C:088FH         LINE#         20
+  C:0895H         LINE#         21
+  C:08A4H         LINE#         24
+  C:08ABH         LINE#         25
+  C:08AEH         LINE#         33
+  -------         ENDPROC       MAIN
+  -------         PROC          _CONVERTE_7SEG
+  D:0007H         SYMBOL        dado
+  -------         DO            
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/16/2018  11:17:13  PAGE 3
+
+
+  D:0006H         SYMBOL        led
+  -------         ENDDO         
+  C:0800H         LINE#         37
+  C:0800H         LINE#         38
+  C:0800H         LINE#         41
+  C:083DH         LINE#         43
+  C:083DH         LINE#         44
+  C:0841H         LINE#         45
+  C:0845H         LINE#         46
+  C:0849H         LINE#         47
+  C:084DH         LINE#         48
+  C:0851H         LINE#         49
+  C:0855H         LINE#         50
+  C:0859H         LINE#         51
+  C:085DH         LINE#         52
+  C:0861H         LINE#         53
+  C:0865H         LINE#         54
+  C:0869H         LINE#         55
+  C:086DH         LINE#         56
+  C:0871H         LINE#         57
+  C:0875H         LINE#         58
+  C:0879H         LINE#         59
+  C:087DH         LINE#         60
+  C:087FH         LINE#         61
+  C:087FH         LINE#         62
+  C:0881H         LINE#         63
+  -------         ENDPROC       _CONVERTE_7SEG
+  -------         ENDMOD        LAB8
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 00BFH BYTE ( 9%) *
+******************************************************************************
+
+Program Size: data=10.0 xdata=0 code=191
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
