@@ -1,0 +1,56 @@
+; link_C_asm_2.SRC generated from: link_C_asm_2.c
+; COMPILER INVOKED BY:
+;        C:\Keil_v5\C51\BIN\C51.EXE link_C_asm_2.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\link_C_asm_2.lst) TABS(2) OBJECT(.\Objects\link_C_asm_2.obj)
+
+
+NAME	LINK_C_ASM_2
+
+?PR?_inc_arg?LINK_C_ASM_2                SEGMENT CODE 
+?DT?_inc_arg?LINK_C_ASM_2                SEGMENT DATA OVERLAYABLE 
+	PUBLIC	_inc_arg
+
+	RSEG  ?DT?_inc_arg?LINK_C_ASM_2
+?_inc_arg?BYTE:
+       dado?040:   DS   2
+; #pragma src  // função  que incrementa o argumento passado e o retorna
+; #pragma small 		// ao compilar, gera arquivo com extensão .SRC...
+; 			// ... que deve integrar o projeto com o main.
+; 
+; /* prototipo de funcao externa */
+; 
+; extern void main(void);
+; 
+; /* codigo da funcao */
+; 
+; 
+; unsigned short  inc_arg(unsigned short dado)
+
+	RSEG  ?PR?_inc_arg?LINK_C_ASM_2
+_inc_arg:
+	USING	0
+			; SOURCE LINE # 12
+;	MOV  	dado?040,R6
+;	MOV  	dado?040+01H,R7
+; {
+			; SOURCE LINE # 13
+; 		#pragma asm
+; 		MOV   	A,B
+
+		MOV   	A,R7
+		INC   	A
+		MOV 	R7, A
+		MOV		A, #0
+		ADDC  	A, R6
+		MOV		R6, A
+		
+; 		#pragma endasm
+; return dado;
+			; SOURCE LINE # 17
+	MOV  	R6,dado?040
+	MOV  	R7,dado?040+01H
+; }
+			; SOURCE LINE # 18
+	RET  	
+; END OF _inc_arg
+
+	END

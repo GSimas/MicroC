@@ -1,0 +1,1 @@
+"link_C_asm_2.SRC" SET (SMALL) DEBUG PRINT(.\Listings\link_C_asm_2.lst) OBJECT(.\Objects\link_C_asm_2.obj) EP

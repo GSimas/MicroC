@@ -1,0 +1,199 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    05/23/2018  11:14:29  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\lab9.obj TO .\Objects\lab9 PRINT (.\Listings\lab9.m51)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\STARTUP.obj (?C_STARTUP)
+  .\Objects\lab9.obj (LAB9)
+  C:\KEIL_V5\C51\LIB\C51S.LIB (?C_INIT)
+
+
+LINK MAP OF MODULE:  .\Objects\lab9 (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0001H     UNIT         ?DT?LAB9
+            DATA    0009H     0001H     UNIT         _DATA_GROUP_
+                    000AH     0016H                  *** GAP ***
+            DATA    0020H     0001H     BIT_ADDR     ?BA?LAB9
+            IDATA   0021H     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     0018H                  *** GAP ***
+            CODE    001BH     0003H     ABSOLUTE     
+                    001EH     07E2H                  *** GAP ***
+            CODE    0800H     008CH     UNIT         ?C_C51STARTUP
+            CODE    088CH     0082H     UNIT         ?PR?_CONVERTE_7SEG?LAB9
+            CODE    090EH     0046H     UNIT         ?PR?MAIN?LAB9
+            CODE    0954H     0004H     UNIT         ?C_INITSEG
+            CODE    0958H     0003H     UNIT         ?PR?DELAY?LAB9
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\lab9 (?C_STARTUP)
+
+
+SEGMENT                           DATA_GROUP 
+  +--> CALLED SEGMENT           START    LENGTH
+-----------------------------------------------
+?C_C51STARTUP                   -----    -----
+  +--> ?PR?MAIN?LAB9
+  +--> ?C_INITSEG
+
+?PR?MAIN?LAB9                   0009H    0001H
+  +--> ?PR?_CONVERTE_7SEG?LAB9
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\lab9 (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/23/2018  11:14:29  PAGE 2
+
+
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:0800H         SEGMENT       ?C_C51STARTUP
+  I:0021H         SEGMENT       ?STACK
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0803H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:0800H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:0800H         LINE#         133
+  C:0802H         LINE#         134
+  C:0803H         LINE#         135
+  C:0804H         LINE#         136
+  C:0806H         LINE#         185
+  C:0809H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        LAB9
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  D:0080H         PUBLIC        P0
+  D:0090H         PUBLIC        P1
+  D:00B0H         PUBLIC        P3
+  B:00A8H.7       PUBLIC        EA
+  B:00B0H.3       PUBLIC        END0
+  B:00B0H.4       PUBLIC        END1
+  D:0008H         PUBLIC        atraso
+  D:0020H         PUBLIC        cntdsp
+  C:0958H         PUBLIC        delay
+  B:0080H.7       PUBLIC        CS
+  B:0020H.0       PUBLIC        cntdsp_0
+  B:0020H.1       PUBLIC        cntdsp_1
+  C:090EH         PUBLIC        main
+  D:0089H         PUBLIC        TMOD
+  D:0088H         PUBLIC        TCON
+  C:088CH         PUBLIC        _converte_7seg
+  B:00A8H.3       PUBLIC        ET1
+  D:008DH         PUBLIC        TH1
+  D:008BH         PUBLIC        TL1
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/23/2018  11:14:29  PAGE 3
+
+
+  B:0088H.6       PUBLIC        TR1
+  -------         PROC          MAIN
+  -------         DO            
+  D:0009H         SYMBOL        j
+  -------         ENDDO         
+  C:090EH         LINE#         25
+  C:090EH         LINE#         26
+  C:0911H         LINE#         28
+  C:0914H         LINE#         29
+  C:0916H         LINE#         30
+  C:0918H         LINE#         31
+  C:091AH         LINE#         32
+  C:091CH         LINE#         34
+  C:091CH         LINE#         37
+  C:0920H         LINE#         38
+  C:0924H         LINE#         40
+  C:092BH         LINE#         42
+  C:092DH         LINE#         44
+  C:092FH         LINE#         46
+  C:0932H         LINE#         47
+  C:0934H         LINE#         48
+  C:0936H         LINE#         49
+  C:0938H         LINE#         51
+  C:093DH         LINE#         52
+  C:093FH         LINE#         54
+  C:0946H         LINE#         56
+  C:0948H         LINE#         58
+  C:094AH         LINE#         60
+  C:0952H         LINE#         62
+  -------         ENDPROC       MAIN
+  -------         PROC          DELAY
+  C:0958H         LINE#         66
+  C:0958H         LINE#         67
+  -------         ENDPROC       DELAY
+  -------         PROC          _CONVERTE_7SEG
+  D:0007H         SYMBOL        dado
+  -------         DO            
+  D:0006H         SYMBOL        leds
+  -------         ENDDO         
+  C:088CH         LINE#         70
+  C:088CH         LINE#         71
+  C:088CH         LINE#         74
+  C:08C9H         LINE#         75
+  C:08C9H         LINE#         76
+  C:08CDH         LINE#         77
+  C:08D1H         LINE#         78
+  C:08D5H         LINE#         79
+  C:08D9H         LINE#         80
+  C:08DDH         LINE#         81
+  C:08E1H         LINE#         82
+  C:08E5H         LINE#         83
+  C:08E9H         LINE#         84
+  C:08EDH         LINE#         85
+  C:08F1H         LINE#         86
+  C:08F5H         LINE#         87
+  C:08F9H         LINE#         88
+  C:08FDH         LINE#         89
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/23/2018  11:14:29  PAGE 4
+
+
+  C:0901H         LINE#         90
+  C:0905H         LINE#         91
+  C:0909H         LINE#         92
+  C:090BH         LINE#         93
+  C:090BH         LINE#         95
+  C:090DH         LINE#         97
+  -------         ENDPROC       _CONVERTE_7SEG
+  -------         ENDMOD        LAB9
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 00E0H BYTE (10%) *
+******************************************************************************
+
+Program Size: data=12.0 xdata=0 code=353
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

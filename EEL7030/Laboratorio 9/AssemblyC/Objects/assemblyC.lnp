@@ -1,0 +1,5 @@
+".\Objects\STARTUP.obj",
+".\Objects\link_C_asm_1.obj",
+".\Objects\link_C_asm_2.obj" 
+TO ".\Objects\assemblyC" 
+PRINT(".\Listings\assemblyC.m51")

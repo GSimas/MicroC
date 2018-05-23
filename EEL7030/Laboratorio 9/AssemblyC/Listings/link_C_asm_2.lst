@@ -1,0 +1,87 @@
+A51 MACRO ASSEMBLER  LINK_C_ASM_2                                                         05/23/2018 11:28:17 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\link_C_asm_2.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE link_C_asm_2.SRC SET(SMALL) DEBUG PRINT(.\Listings\link_C_asm_2.lst) OB
+                      JECT(.\Objects\link_C_asm_2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ; link_C_asm_2.SRC generated from: link_C_asm_2.c
+                       2     ; COMPILER INVOKED BY:
+                       3     ;        C:\Keil_v5\C51\BIN\C51.EXE link_C_asm_2.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXT
+                             END PRINT(.\Listings\link_C_asm_2.lst) TABS(2) OBJECT(.\Objects\link_C_asm_2.obj)
+                       4     
+                       5     
+                       6     NAME    LINK_C_ASM_2
+                       7     
+                       8     ?PR?_inc_arg?LINK_C_ASM_2                SEGMENT CODE 
+                       9     ?DT?_inc_arg?LINK_C_ASM_2                SEGMENT DATA OVERLAYABLE 
+                      10             PUBLIC  _inc_arg
+                      11     
+----                  12             RSEG  ?DT?_inc_arg?LINK_C_ASM_2
+0000                  13     ?_inc_arg?BYTE:
+0000                  14            dado?040:   DS   2
+                      15     ; #pragma src  // função  que incrementa o argumento passado e o retorna
+                      16     ; #pragma small                 // ao compilar, gera arquivo com extensão .SRC...
+                      17     ;                       // ... que deve integrar o projeto com o main.
+                      18     ; 
+                      19     ; /* prototipo de funcao externa */
+                      20     ; 
+                      21     ; extern void main(void);
+                      22     ; 
+                      23     ; /* codigo da funcao */
+                      24     ; 
+                      25     ; 
+                      26     ; unsigned short  inc_arg(unsigned short dado)
+                      27     
+----                  28             RSEG  ?PR?_inc_arg?LINK_C_ASM_2
+0000                  29     _inc_arg:
+                      30             USING   0
+                      31                             ; SOURCE LINE # 12
+                      32     ;       MOV     dado?040,R6
+                      33     ;       MOV     dado?040+01H,R7
+                      34     ; {
+                      35                             ; SOURCE LINE # 13
+                      36     ;               #pragma asm
+                      37     ;               MOV     A,B
+                      38     
+0000 EF               39                     MOV     A,R7
+0001 04               40                     INC     A
+0002 FF               41                     MOV     R7, A
+0003 7400             42                     MOV             A, #0
+0005 3E               43                     ADDC    A, R6
+0006 FE               44                     MOV             R6, A
+                      45                     
+                      46     ;               #pragma endasm
+                      47     ; return dado;
+                      48                             ; SOURCE LINE # 17
+0007 AE00     F       49             MOV     R6,dado?040
+0009 AF00     F       50             MOV     R7,dado?040+01H
+                      51     ; }
+                      52                             ; SOURCE LINE # 18
+000B 22               53             RET     
+                      54     ; END OF _inc_arg
+                      55     
+                      56             END
+A51 MACRO ASSEMBLER  LINK_C_ASM_2                                                         05/23/2018 11:28:17 PAGE     2
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E                    T Y P E  V A L U E   ATTRIBUTES
+
+?DT?_INC_ARG?LINK_C_ASM_2  D SEG    0002H       REL=UNIT
+?PR?_INC_ARG?LINK_C_ASM_2  C SEG    000CH       REL=UNIT
+?_INC_ARG?BYTE. . . . . .  D ADDR   0000H   R   SEG=?DT?_INC_ARG?LINK_C_ASM_2
+DADO?040. . . . . . . . .  D ADDR   0000H   R   SEG=?DT?_INC_ARG?LINK_C_ASM_2
+LINK_C_ASM_2. . . . . . .  N NUMB   -----       
+_INC_ARG. . . . . . . . .  C ADDR   0000H   R   SEG=?PR?_INC_ARG?LINK_C_ASM_2
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

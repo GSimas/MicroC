@@ -1,0 +1,138 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    05/23/2018  11:28:17  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\STARTUP.obj, .\Objects\link_C_asm_1.obj, .\Objects\link_C_asm_2.obj TO .\Objects\a
+>> ssemblyC PRINT (.\Listings\assemblyC.m51)
+
+
+MEMORY MODEL: SMALL
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\STARTUP.obj (?C_STARTUP)
+  .\Objects\link_C_asm_1.obj (LINK_C_ASM_1)
+  .\Objects\link_C_asm_2.obj (LINK_C_ASM_2)
+
+
+LINK MAP OF MODULE:  .\Objects\assemblyC (?C_STARTUP)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+            DATA    0008H     0002H     UNIT         _DATA_GROUP_
+            IDATA   000AH     0001H     UNIT         ?STACK
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0003H     ABSOLUTE     
+                    0003H     07FDH                  *** GAP ***
+            CODE    0800H     000CH     UNIT         ?C_C51STARTUP
+            CODE    080CH     000CH     UNIT         ?PR?_INC_ARG?LINK_C_ASM_2
+            CODE    0818H     0008H     UNIT         ?PR?MAIN?LINK_C_ASM_1
+
+
+
+OVERLAY MAP OF MODULE:   .\Objects\assemblyC (?C_STARTUP)
+
+
+SEGMENT                             DATA_GROUP 
+  +--> CALLED SEGMENT             START    LENGTH
+-------------------------------------------------
+?C_C51STARTUP                     -----    -----
+  +--> ?PR?MAIN?LINK_C_ASM_1
+
+?PR?MAIN?LINK_C_ASM_1             -----    -----
+  +--> ?PR?_INC_ARG?LINK_C_ASM_2
+
+?PR?_INC_ARG?LINK_C_ASM_2         0008H    0002H
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\assemblyC (?C_STARTUP)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        ?C_STARTUP
+  C:0800H         SEGMENT       ?C_C51STARTUP
+  I:000AH         SEGMENT       ?STACK
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/23/2018  11:28:17  PAGE 2
+
+
+  C:0000H         PUBLIC        ?C_STARTUP
+  D:00E0H         SYMBOL        ACC
+  D:00F0H         SYMBOL        B
+  D:0083H         SYMBOL        DPH
+  D:0082H         SYMBOL        DPL
+  N:0000H         SYMBOL        IBPSTACK
+  N:0100H         SYMBOL        IBPSTACKTOP
+  N:0080H         SYMBOL        IDATALEN
+  C:0803H         SYMBOL        IDATALOOP
+  N:0000H         SYMBOL        PBPSTACK
+  N:0100H         SYMBOL        PBPSTACKTOP
+  N:0000H         SYMBOL        PDATALEN
+  N:0000H         SYMBOL        PDATASTART
+  N:0000H         SYMBOL        PPAGE
+  N:0000H         SYMBOL        PPAGEENABLE
+  D:00A0H         SYMBOL        PPAGE_SFR
+  D:0081H         SYMBOL        SP
+  C:0800H         SYMBOL        STARTUP1
+  N:0000H         SYMBOL        XBPSTACK
+  N:0000H         SYMBOL        XBPSTACKTOP
+  N:0000H         SYMBOL        XDATALEN
+  N:0000H         SYMBOL        XDATASTART
+  C:0000H         LINE#         126
+  C:0800H         LINE#         133
+  C:0802H         LINE#         134
+  C:0803H         LINE#         135
+  C:0804H         LINE#         136
+  C:0806H         LINE#         185
+  C:0809H         LINE#         196
+  -------         ENDMOD        ?C_STARTUP
+
+  -------         MODULE        LINK_C_ASM_1
+  C:0000H         SYMBOL        _ICE_DUMMY_
+  C:0818H         PUBLIC        main
+  -------         PROC          MAIN
+  -------         DO            
+  D:0006H         SYMBOL        teste
+  -------         ENDDO         
+  C:0818H         LINE#         7
+  C:0818H         LINE#         8
+  C:0818H         LINE#         11
+  C:081BH         LINE#         13
+  C:081BH         LINE#         15
+  C:081EH         LINE#         17
+  -------         ENDPROC       MAIN
+  -------         ENDMOD        LINK_C_ASM_1
+
+  -------         MODULE        LINK_C_ASM_2
+  C:080CH         SEGMENT       ?PR?_INC_ARG?LINK_C_ASM_2
+  D:0008H         SEGMENT       ?DT?_INC_ARG?LINK_C_ASM_2
+  C:080CH         PUBLIC        _INC_ARG
+  D:0008H         SYMBOL        ?_INC_ARG?BYTE
+  D:0008H         SYMBOL        DADO?040
+  N:0000H         SYMBOL        LINK_C_ASM_2
+  C:080CH         LINE#         39
+  C:080DH         LINE#         40
+  C:080EH         LINE#         41
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  05/23/2018  11:28:17  PAGE 3
+
+
+  C:080FH         LINE#         42
+  C:0811H         LINE#         43
+  C:0812H         LINE#         44
+  C:0813H         LINE#         49
+  C:0815H         LINE#         50
+  C:0817H         LINE#         53
+  -------         ENDMOD        LINK_C_ASM_2
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0023H BYTE ( 1%) *
+******************************************************************************
+
+Program Size: data=11.0 xdata=0 code=35
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

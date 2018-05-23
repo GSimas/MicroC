@@ -1,0 +1,123 @@
+C51 COMPILER V9.57.0.0   LAB9                                                              05/23/2018 11:14:29 PAGE 1   
+
+
+C51 COMPILER V9.57.0.0, COMPILATION OF MODULE LAB9
+OBJECT MODULE PLACED IN .\Objects\lab9.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE lab9.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\lab9
+                    -.lst) TABS(2) OBJECT(.\Objects\lab9.obj)
+
+line level    source
+
+   1          //UNIVERSIDADE FEDERAL DE SANTA CATARINA
+   2          //CENTRO TECNOLOGICO - CTC - ENGENHARIA ELETRONICA
+   3          //EEL7030 MICROPROCESSADORES
+   4          //GUSTAVO SIMAS DA SILVA
+   5          //Escreve n?meros hexadecimais  (0 a F) nos 4 displays do                          
+   6          //...EDSIM51.  Utilizando timer 1 no modo 1 para inserir atraso
+   7          
+   8          #include <reg51.h> 
+   9          
+  10          
+  11          unsigned char converte_7seg (unsigned char);
+  12          void delay (void);
+  13          
+  14          
+  15          unsigned char bdata cntdsp = 3;
+  16          unsigned char atraso;
+  17          
+  18          
+  19           sbit   CS=P0^7;    
+  20           sbit   cntdsp_1=cntdsp^1;   
+  21           sbit   cntdsp_0=cntdsp^0;    
+  22           sbit   END1=P3^4;      
+  23           sbit   END0=P3^3;
+  24                 
+  25          void main (void)       {
+  26   1      unsigned char j=0;
+  27   1         
+  28   1          TMOD = 0x10;  
+  29   1          TCON = 0;
+  30   1          EA = 1;
+  31   1          ET1 = 1;
+  32   1          CS=0;
+  33   1        
+  34   1          while (1)    {  
+  35   2            
+  36   2                  //end. dsp
+  37   2                  END1=cntdsp_1;  
+  38   2                  END0=cntdsp_0; 
+  39   2            
+  40   2                  P1= converte_7seg(j); 
+  41   2            
+  42   2                  j++;
+  43   2            
+  44   2                  CS=1;
+  45   2      
+  46   2                  TH1 = 0x00;
+  47   2                  TL1 = 0x00;
+  48   2                  TR1 = 1;
+  49   2                  atraso = 0;
+  50   2            
+  51   2                  while(atraso!=3);
+  52   2                  TR1 = 0;
+  53   2            
+  54   2                  if (cntdsp==0)  cntdsp=4; 
+C51 COMPILER V9.57.0.0   LAB9                                                              05/23/2018 11:14:29 PAGE 2   
+
+  55   2            
+  56   2                  cntdsp--;  
+  57   2            
+  58   2                  CS=0; 
+  59   2            
+  60   2                  if ( j == 16) j=0;
+  61   2            
+  62   2                }
+  63   1                      } //end of main
+  64          
+  65                          
+  66          void delay (void) interrupt 3 {
+  67   1      atraso++;} /* end of delay */           
+  68                  
+  69          
+  70          unsigned char converte_7seg (unsigned char dado) //   fun??o retorna valor a ser escrito?
+  71          {           //? nos displays para formar o caractere
+  72   1       unsigned char leds;
+  73   1            
+  74   1      switch (dado)                   // GFEDCBA
+  75   1        {
+  76   2                case 0:    leds  = 0x40; break;   // "1000000";
+  77   2                case 1:    leds  = 0x79; break;   // "1111001";
+  78   2                case 2:    leds  = 0x24; break;   // "0100100";
+  79   2                case 3:    leds  = 0x30; break;   // "0110000";
+  80   2                case 4:    leds  = 0x19; break;   // "0011001";
+  81   2                case 5:    leds  = 0x12; break;   // "0010010";
+  82   2                case 6:    leds  = 0x02; break;   // "0000010";
+  83   2                case 7:    leds  = 0x78; break;   // "1111000";
+  84   2                case 8:    leds  = 0x00; break;   // "0000000";
+  85   2                case 9:    leds  = 0x10; break;   // "0010000";
+  86   2                case 10:   leds  = 0x08; break;   // "0001000";
+  87   2                case 11:   leds  = 0x03; break;   // "0000011";
+  88   2                case 12:   leds  = 0x46; break;   // "1000110";
+  89   2                case 13:   leds  = 0x21; break;   // "0100001";
+  90   2                case 14:   leds =  0x06; break;   // "0000110";
+  91   2                case 15:   leds =  0x0E; break;   // "0001110";
+  92   2                default:   leds =  0x80;          // "0000000";
+  93   2              }
+  94   1      
+  95   1         return leds;
+  96   1      
+  97   1            } // end converte
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    203    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      2       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
