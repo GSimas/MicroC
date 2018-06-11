@@ -1,0 +1,89 @@
+;2017-2
+;1) enviar nome completo pela interface serial			OK
+;2) gerar onda quad. - pino 5 da porta 2				OK
+;3) receber dados,- mostrar porta 1						OK
+;4) transmissao sem bit de paridade - BD 2400 			OK
+;5) onda quad. T=3840 ciclos
+;6) Timer 0 - temporizador de 13 bits pra gerar onda quadrada
+
+;MODO TEMPORIZADOR 13 BITS - MODO1
+;FAZER TIMER0 COM T=3840 - MODO 0 TEM TL0 COM 5 BITS (MENOS SIGN.), E TH0 COM 8 BITS.
+;2^5=32 - 3840/32= 2^8(256)-120 = 136 = 88H E TL0=0)
+
+
+
+RESET       EQU     00H
+INTSERIAL   EQU    	23H ; local tratador
+TIMER0		EQU		0BH
+
+			ORG RESET  	;PC=0 depois de reset
+			JMP INICIO 	
+
+			ORG TIMER0
+			CPL P2.5
+			RETI		
+
+;RECEP
+			ORG	   INTSERIAL			;TI ta setado apos ter transmitido
+			JNB	   RI,TRANS			;se flip flop de recepcao for RI=0, vai pra TRANS, vai setar F1 e vai TRANSMITIR, se nao seta F0 - pra RECEBER
+			CLR	   RI
+			MOV		R2,#1H	; FLIP FLOP DE USO DE PROPOSITO GERAL DO PSW
+
+ TRANS: 	JNB	   TI,VOLTAROT			;desvia se Ti estiver em zero - volta pra rotina
+			CLR	   TI
+			MOV		R3,#1H		; FLIP FLOP DE USO DE PROPOSITO GERAL DO PSW
+
+VOLTAROT:   RETI
+
+
+INICIO: 	MOV 	   IE,#10010010B
+
+			MOV       SCON,#11010000B	; MODO 3; REN=1
+			MOV       TH1,#0F4H
+			MOV       TL1,#0F4H
+			
+			MOV 	   TMOD,#00100000B	; C/T- 0 (TEMP)
+			MOV			TL0,#00H
+			MOV			TH0,#88H
+			SETB		TR0
+			
+			MOV       PCON,#0H
+			SETB	   TR1
+
+			MOV		R2, #0H
+			MOV		R3, #0H
+
+			MOV		R1,#0
+			MOV		DPTR, #NOME
+			
+			MOV     SBUF,'G'	;coloca dado trans. no sbuf
+			    
+
+RECEP1:  	CJNE	R2,#1H,TRANS1	;RECEPCAOO!!!!
+			MOV		R2,#0H
+			
+			MOV  	R5,SBUF  ;coloca dado recebido no end. de r1
+			MOV		P1,R5
+
+			
+TRANS1:  	CJNE	R3,#1H,RECEP1		;TRANSMISSAO!! -se F1=0 volta a RECEBER, se F=1 - TRANSMITI!
+			MOV		R3,#0H
+			
+			CJNE 	R1,#13H,TRANSNOME
+			JMP	RECEP1
+
+TRANSNOME:	MOV		A, R1
+			MOVC	A,@A+DPTR
+			MOV     SBUF,A
+			INC		R1
+			JMP RECEP1
+			
+			
+NOME:		DB 'Gustavo Julia'	;13 CARACTERES		
+
+END
+				
+				;pq tem que colocar um bit de paridade antes de tudo e depois outro em TSTTI?
+				;pode usar r2 e r3 em interrupcao, sem chamar de state??
+				;clr e jnb é so pra bit!!!!
+				;CTRL H - replace!!
