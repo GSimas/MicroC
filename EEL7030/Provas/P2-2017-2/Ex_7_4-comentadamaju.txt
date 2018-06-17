@@ -1,0 +1,75 @@
+;Fazer um programa para transmitir pela interface serial os valores de 41H a
+;61H de forma cíclica. Devem ser transmitidos 8 bits de dados à taxa de 19,2
+;kbits por segundo (lembrar de trocar valor freq.!!). O programa deve também receber dados, armazenando os
+;valores recebidos na memória externa entre os endereços 0h e 0009h. Após
+;completar o preenchimento desta região de memória, voltar a preenchê-la com
+;os dados recebidos a partir do endereço inicial.
+
+RESET       EQU     00H
+INTSERIAL   EQU    	23H ; local tratador
+
+	
+;F1 e F0 são Flags (Sinalizadores) do Reg. PSW definidos pelo programador
+;F0 - RECEPCAO // F1 - TRANSMISSAO
+
+    	ORG RESET  	;PC=0 depois de reset
+    	JMP INICIO 	
+
+;RECEP
+		ORG	   INTSERIAL			;TI ta setado apos ter transmitido
+    	JNB	   RI,TRANS			;se flip flop de recepcao for RI=0, vai pra TRANS, vai setar F1 e vai TRANSMITIR, se nao seta F0 - pra RECEBER
+		CLR	   RI
+    	MOV		R2,#1H	; FLIP FLOP DE USO DE PROPOSITO GERAL DO PSW
+
+ 
+TRANS: 	JNB	   TI,VOLTAROT			;desvia se Ti estiver em zero - volta pra rotina
+		CLR	   TI
+    	MOV		R3,#1H		; FLIP FLOP DE USO DE PROPOSITO GERAL DO PSW
+
+VOLTAROT:   RETI
+
+
+INICIO: 	MOV 	   IE,#10010000B
+			MOV       SCON,#11010000B	; MODO 3; REN=1
+			MOV 	   TMOD,#00100000B	; TIMER 1 NO MODO 2 - 62.5 kbits/s
+			MOV       TH1,#0FDH
+			MOV       TL1,#0FDH
+			MOV       PCON,#80H
+			SETB	   TR1
+			
+			MOV		R2, #0H
+			MOV		R3, #0H
+
+			MOV		R4,#41H	; 1º Dado a transmi
+			MOV     C,P		;bit paridade
+			MOV     TB8,C
+			MOV     SBUF,R4	;coloca dado trans. no sbuf
+			MOV		DPTR,#0H ;mem externa
+			    
+
+RECEP1:  	CJNE	R2,#1H,TRANS1	;RECEPCAOO!!!!
+			MOV		R2,#0H
+			MOV  	A,SBUF  ;coloca dado recebido no end. de r1
+			MOVX	@DPTR,A
+			INC		DPL
+			MOV		R1,DPL
+						
+			CJNE 	R1,#0AH,TRANS1 ;enquanto nao carregar ate no end 9h pula pra transmissao
+			MOV		DPL,#0H ;para ser ciclico - nao poderia pedir pra ir pro comeco?
+			
+TRANS1:  	CJNE	R3,#1H,RECEP1		;TRANSMISSAO!! -se F1=0 volta a RECEBER, se F=1 - TRANSMITI!
+			MOV		R3,#0H
+			INC		R4
+			MOV     C,P
+			MOV     TB8,C
+			MOV     SBUF,R4
+			CJNE 	R4,#61H,RECEP1
+			MOV		R4,#40H ; quer que seja cíclico!
+			JMP	RECEP1
+
+			END
+				
+				;pq tem que colocar um bit de paridade antes de tudo e depois outro em TSTTI?
+				;pode usar r2 e r3 em interrupcao, sem chamar de state??
+				;clr e jnb é so pra bit!!!!
+				;CTRL H - replace!!

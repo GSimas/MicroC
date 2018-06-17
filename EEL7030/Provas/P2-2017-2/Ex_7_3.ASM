@@ -1,0 +1,51 @@
+RESET        	EQU     00H
+LTSERIAL    	EQU    	23H ; local tratador
+F1	    	EQU    	PSW.1 			; FLIP FLOP DE USO DE PROPOSITO GERAL DO PSW  -- F1 NÃO É ACEITO NO KEIL
+
+
+
+    	ORG RESET  	;PC=0 depois de reset
+    	JMP INICIO 	
+
+    	ORG	   LTSERIAL
+    	JNB 	   RI,SETTI
+	CLR	   RI
+    	SETB	   F0			; FLIP FLOP DE USO DE PROPOSITO GERAL DO PSW
+SETTI:  JNB	   TI,RTN
+	CLR	   TI
+    	SETB	   F1			; FLIP FLOP DE USO DE PROPOSITO GERAL DO PSW
+RTN:   	RETI
+
+INICIO: MOV 	   IE,#10010000B
+   	MOV       SCON,#11010000B	; MODO 3; REN=1
+   	MOV 	   TMOD,#00100000B	; TIMER 1 NO MODO 2 - 62.5 kbits/s
+	MOV       TH1,#0FFH
+    	MOV       TL1,#0FFH
+    	MOV       PCON,#80H
+    	SETB	   TR1
+
+       	MOV	A,#41H
+	MOV     C,P
+	MOV     TB8,C
+	MOV     SBUF,A
+	MOV	R1,#30H
+    
+
+VOLTA:  JNB	F0,TSTTI
+	CLR	F0
+    	MOV  	@R1,SBUF
+	INC	R1
+	CJNE 	R1,#36H,TSTTI
+	MOV	R1,#30H
+
+TSTTI:  JNB	F1,VOLTA
+	CLR	F1
+	INC	A
+	MOV     C,P
+	MOV     TB8,C
+	MOV     SBUF,A
+	CJNE 	A,#61H,VOLTA
+	MOV	A,#40H
+	JMP	VOLTA
+
+    	END
