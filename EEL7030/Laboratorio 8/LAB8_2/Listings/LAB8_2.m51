@@ -1,0 +1,109 @@
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                    06/17/2018  10:55:59  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22.2.0, INVOKED BY:
+C:\USERS\GUSTAVO\DOCUMENTS\GITHUB\MICROC\EEL7030\KEIL\C51\BIN\BL51.EXE .\Objects\lab8_2.obj TO .\Objects\LAB8_2 PRINT (.
+>> \Listings\LAB8_2.m51)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\lab8_2.obj (LAB8_2)
+
+
+LINK MAP OF MODULE:  .\Objects\LAB8_2 (LAB8_2)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     0093H     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\LAB8_2 (LAB8_2)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        LAB8_2
+  D:00A8H         SYMBOL        IE
+  C:0030H         SYMBOL        INICIO
+  N:0023H         SYMBOL        INTSERIAL
+  C:0077H         SYMBOL        NOME
+  D:0090H         SYMBOL        P1
+  D:00A0H         SYMBOL        P2
+  D:0087H         SYMBOL        PCON
+  C:005AH         SYMBOL        RECEP1
+  N:0000H         SYMBOL        RESET
+  B:0098H.0       SYMBOL        RI
+  D:0099H         SYMBOL        SBUF
+  D:0098H         SYMBOL        SCON
+  D:008CH         SYMBOL        TH0
+  D:008DH         SYMBOL        TH1
+  B:0098H.1       SYMBOL        TI
+  N:000BH         SYMBOL        TIMER0
+  D:008AH         SYMBOL        TL0
+  D:008BH         SYMBOL        TL1
+  D:0089H         SYMBOL        TMOD
+  B:0088H.4       SYMBOL        TR0
+  B:0088H.6       SYMBOL        TR1
+  C:002AH         SYMBOL        TRANS
+  C:0063H         SYMBOL        TRANS1
+  C:0068H         SYMBOL        TRANSNOME
+  C:002FH         SYMBOL        VOLTAROT
+  C:0000H         LINE#         16
+  C:000BH         LINE#         19
+  C:000CH         LINE#         20
+  C:000FH         LINE#         21
+BL51 BANKED LINKER/LOCATER V6.22.2.0                                                  06/17/2018  10:55:59  PAGE 2
+
+
+  C:0023H         LINE#         25
+  C:0026H         LINE#         26
+  C:0028H         LINE#         27
+  C:002AH         LINE#         29
+  C:002DH         LINE#         30
+  C:002FH         LINE#         32
+  C:0030H         LINE#         35
+  C:0033H         LINE#         37
+  C:0036H         LINE#         38
+  C:0039H         LINE#         39
+  C:003CH         LINE#         41
+  C:003FH         LINE#         42
+  C:0042H         LINE#         43
+  C:0045H         LINE#         45
+  C:0048H         LINE#         46
+  C:004AH         LINE#         47
+  C:004CH         LINE#         49
+  C:004EH         LINE#         50
+  C:0050H         LINE#         51
+  C:0052H         LINE#         52
+  C:0054H         LINE#         53
+  C:0057H         LINE#         55
+  C:005AH         LINE#         58
+  C:005DH         LINE#         59
+  C:005FH         LINE#         61
+  C:0061H         LINE#         62
+  C:0063H         LINE#         65
+  C:0066H         LINE#         66
+  C:0068H         LINE#         68
+  C:0069H         LINE#         69
+  C:006AH         LINE#         70
+  C:006CH         LINE#         71
+  C:006DH         LINE#         73
+  C:0070H         LINE#         74
+  C:0072H         LINE#         75
+  C:0073H         LINE#         76
+  C:0075H         LINE#         77
+  -------         ENDMOD        LAB8_2
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 0077H BYTE ( 5%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=147
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)

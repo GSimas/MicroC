@@ -1,0 +1,151 @@
+A51 MACRO ASSEMBLER  LAB8_2                                                               06/17/2018 10:55:58 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.2.7.0
+OBJECT MODULE PLACED IN .\Objects\lab8_2.obj
+ASSEMBLER INVOKED BY: C:\Users\Gustavo\Documents\GitHub\MicroC\EEL7030\Keil\C51\BIN\A51.EXE lab8_2.asm SET(SMALL) DEBUG 
+                      PRINT(.\Listings\lab8_2.lst) OBJECT(.\Objects\lab8_2.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;Exercício 2017-2
+                       2     ;1) enviar frase completa pela interface serial                                 
+                       3     ;2) a cada 998800 ciclos de inst. - timer 0                                                
+                                  
+                       4     ;3) transmissao com BR = 137,5 kbits/s e sem bit paridade               
+                       5     ;4) timer 0, temporizador, modo 1 - 16 bits                                             
+                       6     ;5) receber dados e mostrar na P1
+                       7     ;6) mostrar na P2 quant. vezes que a msg. foi transmitida               
+                       8     
+                       9     
+                      10     
+  0000                11     RESET       EQU     00H
+  0023                12     INTSERIAL   EQU         23H ; local tratador
+  000B                13     TIMER0          EQU             0BH
+                      14     
+0000                  15                             ORG     RESET   ;PC=0 depois de reset
+0000 802E             16                             JMP     INICIO  
+                      17     
+000B                  18                             ORG     TIMER0
+000B 0C               19                             INC     R4
+000C 758C9C           20                             MOV             TH0,#9CH ;156
+000F 32               21                             RETI            
+                      22     
+                      23     ;RECEP
+0023                  24                             ORG             INTSERIAL                       ;TI ta setado apos 
+                             ter transmitido
+0023 309804           25                             JNB             RI,TRANS                        ;se flip flop de re
+                             cepcao for RI=0, vai pra TRANS, vai setar F1 e vai TRANSMITIR, se nao seta F0 - pra RECEBER
+0026 C298             26                             CLR             RI
+0028 7A01             27                             MOV             R2,#1H  ; FLIP FLOP DE USO DE PROPOSITO GERAL DO PSW
+                      28     
+002A 309902           29     TRANS:          JNB             TI,VOLTAROT                     ;desvia se Ti estiver em ze
+                             ro - volta pra rotina
+002D C299             30                             CLR             TI
+                      31     
+002F 32               32     VOLTAROT:   RETI
+                      33     
+                      34     
+0030 75A892           35     INICIO:         MOV     IE,#10010010B
+                      36     
+0033 759850           37                             MOV     SCON,#01010000B ; MODO 3; REN=1
+0036 758D1D           38                             MOV     TH1,#01DH
+0039 758B1D           39                             MOV     TL1,#01DH
+                      40                             
+003C 758921           41                             MOV     TMOD,#00100001B ; C/T- 0 (TEMP)
+003F 758A00           42                             MOV             TL0,#00H     
+0042 758C9C           43                             MOV             TH0,#9CH
+                      44                             
+0045 758700           45                             MOV     PCON,#0H
+0048 D28C             46                             SETB    TR0
+004A D28E             47                             SETB    TR1
+                      48     
+004C 7900             49                             MOV             R1, #0H         ;para transmissao da tabela
+004E 7A00             50                             MOV             R2, #0H         ;usados para int. transf e recebe
+0050 7C00             51                             MOV             R4, #0H
+0052 7E00             52                             MOV             R6, #0H         ;quant. de vezes que msg inteira fo
+                             i transmitida 
+A51 MACRO ASSEMBLER  LAB8_2                                                               06/17/2018 10:55:58 PAGE     2
+
+0054 900077           53                             MOV             DPTR,#NOME
+                      54                             
+0057 854599           55                             MOV     SBUF,'E'        ;coloca dado trans. no sbuf
+                      56                                 
+                      57     
+005A BA0106           58     RECEP1:         CJNE    R2,#1H,TRANS1   ;RECEPCAOO!!!!
+005D 7A00             59                             MOV             R2,#0H
+                      60                             
+005F AD99             61                             MOV     R5,SBUF  ;coloca dado recebido no end. de r1
+0061 8D90             62                             MOV             P1,R5
+                      63     
+                      64                             
+0063 BC27F4           65     TRANS1:         CJNE    R4,#39,RECEP1           ;TRANSMISSAO!! -se F1=0 volta a RECEBER, se
+                              F=1 - TRANSMITI!
+0066 7C00             66                             MOV             R4,#0H
+                      67                             
+0068 E9               68     TRANSNOME:      MOV     A,R1
+0069 93               69                             MOVC    A,@A+DPTR
+006A F599             70                             MOV     SBUF,A
+006C 09               71                             INC     R1
+                      72     
+006D B91CEA           73                             CJNE    R1,#28,RECEP1 ;compara se atingiu maximo de caracteres
+0070 7900             74                             MOV     R1,#0H
+0072 0E               75                             INC             R6 ;quant. de vezes que msg inteira foi transmitida
+0073 8EA0             76                             MOV             P2, R6  ; nao sei se pode incrementar porta! VER!
+0075 80E3             77                             JMP     RECEP1
+                      78                             
+                      79                             
+0077 45786572         80     NOME:           DB 'Exercício para P2 - EEL7030_'       ;28  CARACTERES         
+007B 63ED6369                
+007F 6F207061                
+0083 72612050                
+0087 32202D20                
+008B 45454C37                
+008F 3033305F                
+                      81     
+                      82     END
+                                                             
+                                                             ;pq tem que colocar um bit de paridade antes de tudo e depo
+                             is outro em TSTTI?
+                                                             ;pode usar r2 e r3 em interrupcao, sem chamar de state??
+                                                             ;clr e jnb é so pra bit!!!!
+                                                             ;CTRL H - replace!!
+A51 MACRO ASSEMBLER  LAB8_2                                                               06/17/2018 10:55:58 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0030H   A   
+INTSERIAL. . . . .  N NUMB   0023H   A   
+NOME . . . . . . .  C ADDR   0077H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+P2 . . . . . . . .  D ADDR   00A0H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+RECEP1 . . . . . .  C ADDR   005AH   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+TH0. . . . . . . .  D ADDR   008CH   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TI . . . . . . . .  B ADDR   0098H.1 A   
+TIMER0 . . . . . .  N NUMB   000BH   A   
+TL0. . . . . . . .  D ADDR   008AH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR0. . . . . . . .  B ADDR   0088H.4 A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+TRANS. . . . . . .  C ADDR   002AH   A   
+TRANS1 . . . . . .  C ADDR   0063H   A   
+TRANSNOME. . . . .  C ADDR   0068H   A   
+VOLTAROT . . . . .  C ADDR   002FH   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)
