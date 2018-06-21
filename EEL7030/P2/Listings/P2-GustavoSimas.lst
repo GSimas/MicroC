@@ -1,0 +1,111 @@
+A51 MACRO ASSEMBLER  P2_GUSTAVOSIMAS                                                      06/20/2018 10:49:04 PAGE     1
+
+
+MACRO ASSEMBLER A51 V8.02c
+OBJECT MODULE PLACED IN .\Objects\P2-GustavoSimas.obj
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE P2-GustavoSimas.asm SET(SMALL) DEBUG PRINT(.\Listings\P2-GustavoSimas.l
+                      st) OBJECT(.\Objects\P2-GustavoSimas.obj) EP
+
+LOC  OBJ            LINE     SOURCE
+
+                       1     ;Gustavo Simas da Silva (matr. 16101076)
+                       2     ;Universidade Federal de Santa Catarina - UFSC
+                       3     ;Engenharia Eletrônica - EEL7030 Microprocessadores
+                       4     
+                       5     ;P2 - Lab
+                       6     ;Programa que recebe palavras de 8bits pela interface serial à taxa de 4,8kbits/s utilizand
+                             o interrupcao serial
+                       7     ;Os dados recebidos sao armazenados na memoria externa de dados em enderecos consecutivos d
+                             e 2000H até 2020H
+                       8     ;O numero total de dados recebidos é mostrado na porta P2
+                       9     ;Clock do cristal em 11,059MHz
+                      10     
+                      11     
+                      12     
+  0000                13     RESET       EQU     00H                 ;local inicio programa
+  0023                14     INTSERIAL   EQU         23H             ;local tratador interrupcao serial
+                      15     
+0000                  16                             ORG     RESET                   ;PC=0 depois de reset
+0000 8027             17                             JMP     INICIO                  ;pula para o inicio
+                      18             
+                      19     
+                      20     ;RECEP
+0023                  21                             ORG             INTSERIAL               ;Interrupcao Serial
+0023 C298             22                             CLR             RI
+0025 7A01             23                             MOV             R2,#1H                  ;move #1h para o registrado
+                             r r2 para executar recebimento no cod principal
+0027 0E               24                             INC             R6                              ;incrementa r6 indi
+                             cando que recebeu mais um dado
+0028 32               25                             RETI
+                      26     
+                      27     
+0029 75A890           28     INICIO:         MOV     IE,#10010000B   ;EA = 1 ES = 1
+                      29     
+002C 759850           30                             MOV     SCON,#01010000B ; MODO 1 10bits (8bits dados + 1 start bit 
+                             + 1 stop bit); REN=1
+002F 758921           31                             MOV     TMOD,#00100001B ; TIMER 1 Modo 2 - C/T- 0  (TEMP) Gate - 0
+0032 758DFA           32                             MOV     TH1,#0FAH               ;valor tabela
+0035 758BFA           33                             MOV     TL1,#0FAH               ;valor tabela
+                      34                             
+0038 758700           35                             MOV     PCON,#0H                ;garantir que SMOD = 0
+003B D28E             36                             SETB    TR1                     ;dispara timer1
+                      37     
+003D 7A00             38                             MOV             R2, #0H                 ;usados para int. recebimen
+                             to
+003F 7400             39                             MOV             A, #0H                  ;move #0h para o acumulador
+0041 7E00             40                             MOV             R6, #0H                 ;quant. de vezes que msg in
+                             teira foi transmitida        
+0043 902000           41     VOLTA:          MOV             DPTR, #2000H    ;endereco externo inicial
+0046 7C00             42                             MOV             R4,#0H                  ;registrador auxiliar para 
+                             verificar DPL
+                      43     
+0048 BA01FD           44     RECEP1:         CJNE    R2,#1H,RECEP1   ;espera acontecer interrupcao para r2 ser = 1 e ava
+                             ncar
+004B 7A00             45                             MOV             R2,#0H                  ;move #0h para r2
+004D 8E90             46                             MOV             P1, R6                  ;coloca em p1 num. total de
+                              dados recebidos (quantidade de vezes que dados foram receb)
+004F E599             47                             MOV             A, SBUF                 ;coloca conteudo recebido n
+A51 MACRO ASSEMBLER  P2_GUSTAVOSIMAS                                                      06/20/2018 10:49:04 PAGE     2
+
+                             o acumulador
+0051 F0               48                             MOVX    @DPTR, A                ;copia conteudo do acumulador para 
+                             o endereco externo indicado por dptr
+0052 0582             49                             INC             DPL                             ;incrementa DPL par
+                             a indicar prox endereco
+0054 AC82             50                             MOV             R4, DPL                 ;copia conteudo de dpl para
+                              registrador r4 para fazer verificacao a seguir
+0056 BC14EF           51                             CJNE    R4,#20,RECEP1   ;verifica se já recebeu 20bytes
+0059 80E8             52                             JMP             VOLTA                   ;retorna para colocar dptr 
+                             2000h
+                      53                             
+                      54     END
+A51 MACRO ASSEMBLER  P2_GUSTAVOSIMAS                                                      06/20/2018 10:49:04 PAGE     3
+
+SYMBOL TABLE LISTING
+------ ----- -------
+
+
+N A M E             T Y P E  V A L U E   ATTRIBUTES
+
+DPL. . . . . . . .  D ADDR   0082H   A   
+IE . . . . . . . .  D ADDR   00A8H   A   
+INICIO . . . . . .  C ADDR   0029H   A   
+INTSERIAL. . . . .  N NUMB   0023H   A   
+P1 . . . . . . . .  D ADDR   0090H   A   
+PCON . . . . . . .  D ADDR   0087H   A   
+RECEP1 . . . . . .  C ADDR   0048H   A   
+RESET. . . . . . .  N NUMB   0000H   A   
+RI . . . . . . . .  B ADDR   0098H.0 A   
+SBUF . . . . . . .  D ADDR   0099H   A   
+SCON . . . . . . .  D ADDR   0098H   A   
+TH1. . . . . . . .  D ADDR   008DH   A   
+TL1. . . . . . . .  D ADDR   008BH   A   
+TMOD . . . . . . .  D ADDR   0089H   A   
+TR1. . . . . . . .  B ADDR   0088H.6 A   
+VOLTA. . . . . . .  C ADDR   0043H   A   
+
+
+REGISTER BANK(S) USED: 0 
+
+
+ASSEMBLY COMPLETE.  0 WARNING(S), 0 ERROR(S)

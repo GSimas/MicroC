@@ -1,0 +1,85 @@
+BL51 BANKED LINKER/LOCATER V6.22                                                        06/20/2018  10:49:04  PAGE 1
+
+
+BL51 BANKED LINKER/LOCATER V6.22, INVOKED BY:
+C:\KEIL_V5\C51\BIN\BL51.EXE .\Objects\P2-GustavoSimas.obj TO .\Objects\P2-GustavoSimas PRINT (.\Listings\P2-GustavoSimas
+>> .m51)
+
+
+INPUT MODULES INCLUDED:
+  .\Objects\P2-GustavoSimas.obj (P2_GUSTAVOSIMAS)
+
+
+LINK MAP OF MODULE:  .\Objects\P2-GustavoSimas (P2_GUSTAVOSIMAS)
+
+
+            TYPE    BASE      LENGTH    RELOCATION   SEGMENT NAME
+            -----------------------------------------------------
+
+            * * * * * * *   D A T A   M E M O R Y   * * * * * * *
+            REG     0000H     0008H     ABSOLUTE     "REG BANK 0"
+
+            * * * * * * *   C O D E   M E M O R Y   * * * * * * *
+            CODE    0000H     005BH     ABSOLUTE     
+
+
+
+SYMBOL TABLE OF MODULE:  .\Objects\P2-GustavoSimas (P2_GUSTAVOSIMAS)
+
+  VALUE           TYPE          NAME
+  ----------------------------------
+
+  -------         MODULE        P2_GUSTAVOSIMAS
+  D:0082H         SYMBOL        DPL
+  D:00A8H         SYMBOL        IE
+  C:0029H         SYMBOL        INICIO
+  N:0023H         SYMBOL        INTSERIAL
+  D:0090H         SYMBOL        P1
+  D:0087H         SYMBOL        PCON
+  C:0048H         SYMBOL        RECEP1
+  N:0000H         SYMBOL        RESET
+  B:0098H.0       SYMBOL        RI
+  D:0099H         SYMBOL        SBUF
+  D:0098H         SYMBOL        SCON
+  D:008DH         SYMBOL        TH1
+  D:008BH         SYMBOL        TL1
+  D:0089H         SYMBOL        TMOD
+  B:0088H.6       SYMBOL        TR1
+  C:0043H         SYMBOL        VOLTA
+  C:0000H         LINE#         17
+  C:0023H         LINE#         22
+  C:0025H         LINE#         23
+  C:0027H         LINE#         24
+  C:0028H         LINE#         25
+  C:0029H         LINE#         28
+  C:002CH         LINE#         30
+  C:002FH         LINE#         31
+  C:0032H         LINE#         32
+  C:0035H         LINE#         33
+  C:0038H         LINE#         35
+  C:003BH         LINE#         36
+  C:003DH         LINE#         38
+BL51 BANKED LINKER/LOCATER V6.22                                                      06/20/2018  10:49:04  PAGE 2
+
+
+  C:003FH         LINE#         39
+  C:0041H         LINE#         40
+  C:0043H         LINE#         41
+  C:0046H         LINE#         42
+  C:0048H         LINE#         44
+  C:004BH         LINE#         45
+  C:004DH         LINE#         46
+  C:004FH         LINE#         47
+  C:0051H         LINE#         48
+  C:0052H         LINE#         49
+  C:0054H         LINE#         50
+  C:0056H         LINE#         51
+  C:0059H         LINE#         52
+  -------         ENDMOD        P2_GUSTAVOSIMAS
+
+******************************************************************************
+* RESTRICTED VERSION WITH 0800H BYTE CODE SIZE LIMIT; USED: 003AH BYTE ( 2%) *
+******************************************************************************
+
+Program Size: data=8.0 xdata=0 code=91
+LINK/LOCATE RUN COMPLETE.  0 WARNING(S),  0 ERROR(S)
